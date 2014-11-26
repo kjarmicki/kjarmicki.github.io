@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gardr overflow test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="test"></div>
+    <div id="test2"></div>
+    <div id="debug">first iframe computed width: <span id="width"></span></div>
+    <script src="gardr/host.js"></script>
+    <script>
+        var gardr = gardrHost({
+            iframeUrl: 'gardr/iframe.html'
+        });
+
+        gardr.queue('test', {
+            url: '../test.js',
+            container: 'test',
+            width: '100%',
+            height: 150
+        });
+
+        gardr.queue('test2', {
+            url: '../test.js',
+            container: 'test',
+            width: 200,
+            height: 150
+        })
+
+        gardr.renderAll(function() {
+            document.querySelector('#width').innerHTML = window.getComputedStyle(document.querySelector('#test iframe'), null).width;
+        });
+    </script>
+</body>
+</html>
