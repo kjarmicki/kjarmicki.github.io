@@ -1,0 +1,3228 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)http://www.schibsted.pl/blog/back-end/serverless-architecture-aws-lambda/ -->
+<html lang="en-US" prefix="og: http://ogp.me/ns#" class=" js backgroundsize cssanimations"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/695186ec17"></script><script src="./Serverless architecture - Amazon Web Services Lambda_files/nr-1026.min.js"></script><script type="text/javascript" async="" src="./Serverless architecture - Amazon Web Services Lambda_files/analytics.js"></script><script async="" src="./Serverless architecture - Amazon Web Services Lambda_files/fbds.js"></script><script async="" src="./Serverless architecture - Amazon Web Services Lambda_files/gtm.js"></script><script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var o=n[t]={exports:{}};e[t][0].call(o.exports,function(n){var o=e[t][1][n];return r(o||n)},o,o.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({1:[function(e,n,t){function r(){}function o(e,n,t){return function(){return i(e,[c.now()].concat(u(arguments)),n?null:this,t),n?void 0:this}}var i=e("handle"),a=e(2),u=e(3),f=e("ee").get("tracer"),c=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(e,n){s[n]=o(d+n,!0,"api")}),s.addPageAction=o(d+"addPageAction",!0),s.setCurrentRouteName=o(d+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,o="function"==typeof n;return i(l+"tracer",[c.now(),e,t],r),function(){if(f.emit((o?"":"no-")+"fn-start",[c.now(),r,o],t),o)try{return n.apply(this,arguments)}finally{f.emit("fn-end",[c.now()],t)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=o(l+n)}),newrelic.noticeError=function(e){"string"==typeof e&&(e=new Error(e)),i("err",[e,c.now()])}},{}],2:[function(e,n,t){function r(e,n){var t=[],r="",i=0;for(r in e)o.call(e,r)&&(t[i]=n(r,e[r]),i+=1);return t}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],3:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,o=t-n||0,i=Array(o<0?0:o);++r<o;)i[r]=e[n+r];return i}n.exports=r},{}],4:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function o(e){function n(e){return e&&e instanceof r?e:e?f(e,u,i):i()}function t(t,r,o,i){if(!d.aborted||i){e&&e(t,r,o);for(var a=n(o),u=m(t),f=u.length,c=0;c<f;c++)u[c].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function l(e,n){v[e]=m(e).concat(n)}function m(e){return v[e]||[]}function w(e){return p[e]=p[e]||o(t)}function g(e,n){c(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var v={},y={},b={on:l,emit:t,get:w,listeners:m,context:n,buffer:g,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u="nr@context",f=e("gos"),c=e(2),s={},p={},d=n.exports=o();d.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(o.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){o.buffer([e],r),o.emit(e,n,t)}var o=e("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=h.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();c(y,function(n,t){e[n]||(e[n]=t)}),f("mark",["onload",a()+h.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function o(){"complete"===d.readyState&&i()}function i(){f("mark",["domContent",a()+h.offset],null,"api")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-h.offset}var u=(new Date).getTime(),f=e("handle"),c=e(2),s=e("ee"),p=window,d=p.document,l="addEventListener",m="attachEvent",w=p.XMLHttpRequest,g=w&&w.prototype;NREUM.o={ST:setTimeout,CT:clearTimeout,XHR:w,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var v=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1026.min.js"},b=w&&g&&g[l]&&!/CriOS/.test(navigator.userAgent),h=n.exports={offset:u,now:a,origin:v,features:{},xhrWrappable:b};e(1),d[l]?(d[l]("DOMContentLoaded",i,!1),p[l]("load",r,!1)):(d[m]("onreadystatechange",o),p[m]("onload",r)),f("mark",["firstbyte",u],null,"api");var x=0,E=e(4)},{}]},{},["loader"]);</script>
+    <meta name="viewport" content="width=device-width">
+    <meta name="app_version" content="1090">
+    <meta name="google-site-verification" content="pSvs7giHiZQ6praLwPuwTPytjkWf4E6fEyihsnvAPu8">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <link rel="pingback" href="http://www.schibsted.pl/xmlrpc.php">
+    <link rel="shortcut icon" href="http://www.schibsted.pl/wp-content/themes/schibsted-pl/favicon.ico">
+    <title>Lag Compensation in Multiplayer Games</title>
+    
+<!-- Google Tag Manager for WordPress by DuracellTomi - http://duracelltomi.com -->
+<script data-cfasync="false" type="text/javascript">
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || []
+</script>
+<!-- End Google Tag Manager for WordPress by DuracellTomi -->
+<!-- This site is optimized with the Yoast SEO plugin v3.7.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="This article describes the experience we gained during our recent adventure with a serverless architecture - AWS Lambda solution.">
+<meta name="robots" content="noodp">
+<link rel="canonical" href="http://www.schibsted.pl/blog/back-end/serverless-architecture-aws-lambda/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Serverless architecture - Amazon Web Services Lambda">
+<meta property="og:description" content="This article describes the experience we gained during our recent adventure with a serverless architecture - AWS Lambda solution.">
+<meta property="og:url" content="http://www.schibsted.pl/blog/back-end/serverless-architecture-aws-lambda/">
+<meta property="og:site_name" content="Schibsted Tech Polska">
+<meta property="article:tag" content="aws">
+<meta property="article:tag" content="cloud">
+<meta property="article:tag" content="datadog">
+<meta property="article:tag" content="faas">
+<meta property="article:tag" content="Lambda">
+<meta property="article:tag" content="serverless">
+<meta property="article:section" content="Back-end">
+<meta property="article:published_time" content="2017-03-15T09:59:11+02:00">
+<meta property="article:modified_time" content="2017-03-21T18:03:34+02:00">
+<meta property="og:updated_time" content="2017-03-21T18:03:34+02:00">
+<meta property="og:image" content="http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989.jpg">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="1067">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Schibsted Tech Polska » Serverless architecture – AWS Lambda Comments Feed" href="http://www.schibsted.pl/blog/back-end/serverless-architecture-aws-lambda/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.schibsted.pl\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.2"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Serverless architecture - Amazon Web Services Lambda_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./Serverless architecture - Amazon Web Services Lambda_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-classic-css" href="./Serverless architecture - Amazon Web Services Lambda_files/classic.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./Serverless architecture - Amazon Web Services Lambda_files/monaco.css" type="text/css" media="all">
+<link rel="stylesheet" id="contact-form-7-css" href="./Serverless architecture - Amazon Web Services Lambda_files/styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="css/normalize-css" href="./Serverless architecture - Amazon Web Services Lambda_files/normalize.css" type="text/css" media="all">
+<link rel="stylesheet" id="css/slick-css" href="./Serverless architecture - Amazon Web Services Lambda_files/slick.css" type="text/css" media="all">
+<link rel="stylesheet" id="css/slick-theme-css" href="./Serverless architecture - Amazon Web Services Lambda_files/slick-custom-theme.css" type="text/css" media="all">
+<link rel="stylesheet" id="css/fonts-css" href="./Serverless architecture - Amazon Web Services Lambda_files/fonts.css" type="text/css" media="all">
+<link rel="stylesheet" id="css/icons-css" href="./Serverless architecture - Amazon Web Services Lambda_files/icomoon.css" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="./Serverless architecture - Amazon Web Services Lambda_files/style.css" type="text/css" media="all">
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/jquery.js"></script><script>jQueryWP = jQuery;</script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/www.schibsted.pl\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/crayon.min.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/gtm4wp-form-move-tracker.js"></script>
+<!--[if lt IE 9]><script type='text/javascript' src='http://www.schibsted.pl/wp-content/themes/schibsted-pl/js/html5.min.js?ver=3.7.0'></script>
+<![endif]--><script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/modernizr.min.js"></script>
+<link rel="https://api.w.org/" href="http://www.schibsted.pl/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.schibsted.pl/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.schibsted.pl/wp-includes/wlwmanifest.xml">
+<meta name="generator" content="WordPress 4.7.2">
+<link rel="shortlink" href="http://www.schibsted.pl/?p=11004">
+<link rel="alternate" type="application/json+oembed" href="http://www.schibsted.pl/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.schibsted.pl%2Fblog%2Fback-end%2Fserverless-architecture-aws-lambda%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://www.schibsted.pl/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.schibsted.pl%2Fblog%2Fback-end%2Fserverless-architecture-aws-lambda%2F&amp;format=xml">
+<script data-cfasync="false" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource" data-sumo-platform="wordpress" data-sumo-site-id="758b6009851ce163f3f37a7a1910e0d6515a9f14780f69975942413b76509999" async=""></script>
+<!-- Google Tag Manager for WordPress by DuracellTomi -->
+<script data-cfasync="false" type="text/javascript">
+	dataLayer.push({"visitorLoginState":"logged-out","pageTitle":"Serverless architecture - Amazon Web Services Lambda","pagePostType":"post","pagePostType2":"single-post","pageCategory":["back-end","blog"],"pageAttributes":["aws","cloud","datadog","faas","lambda","serverless"],"pagePostAuthor":"Marek Smęt"});
+</script><style>button#responsive-menu-button, #responsive-menu-container {
+  display: none;
+  -webkit-text-size-adjust: 100%; }
+
+@media screen and (max-width: 720px) {
+  #responsive-menu-container {
+    display: block; }
+
+  #responsive-menu-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    /* Fix for scroll bars appearing when not needed */
+    z-index: 99998;
+    padding-bottom: 5px;
+    margin-bottom: -5px;
+    overflow-y: auto;
+    overflow-x: hidden; }
+    #responsive-menu-container .responsive-menu-search-box {
+      width: 100%;
+      padding: 0 2%;
+      border-radius: 2px;
+      height: 50px;
+      -webkit-appearance: none; }
+    #responsive-menu-container.push-left, #responsive-menu-container.slide-left {
+      transform: translateX(-100%);
+      -ms-transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+      -moz-transform: translateX(-100%); }
+      .responsive-menu-open #responsive-menu-container.push-left, .responsive-menu-open #responsive-menu-container.slide-left {
+        transform: translateX(0);
+        -ms-transform: translateX(0);
+        -webkit-transform: translateX(0);
+        -moz-transform: translateX(0); }
+    #responsive-menu-container.push-top, #responsive-menu-container.slide-top {
+      transform: translateY(-100%);
+      -ms-transform: translateY(-100%);
+      -webkit-transform: translateY(-100%);
+      -moz-transform: translateY(-100%); }
+      .responsive-menu-open #responsive-menu-container.push-top, .responsive-menu-open #responsive-menu-container.slide-top {
+        transform: translateY(0);
+        -ms-transform: translateY(0);
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0); }
+    #responsive-menu-container.push-right, #responsive-menu-container.slide-right {
+      transform: translateX(100%);
+      -ms-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      -moz-transform: translateX(100%); }
+      .responsive-menu-open #responsive-menu-container.push-right, .responsive-menu-open #responsive-menu-container.slide-right {
+        transform: translateX(0);
+        -ms-transform: translateX(0);
+        -webkit-transform: translateX(0);
+        -moz-transform: translateX(0); }
+    #responsive-menu-container.push-bottom, #responsive-menu-container.slide-bottom {
+      transform: translateY(100%);
+      -ms-transform: translateY(100%);
+      -webkit-transform: translateY(100%);
+      -moz-transform: translateY(100%); }
+      .responsive-menu-open #responsive-menu-container.push-bottom, .responsive-menu-open #responsive-menu-container.slide-bottom {
+        transform: translateY(0);
+        -ms-transform: translateY(0);
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0); }
+    #responsive-menu-container, #responsive-menu-container:before, #responsive-menu-container:after, #responsive-menu-container *, #responsive-menu-container *:before, #responsive-menu-container *:after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0; }
+    #responsive-menu-container #responsive-menu-search-box, #responsive-menu-container #responsive-menu-additional-content, #responsive-menu-container #responsive-menu-title {
+      padding: 25px 5%; }
+    #responsive-menu-container #responsive-menu, #responsive-menu-container #responsive-menu ul {
+      width: 100%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu {
+        display: none; }
+        #responsive-menu-container #responsive-menu ul.responsive-menu-submenu.responsive-menu-submenu-open {
+          display: block; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-1 a.responsive-menu-item-link {
+        padding-left: 10%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-2 a.responsive-menu-item-link {
+        padding-left: 15%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-3 a.responsive-menu-item-link {
+        padding-left: 20%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-4 a.responsive-menu-item-link {
+        padding-left: 25%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-5 a.responsive-menu-item-link {
+        padding-left: 30%; }
+      #responsive-menu-container #responsive-menu ul.responsive-menu-submenu-depth-6 a.responsive-menu-item-link {
+        padding-left: 35%; }
+    #responsive-menu-container li.responsive-menu-item {
+      width: 100%;
+      list-style: none; }
+      #responsive-menu-container li.responsive-menu-item a {
+        width: 100%;
+        display: block;
+        text-decoration: none;
+        padding: 0 5%;
+        position: relative; }
+        #responsive-menu-container li.responsive-menu-item a .fa {
+          margin-right: 15px; }
+        #responsive-menu-container li.responsive-menu-item a .responsive-menu-subarrow {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          text-align: center;
+          overflow: hidden; }
+          #responsive-menu-container li.responsive-menu-item a .responsive-menu-subarrow .fa {
+            margin-right: 0; }
+
+  button#responsive-menu-button .responsive-menu-button-icon-inactive {
+    display: none; }
+
+  button#responsive-menu-button {
+    z-index: 99999;
+    display: none;
+    overflow: hidden; }
+    button#responsive-menu-button img {
+      max-width: 100%; }
+
+  .responsive-menu-label {
+    display: inline-block;
+    font-weight: 600;
+    margin: 0 5px;
+    vertical-align: middle; }
+
+  .responsive-menu-accessible {
+    display: inline-block; }
+
+  .responsive-menu-accessible .responsive-menu-box {
+    display: inline-block;
+    vertical-align: middle; }
+
+  .responsive-menu-label.responsive-menu-label-top, .responsive-menu-label.responsive-menu-label-bottom {
+    display: block;
+    margin: 0 auto; } }
+@media screen and (max-width: 720px) {
+  /*!
+ * Hamburgers
+ * @description Tasty CSS-animated hamburgers
+ * @author Jonathan Suh @jonsuh
+ * @site https://jonsuh.com/hamburgers
+ * @link https://github.com/jonsuh/hamburgers
+ */
+  /*
+   * Boring
+   */
+    button#responsive-menu-button {
+      padding: 0 0;
+      display: inline-block;
+      cursor: pointer;
+      transition-property: opacity, filter;
+      transition-duration: 0.15s;
+      transition-timing-function: linear;
+      font: inherit;
+      color: inherit;
+      text-transform: none;
+      background-color: transparent;
+      border: 0;
+      margin: 0;
+      overflow: visible; }
+      button#responsive-menu-button:hover {
+        opacity: 1; }
+    .responsive-menu-box {
+      width: 33px;
+      height: 27px;
+      display: inline-block;
+      position: relative; }
+    .responsive-menu-inner {
+      display: block;
+      top: 50%;
+      margin-top: -2.5px; }
+      .responsive-menu-inner, .responsive-menu-inner::before, .responsive-menu-inner::after {
+        width: 33px;
+        height: 5px;
+        background-color: #289fc5;
+        border-radius: 4px;
+        position: absolute;
+        transition-property: transform;
+        transition-duration: 0.15s;
+        transition-timing-function: ease; }
+      .responsive-menu-inner::before, .responsive-menu-inner::after {
+        content: "";
+        display: block; }
+      .responsive-menu-inner::before {
+        top: -11px; }
+      .responsive-menu-inner::after {
+        bottom: -11px; }
+    .responsive-menu-boring .responsive-menu-inner, .responsive-menu-boring .responsive-menu-inner::before, .responsive-menu-boring .responsive-menu-inner::after {
+      transition-property: none; }
+      .responsive-menu-boring.is-active .responsive-menu-inner {
+        transform: rotate(45deg); }
+        .responsive-menu-boring.is-active .responsive-menu-inner::before {
+          top: 0;
+          opacity: 0; }
+        .responsive-menu-boring.is-active .responsive-menu-inner::after {
+          bottom: 0;
+          transform: rotate(-90deg); }
+    button#responsive-menu-button {
+      width: 55px;
+      height: 55px;
+      background: #fff;
+      position: absolute;
+      top: 23px;
+      right: 5%; }
+      button#responsive-menu-button:hover {
+        background: #fff; }
+      button#responsive-menu-button .responsive-menu-box {
+        color: #289fc5; }
+    .responsive-menu-label {
+      color: #fff;
+      font-size: 14px;
+      line-height: 13px; }
+    button#responsive-menu-button {
+      display: inline-block;
+      transition: transform 0.5s, background-color 1s; } }
+@media screen and (max-width: 720px) {
+  #responsive-menu-container {
+    width: 75%;
+    right: 0;
+    background: #289fc5;
+    transition: transform 0.5s;
+    text-align: left; }
+    #responsive-menu-container #responsive-menu-wrapper {
+      background: #289fc5; }
+    #responsive-menu-container #responsive-menu-additional-content {
+      color: #fff; }
+    #responsive-menu-container .responsive-menu-search-box {
+      background: #fff;
+      border: 2px solid #dadada;
+      color: #333; }
+      #responsive-menu-container .responsive-menu-search-box:-ms-input-placeholder {
+        color: #c7c7cd; }
+      #responsive-menu-container .responsive-menu-search-box:-webkit-input-placeholder {
+        color: #c7c7cd; }
+      #responsive-menu-container .responsive-menu-search-box:-moz-placeholder {
+        color: #c7c7cd;
+        opacity: 1; }
+      #responsive-menu-container .responsive-menu-search-box::-moz-placeholder {
+        color: #c7c7cd;
+        opacity: 1; }
+    #responsive-menu-container .responsive-menu-item-link, #responsive-menu-container #responsive-menu-title, #responsive-menu-container .responsive-menu-subarrow {
+      transition: background-color 1s, border-color 1s, color 1s; }
+    #responsive-menu-container #responsive-menu-title {
+      background-color: #289fc5;
+      color: #289fc5;
+      font-size: 16px; }
+      #responsive-menu-container #responsive-menu-title a {
+        color: #289fc5;
+        font-size: 16px;
+        text-decoration: none; }
+        #responsive-menu-container #responsive-menu-title a:hover {
+          color: #289fc5; }
+      #responsive-menu-container #responsive-menu-title:hover {
+        background-color: #289fc5;
+        color: #289fc5; }
+        #responsive-menu-container #responsive-menu-title:hover a {
+          color: #289fc5; }
+      #responsive-menu-container #responsive-menu-title #responsive-menu-title-image {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 15px; }
+    #responsive-menu-container #responsive-menu > li.responsive-menu-item:first-child a {
+      border-top: 1px solid #289fc5; }
+      #responsive-menu-container #responsive-menu li.responsive-menu-item .responsive-menu-item-link {
+        font-size: 23px; }
+        #responsive-menu-container #responsive-menu li.responsive-menu-item a {
+          line-height: 49px;
+          border-bottom: 1px solid #289fc5;
+          color: #fff;
+          background-color: #289fc5; }
+          #responsive-menu-container #responsive-menu li.responsive-menu-item a:hover {
+            color: #fff;
+            background-color: #58a9c4;
+            border-color: #289fc5; }
+            #responsive-menu-container #responsive-menu li.responsive-menu-item a:hover .responsive-menu-subarrow {
+              color: #fff;
+              border-color: #289fc5;
+              background-color: #58a9c4; }
+          #responsive-menu-container #responsive-menu li.responsive-menu-item a .responsive-menu-subarrow {
+            right: 0;
+            height: 49px;
+            line-height: 49px;
+            width: 49px;
+            color: #fff;
+            border-left: 1px solid #289fc5;
+            background-color: #289fc5; }
+            #responsive-menu-container #responsive-menu li.responsive-menu-item a .responsive-menu-subarrow.responsive-menu-subarrow-active {
+              color: #fff;
+              border-color: #212121;
+              background-color: #212121; }
+              #responsive-menu-container #responsive-menu li.responsive-menu-item a .responsive-menu-subarrow.responsive-menu-subarrow-active:hover {
+                color: #fff;
+                border-color: #3f3f3f;
+                background-color: #3f3f3f; }
+            #responsive-menu-container #responsive-menu li.responsive-menu-item a .responsive-menu-subarrow:hover {
+              color: #fff;
+              border-color: #289fc5;
+              background-color: #58a9c4; }
+        #responsive-menu-container #responsive-menu li.responsive-menu-item.responsive-menu-current-item > .responsive-menu-item-link {
+          background-color: #58a9c4;
+          color: #fff;
+          border-color: #289fc5; }
+          #responsive-menu-container #responsive-menu li.responsive-menu-item.responsive-menu-current-item > .responsive-menu-item-link:hover {
+            background-color: #7db2c4;
+            color: #fff;
+            border-color: #289fc5; } }
+</style><script>
+    jQuery(document).ready(function($) {
+
+      var ResponsiveMenu = {
+        trigger: '#responsive-menu-button',
+        animationSpeed: 500,
+        breakpoint: 720,
+        pushButton: 'off',
+        animationType: 'push',
+        animationSide: 'right',
+        pageWrapper: '',
+        isOpen: false,
+        triggerTypes: 'click',
+        activeClass: 'is-active',
+        container: '#responsive-menu-container',
+        openClass: 'responsive-menu-open',
+        accordion: 'off',
+        activeArrow: '▲',
+        inactiveArrow: '▼',
+        wrapper: '#responsive-menu-wrapper',
+        closeOnBodyClick: 'off',
+        closeOnLinkClick: 'off',
+        itemTriggerSubMenu: 'off',
+        linkElement: '.responsive-menu-item-link',
+        openMenu: function() {
+          $(this.trigger).addClass(this.activeClass);
+          $('html').addClass(this.openClass);
+          $('.responsive-menu-button-icon-active').hide();
+          $('.responsive-menu-button-icon-inactive').show();
+          this.setWrapperTranslate();
+          this.isOpen = true;
+        },
+        closeMenu: function() {
+          $(this.trigger).removeClass(this.activeClass);
+          $('html').removeClass(this.openClass);
+          $('.responsive-menu-button-icon-inactive').hide();
+          $('.responsive-menu-button-icon-active').show();
+          this.clearWrapperTranslate();
+          this.isOpen = false;
+        },
+        triggerMenu: function() {
+          this.isOpen ? this.closeMenu() : this.openMenu();
+        },
+        triggerSubArrow: function(subarrow) {
+          var sub_menu = $(subarrow).parent().next('.responsive-menu-submenu');
+          var self = this;
+          if(this.accordion == 'on') {
+            /* Get Top Most Parent and the siblings */
+            var top_siblings = sub_menu.parents('.responsive-menu-item-has-children').last().siblings('.responsive-menu-item-has-children');
+            var first_siblings = sub_menu.parents('.responsive-menu-item-has-children').first().siblings('.responsive-menu-item-has-children');
+            /* Close up just the top level parents to key the rest as it was */
+            top_siblings.children('.responsive-menu-submenu').slideUp(200, 'linear').removeClass('responsive-menu-submenu-open');
+            /* Set each parent arrow to inactive */
+            top_siblings.each(function() {
+              $(this).find('.responsive-menu-subarrow').first().html(self.inactiveArrow);
+              $(this).find('.responsive-menu-subarrow').first().removeClass('responsive-menu-subarrow-active');
+            });
+            /* Now Repeat for the current item siblings */
+            first_siblings.children('.responsive-menu-submenu').slideUp(200, 'linear').removeClass('responsive-menu-submenu-open');
+            first_siblings.each(function() {
+              $(this).find('.responsive-menu-subarrow').first().html(self.inactiveArrow);
+              $(this).find('.responsive-menu-subarrow').first().removeClass('responsive-menu-subarrow-active');
+            });
+          }
+          if(sub_menu.hasClass('responsive-menu-submenu-open')) {
+            sub_menu.slideUp(200, 'linear').removeClass('responsive-menu-submenu-open');
+            $(subarrow).html(this.inactiveArrow);
+            $(subarrow).removeClass('responsive-menu-subarrow-active');
+          } else {
+            sub_menu.slideDown(200, 'linear').addClass('responsive-menu-submenu-open');
+            $(subarrow).html(this.activeArrow);
+            $(subarrow).addClass('responsive-menu-subarrow-active');
+          }
+        },
+        menuHeight: function() {
+          return $(this.container).height();
+        },
+        menuWidth: function() {
+          return $(this.container).width();
+        },
+        wrapperHeight: function() {
+          return $(this.wrapper).height();
+        },
+        setWrapperTranslate: function() {
+          switch(this.animationSide) {
+            case 'left':
+              translate = 'translateX(' + this.menuWidth() + 'px)'; break;
+            case 'right':
+              translate = 'translateX(-' + this.menuWidth() + 'px)'; break;
+            case 'top':
+              translate = 'translateY(' + this.wrapperHeight() + 'px)'; break;
+            case 'bottom':
+              translate = 'translateY(-' + this.menuHeight() + 'px)'; break;
+            }
+            if(this.animationType == 'push') {
+              $(this.pageWrapper).css({'transform':translate});
+              $('html, body').css('overflow-x', 'hidden');
+            }
+            if(this.pushButton == 'on') {
+              $('#responsive-menu-button').css({'transform':translate});
+            }
+        },
+        clearWrapperTranslate: function() {
+          self = this;
+          if(this.animationType == 'push') {
+            $(this.pageWrapper).css({'transform':''});
+            setTimeout(function() {
+              $('html, body').css('overflow-x', '');
+            }, self.animationSpeed);
+          }
+          if(this.pushButton == 'on') {
+            $('#responsive-menu-button').css({'transform':''});
+          }
+        },
+        init: function() {
+          var self = this;
+          $(this.trigger).on(this.triggerTypes, function(e){
+            e.stopPropagation();
+            self.triggerMenu();
+          });
+          $('.responsive-menu-subarrow').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            self.triggerSubArrow(this);
+          });
+          $(window).resize(function() {
+            if($(window).width() > self.breakpoint) {
+              if(self.isOpen){
+                self.closeMenu();
+              }
+            } else {
+              if($('.responsive-menu-open').length>0){
+                self.setWrapperTranslate();
+              }
+            }
+          });
+          if(this.closeOnLinkClick == 'on') {
+            $(this.linkElement).on('click', function(e) {
+              e.preventDefault();
+              /* Fix for when close menu on parent clicks is on */
+              if(self.itemTriggerSubMenu == 'on' && $(this).is('.responsive-menu-item-has-children > ' + self.linkElement)) {
+                return;
+              }
+              old_href = $(this).attr('href');
+              old_target = typeof $(this).attr('target') == 'undefined' ? '_self' : $(this).attr('target');
+              if(self.isOpen) {
+                if($(e.target).closest('.responsive-menu-subarrow').length) {
+                  return;
+                }
+                self.closeMenu();
+                setTimeout(function() {
+                  window.open(old_href, old_target);
+                }, self.animationSpeed);
+              }
+            });
+          }
+          if(this.closeOnBodyClick == 'on') {
+            $(document).on('click', 'body', function(e) {
+              if(self.isOpen) {
+                if($(e.target).closest('#responsive-menu-container').length || $(e.target).closest('#responsive-menu-button').length) {
+                  return;
+                }
+              }
+              self.closeMenu();
+            });
+          }
+          if(this.itemTriggerSubMenu == 'on') {
+            $('.responsive-menu-item-has-children > ' + this.linkElement).on('click', function(e) {
+              e.preventDefault();
+              self.triggerSubArrow($(this).children('.responsive-menu-subarrow').first());
+            });
+          }
+        }
+      };
+      ResponsiveMenu.init();
+    });
+</script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="8dc42610-ae42-4164-90b1-573478b46574/service" src="./Serverless architecture - Amazon Web Services Lambda_files/service.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="2c40add5-3570-45d7-8212-8fc2942f7f74/service" src="./Serverless architecture - Amazon Web Services Lambda_files/service(1).js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="9e8a4d2a-6f8c-415e-851b-bdfe4c01d5c1/service" src="./Serverless architecture - Amazon Web Services Lambda_files/service(2).js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="a25489e9-848c-4356-97ff-161b0852c509/service" src="./Serverless architecture - Amazon Web Services Lambda_files/service(3).js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="13359558-e447-43f3-a3cd-aa61c0b91c02/service" src="./Serverless architecture - Amazon Web Services Lambda_files/service(4).js"></script><style>@-webkit-keyframes insQ_100 {  from {  outline: 1px solid transparent  } to {  outline: 0px solid transparent }  }
+#menufication-top { animation-duration: 0.001s; animation-name: insQ_100; -webkit-animation-duration: 0.001s; -webkit-animation-name: insQ_100;  } </style><link type="text/css" rel="stylesheet" href="./Serverless architecture - Amazon Web Services Lambda_files/sumome-scrollbox-popup.css"><link type="text/css" rel="stylesheet" href="./Serverless architecture - Amazon Web Services Lambda_files/sumome-share-client.css"><link type="text/css" rel="stylesheet" href="./Serverless architecture - Amazon Web Services Lambda_files/sme-popup.css"></head>
+
+<body class="post-template-default single single-post postid-11004 single-format-standard responsive-menu-push-right">
+    
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-WSZXDR"
+height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script data-cfasync="false">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.'+'js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSZXDR');</script>
+<!-- End Google Tag Manager -->
+<header data-role="header">
+    <a class="logo" href="http://www.schibsted.pl/" data-role="logo">
+        <img src="./Serverless architecture - Amazon Web Services Lambda_files/stp_logo.png" alt="Schibsted Tech Polska">
+    </a>
+
+    <div class="primary-menu-wrapper clearfix"><ul id="menu-primary-menu" class="primary-menu"><li id="menu-item-3341" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3341"><a href="http://www.schibsted.pl/about-us/">About us</a></li>
+<li id="menu-item-3342" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-3342"><a href="http://www.schibsted.pl/news/">News</a></li>
+<li id="menu-item-3343" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3343"><a href="http://www.schibsted.pl/career/">Career</a></li>
+<li id="menu-item-3879" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3879"><a href="http://www.schibsted.pl/contact/">Contact</a></li>
+<li id="menu-item-3344" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3344"><a href="http://www.schibsted.pl/blog/">Blog</a></li>
+</ul></div></header>
+
+<div class="container">
+    <div>
+
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+
+                        <article id="post-11004" class="post--single post-11004 post type-post status-publish format-standard has-post-thumbnail hentry category-back-end category-blog tag-aws tag-cloud tag-datadog tag-faas tag-lambda tag-serverless sumome-article" style="position: relative;">
+                    
+            <header class="post-header" style="background-position: center center;background-image: url(http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989.jpg);">
+                <img width="1600" height="1067" src="./Serverless architecture - Amazon Web Services Lambda_files/IMG_2989.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Road to serverless area" srcset="http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989.jpg 1600w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989-300x200.jpg 300w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989-768x512.jpg 768w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989-1024x683.jpg 1024w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2017/03/06090447/IMG_2989-810x540.jpg 810w" sizes="(max-width: 1600px) 100vw, 1600px">            </header><!-- .entry-header -->
+        
+        <div class="post-content">
+                        <div class="post-content-author">
+                <a href="http://www.schibsted.pl/author/smet/">
+
+                <a href="http://www.schibsted.pl/author/smet/">
+                    <h3 class="post-content-author-name">
+                        Krystian Jarmicki                    </h3>
+                </a>
+
+                                    <span>Software Engineer</span>
+                            </div>
+
+          <style>
+            p code {
+              padding: 0.2em
+              margin: 0;
+              font-size: 85%;
+              background-color: rgba(27,31,35,0.05);
+              border-radius: 3px;
+            }
+            p code:before, p code:after {
+              letter-spacing: -0.2em;
+                content: "\00a0";
+            }
+          </style>
+            <h1 class="post-content-title">Lag compensation in multiplayer games</h1>
+            <p>Developing a smooth multiplayer action games takes a lot of consideration. What data exactly should be exchanged between clients and the server?
+              Should server run the game logic or just broadcast the data? Should clients run the game logic or just render the data?
+              If you’ve ever found yourself stuck trying to answer these questions (or just have a general curiosity towards this topic), read on!</p>
+
+          <h3>What we’re going to make</h3>
+          <p>We’ll take a 1979 arcade classic <a href="https://en.wikipedia.org/wiki/Asteroids_(video_game)">Asteroids</a> and modify it’s premise a bit so it becomes a deathmatch. Ironically, we’ll skip the eponymous asteroids. In case of our game they’ll be replaced by other players.</p>
+
+          <h2>Choice of technologies</h2>
+          <p>We’ll use Java 8, <a href="https://libgdx.badlogicgames.com/">LibGDX</a> as a game framework, <a href="https://github.com/FasterXML/jackson">Jackson</a> for data serialization and implementations of <a href="https://socket.io">Socket.IO</a> for client-server communication.<br>
+            If you’re not familiar with LibGDX yet I encourage you to do their <a href="https://github.com/libgdx/libgdx/wiki/A-simple-game">simple game tutorial</a> before reading further, and if that got you interested, definitely dive into Udacity’s excellent <a href="https://www.udacity.com/course/2d-game-development-with-libgdx--ud405">Game Development with LibGDX</a>  and <a href="https://www.udacity.com/course/how-to-make-a-platformer-using-libgdx--ud406"> How to Make a Platformer Game Using LibGDX</a>.
+          </p>
+
+          <h2>Reference repository</h2>
+          <p>Everything that we're going to build here is available as code at <a href="https://bitbucket.org/kjarm/asteroids-dev/src">reference repository</a> and some of the code is omitted in the article, so have it tabbed somewhere.</p>
+
+            <h2>Lonely in the Universe</h2>
+            <p>We’ll start with developing offline game and enhance it with multiplayer capabilities later. In this particular part we’ll deal with moving ship around and shooting bullets into the void, and we'll add another mockup player later.</p>
+
+            <p>So, set up <a href="https://libgdx.badlogicgames.com/download.html">a fresh LibGDX project</a> with only Desktop subproject and let's get to it.</p>
+              <img class="alignnone size-full wp-image-11185" src="./Serverless architecture - Amazon Web Services Lambda_files/libgdx.jpg" alt="" width="601" height="659" />
+
+            <p>When LibGDX is done initializing, you’ll need to change sourceCompatibility from 1.6 to 1.8 in build.gradle files in both desktop and core subprojects. Note that if you’d want to support Android and GWT-based HTML builds you’d have to use 1.7 at most, but for this tutorial all we care about is desktop, and I like lambdas and streams :).<br>
+            In this part all of our development will happen inside of core subproject. Go ahead and delete everything inside <code>core/src/com/asteroids/game</code> and we’ll start developing packages from scratch.</p>
+
+            <h2>Vectors Utils</h2>
+            <p>I know, I know. <a href="http://www.yegor256.com/2014/05/05/oop-alternative-to-utility-classes.html#utility-classes-are-evil">Utility classes are evil</a>.
+                But in this particular case we're missing an utility method on a <a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/math/Vector2.html"><code>Vector2</code></a> class we cannot augment ourselves, so it's justified.<br>
+                The <code>Vectors</code> class will live in <code>util</code> package and it will provide a method that returns a <code>Vector2</code> pointed in a direction according to rotation.
+                This will be very helpful in a moment, when we'll be rotating things.
+            </p>
+
+            <pre><code>
+public class Vectors {
+    public static Vector2 getDirectionVector(float rotation) {
+        return new Vector2(-(float)Math.sin(Math.toRadians(rotation)),
+                (float)Math.cos(Math.toRadians(rotation)));
+    }
+}
+            </code></pre>
+            <p>Don't worry (or don't get your hopes up) - that's about all the math we're going to touch.</p>
+
+            <h2>Controls</h2>
+            <p>We’ll tackle <code>controls</code> package next, because our upcoming models will use its interface directly. We want our controls to let us know whether player wants to move forwards, move left, move right or shoot. This is exactly how our interface is going to look like:</p>
+            <pre><code>
+public interface Controls {
+    boolean forward();
+    boolean left();
+    boolean right();
+    boolean shoot();
+}
+            </code></pre>
+
+            <p>For now there will be just one implementation of that interface, and since keyboard controls makes most sense in our case, we'll start with that. It’s quite straightforward:</p>
+
+            <pre><code>
+public class KeyboardControls implements Controls {
+    @Override
+    public boolean forward() {
+        return Gdx.input.isKeyPressed(UP);
+    }
+
+    @Override
+    public boolean left() {
+        return Gdx.input.isKeyPressed(LEFT);
+    }
+
+    @Override
+    public boolean right() {
+        return Gdx.input.isKeyPressed(RIGHT);
+    }
+
+    @Override
+    public boolean shoot() {
+        return Gdx.input.isKeyPressed(SPACE);
+    }
+}
+
+            </code></pre>
+
+            <h2>Model</h2>
+            <p>Another package will contain our model classes and interfaces. Let’s take a bird’s eye look at original game’s screenshot and name them:</p>
+            <p>We’re inside of <code>Arena</code>. There’s a <code>Player</code> that owns a <code>Ship</code>. <code>Ship</code> is able to shoot <code>Bullets</code>.<br>
+                Also, <code>Ship</code> and <code>Bullet</code> share a common trait - they’re <code>Visible</code>, which means they have some sort of shape and a color. This abstraction will come in handy when we’ll be about to render our game.<br>
+                That gives us model classes <code>Arena</code>, <code>Player</code>, <code>Ship</code> and <code>Bullet</code>, as well as interface <code>Visible</code>.</p>
+
+            <h2>Visible</h2>
+            <p>This will basically be our “thing on the scene”. It will have color and a shape.<br>
+                We’ll use LibGDX’s <a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/math/Polygon.html"><code>Polygon</code></a>s to represent underlying shapes because they’re easy to work with and have good support for what we’ll need later (rendering, collision detection).
+            </p>
+
+            <pre><code>
+public interface Visible {
+    Color getColor();
+    Polygon getShape();
+}
+            </code></pre>
+
+            <h2>Arena</h2>
+            <p>
+            <code>Arena</code> will be responsible for keeping <code>Visible</code> things inside of its bounds.
+              Asteroids game has a particular way of dealing with arena bounds - whenever something reached one of those, it’s immediately teleported to the other side of parallel bound.
+              For the sake of simplicity we’ll do the easiest implementation, which moves whole objects rather than keep them partially on both sides.
+            </p>
+
+            <pre><code>
+public class Arena {
+    private final Rectangle bounds;
+
+    public Arena(float width, float height) {
+        bounds = new Rectangle(0, 0, width, height);
+    }
+
+    public void ensurePlacementWithinBounds(Visible visible) {
+        Polygon shape = visible.getShape();
+        Rectangle shapeBounds = shape.getBoundingRectangle();
+        float x = shape.getX();
+        float y = shape.getY();
+
+        if(x + shapeBounds.width < bounds.x) x = bounds.width;
+        if(y + shapeBounds.height < bounds.y) y = bounds.height;
+        if(x > bounds.width) x = bounds.x - shapeBounds.width;
+        if(y > bounds.height) y = bounds.y - shapeBounds.height;
+
+        shape.setPosition(x, y);
+    }
+}
+            </code></pre>
+
+            <h2>Player</h2>
+
+            <p><code>Player</code> will be a rather simple entity, responsible mostly for managing his <code>Ship</code>. Notice that at any given moment a <code>Player</code> might not have a <code>Ship</code> - for example, his <code>Ship</code> was just destroyed and he awaits to receive another one.
+              Therefore <code>Ship</code> won’t be final, and it will also be <code>Optional</code>.</p>
+
+            <pre><code>
+public class Player {
+    private final Controls controls;
+    private final Color color;
+    private Optional&lt;Ship&gt; ship;
+
+    public Player(Controls controls, Color color) {
+        this.controls = controls;
+        this.color = color;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = Optional.ofNullable(ship);
+    }
+
+    public void update(float delta) {
+        ship.ifPresent(ship -> {
+            ship.control(controls, delta);
+            ship.update(delta);
+        });
+    }
+
+    public Optional&lt;Ship&gt; getShip() {
+        return ship;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+}
+            </code></pre>
+
+            <h2>Ship</h2>
+            <p>Compared to <code>Player</code>, <code>Ship</code> will be somewhat more sophisticated. It will deal with basic physics of the movement (velocity and drag) and set <code>Ship</code>’s underlying shape position accordingly to these coefficients.<br>
+            It will also be responsible for outputting <code>Bullets</code> somewhere (more specifically, into the <code>Container</code> of <code>Bullets</code>, but we’ll talk more about containers later).
+            In order to do that we need to know if it <code>canShoot</code> (enough time has passed since the last shot) and if it<code>wantsToShoot</code> (key indicating shot was pressed).<br>
+            This is the first class we see that implements <code>Visible</code> interface. Common pattern for creation <code>Visible</code> things will be to use a set of points (vertices) to initialize its <code>Polygon</code>.</p>
+
+            <pre><code>
+public class Ship implements Visible {
+    public static final float[] VERTICES = new float[] {
+        0, 0,
+        16, 32,
+        32, 0,
+        16, 10
+    };
+    public static final float MAX_SPEED = 2000f;
+    public static final float ACCELERATION = 500f;
+    public static final float ROTATION = 10f;
+    public static final float DRAG = 2f;
+    public static final Vector2 MIDDLE = new Vector2(16, 16);
+    public static final Vector2 BULLET_OUTPUT = new Vector2(16, 32);
+    public static final Duration SHOT_INTERVAL = Duration.ofMillis(300);
+
+    private final Player owner;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+    private final Polygon shape;
+    private final Vector2 velocity;
+    private float rotation;
+    private Instant lastShot;
+    private boolean canShoot;
+    private boolean wantsToShoot;
+
+
+    public Ship(Player owner, Container&lt;Bullet&gt; bulletsContainer) {
+        shape = new Polygon(VERTICES);
+        shape.setOrigin(MIDDLE.x, MIDDLE.y);
+        this.owner = owner;
+        this.bulletsContainer = bulletsContainer;
+        velocity = new Vector2(0, 0);
+        lastShot = Instant.EPOCH;
+    }
+
+    public void control(Controls controls, float delta) {
+        if(controls.forward()) moveForwards(delta);
+        if(controls.left()) rotateLeft(delta);
+        if(controls.right()) rotateRight(delta);
+        wantsToShoot = controls.shoot();
+    }
+
+    public void update(float delta) {
+        applyMovement(delta);
+        applyShootingPossibility();
+    }
+
+    @Override
+    public Color getColor() {
+        return owner.getColor();
+    }
+
+    @Override
+    public Polygon getShape() {
+        return shape;
+    }
+
+    public Optional&lt;Bullet&gt; obtainBullet() {
+        if(canShoot && wantsToShoot) {
+            lastShot = Instant.now();
+            return Optional.of(new Bullet(
+                owner,
+                bulletStartingPosition(),
+                shape.getRotation())
+            );
+        }
+        return Optional.empty();
+    }
+
+    private Vector2 getDirection() {
+        return Vectors.getDirectionVector(shape.getRotation());
+    }
+
+    private void moveForwards(float delta) {
+        Vector2 direction = getDirection();
+        velocity.x += delta * ACCELERATION * direction.x;
+        velocity.y += delta * ACCELERATION * direction.y;
+    }
+
+    private void rotateLeft(float delta) {
+        rotation += delta * ROTATION;
+    }
+
+    private void rotateRight(float delta) {
+        rotation -= delta * ROTATION;
+    }
+
+    private void applyMovement(float delta) {
+        velocity.clamp(0, MAX_SPEED);
+
+        velocity.x -= delta * DRAG * velocity.x;
+        velocity.y -= delta * DRAG * velocity.y;
+        rotation -= delta * DRAG * rotation;
+
+        float x = delta * velocity.x;
+        float y = delta * velocity.y;
+        shape.translate(x, y);
+        shape.rotate(rotation);
+    }
+
+    private void applyShootingPossibility() {
+        canShoot = Instant.now().isAfter(lastShot.plus(SHOT_INTERVAL));
+    }
+
+    private Vector2 bulletStartingPosition() {
+        return new Vector2(shape.getX(), shape.getY()).add(BULLET_OUTPUT);
+    }
+}
+
+            </code></pre>
+
+          <h2>Bullet</h2>
+          <p><code>Bullet</code> will be our last model that we will create, and another <code>Visible</code> thing. It will move at a constant speed in a constant direction determined by shooter, but within a limited range.
+            We’ll also store a <code>Player</code> that this bullet was shot by because it will be important in the foreseeable future (for instance, when we know who shot the bullet that destroyed some other ship,
+            it’s trivial to award the shooter with points).</p>
+
+          <pre><code>
+public class Bullet implements Visible {
+    public static final float[] VERTICES = new float[] {
+        0, 0,
+        2, 0,
+        2, 2,
+        0, 2
+    };
+    public static final float SPEED = 500f;
+    public static final float RANGE = 400f;
+
+    private final Player shooter;
+    private final Polygon shape;
+    private float remainingRange;
+
+    public Bullet(Player shooter, Vector2 startPosition, float rotation) {
+        shape = new Polygon(VERTICES);
+        shape.setPosition(startPosition.x, startPosition.y);
+        shape.setRotation(rotation);
+        shape.setOrigin(0, -Ship.MIDDLE.y);
+        this.shooter = shooter;
+        remainingRange = RANGE;
+    }
+
+    @Override
+    public Color getColor() {
+        return shooter.getColor();
+    }
+
+    @Override
+    public Polygon getShape() {
+        return shape;
+    }
+
+    public void move(float delta) {
+        Vector2 direction = Vectors.getDirectionVector(shape.getRotation());
+        Vector2 movement = new Vector2(direction.x * delta * SPEED, direction.y * delta * SPEED);
+        remainingRange -= movement.len();
+        shape.translate(movement.x, movement.y);
+    }
+
+    public boolean isInRange() {
+        return remainingRange > 0;
+    }
+}
+          </code></pre>
+
+          <h2>Container</h2>
+          <p>So we have our models and that’s neat, but soon enough we’ll going to want to perform operations on groups of them. One such operation already slipped into the <code>Ship</code> -
+            whenever it shots, it has to output a <code>Bullet</code> somewhere. Most natural thing to do is to put it among other <code>Bullet</code>s.<br>
+            That’s the basic notion of a <code>Container</code> - it’s hold on to group of <code>Thing</code>s, which makes it easy to perform batch operations on them.<br>
+            Every <code>Container</code> inside this package will implement this interface:</p>
+
+          <pre><code>
+public interface Container&lt;Thing&gt; {
+    void add(Thing toAdd);
+    List&lt;Thing&gt; getAll();
+    void update(float delta);
+}
+          </code></pre>
+
+          <h2>Bullets Container</h2>
+          <p>For now this will be our only <code>Container</code>, but more will come. It’s main responsibility will be to hold on to all <code>Bullet</code>s that’ve been shot, update them and remove those that went out of range.</p>
+
+
+          <pre><code>
+public class BulletsContainer implements Container&lt;Bullet&gt; {
+    private List&lt;Bullet&gt; bullets;
+
+    public BulletsContainer(List&lt;Bullet&gt; bullets) {
+        this.bullets = bullets;
+    }
+
+    public BulletsContainer() {
+        this(new ArrayList<>());
+    }
+
+    @Override
+    public void add(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
+    @Override
+    public List&lt;Bullet&gt; getAll() {
+        return bullets;
+    }
+
+    @Override
+    public void update(float delta) {
+        bullets.forEach(bullet -> bullet.update(delta));
+        bullets = bullets.stream()
+            .filter(Bullet::isInRange)
+            .collect(toList());
+    }
+}
+          </code></pre>
+
+          <h2>Rendering</h2>
+          <p>Separation of rendering and business logic is important in programming in general, but it gets especially important in multiplayer games.
+            We’ll talk more about it in upcoming parts, for now let’s keep our rendering neatly separated from our models and containers.<br>
+            To achieve this goal we’ll introduce a <code>Renderer</code> - an object that will hold on to another object it knows how to render,
+            and given a right tool (which in our case will be LibGDX’s <a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/graphics/glutils/ShapeRenderer.html"><code>ShapeRenderer</code></a>) is able to put pixels on the screen for us.
+          </p>
+
+          <pre><code>
+public interface Renderer {
+    void render(ShapeRenderer shapeRenderer);
+}
+          </code></pre>
+
+          <h2>Visible Renderer</h2>
+          <p>First natural candidate for having it’s own <code>Renderer</code> is anything that implements <code>Visible</code> interface, as we can directly obtain all the information needed to render it directly from <code>Visible</code> itself.</p>
+
+          <pre><code>
+public class VisibleRenderer implements Renderer {
+    private final Visible visible;
+
+    public VisibleRenderer(Visible visible) {
+        this.visible = visible;
+    }
+
+    @Override
+    public void render(ShapeRenderer shapeRenderer) {
+        shapeRenderer.setColor(visible.getColor());
+        shapeRenderer.polygon(visible.getShape().getTransformedVertices());
+    }
+}
+          </code></pre>
+
+          <h2>Player Renderer</h2>
+          <p><code>Player</code> is a peculiar entity, given that its <code>Ship</code>s can change and at times be unavailable.
+            We’ll need a <code>VisibleRenderer</code> for current <code>Ship</code>, and we’d also like <code>Renderes</code> that hold on to previous <code>Ships</code> to be garbage collected.<br>
+            We don’t want to manage all this complexity directly inside of a game loop, so we’ll create a dedicated <code>PlayerRenderer</code>.
+            Note the default usage of <code>WeakHashMap</code> which will discard entries dedicated for <code>Ship</code>s that do not exist anymore.<br>
+          </p>
+
+          <pre><code>
+public class PlayerRenderer implements Renderer {
+    private final Map&lt;Ship, Renderer&gt; cache;
+    private final Player player;
+
+    public PlayerRenderer(Player player, Map&lt;Shi;, Renderer&gt; cache) {
+        this.player = player;
+        this.cache = cache;
+    }
+
+    public PlayerRenderer(Player player) {
+        this(player, new WeakHashMap&lt;&gt;());
+    }
+
+    @Override
+    public void render(ShapeRenderer shapeRenderer) {
+        player.getShip().ifPresent(ship ->
+            cache
+                .computeIfAbsent(ship, VisibleRenderer::new)
+                .render(shapeRenderer));
+    }
+}
+          </code></pre>
+
+          <h2>Container Renderer</h2>
+          <p>Lastly, we’ll need a generic <code>Renderer</code> for <code>Container</code>s. Given the variadic nature of their content which can disappear at any given moment (for example <code>Bullet</code>s can go out of range)
+            we’ll use similar caching mechanism as in <code>Player</code> renderer.<br>
+            We’ll also externalize creation of underlying <code>Renderers</code> to upper layer because we can’t possibly know how to instantiate them all here.
+          </p>
+
+          <pre><code>
+public class ContainerRenderer&lt;Thing&gt; implements Renderer {
+    private final Container&lt;Thing&gt; container;
+    private final Function&lt;Thing, Renderer&gt; rendererFactory;
+    private final Map&lt;Thing, Renderer&gt; cache;
+
+    public ContainerRenderer(Container&lt;Thing&gt; container,
+                            Function&lt;Thing, Renderer&gt; rendererFactory, Map&lt;Thing, Renderer&gt; cache) {
+        this.container = container;
+        this.rendererFactory = rendererFactory;
+        this.cache = cache;
+    }
+
+    public ContainerRenderer(Container&lt;Thing&gt; container, Function&lt;Thing, Renderer&gt; rendererFactory) {
+        this(container, rendererFactory, new WeakHashMap&lt;&gt;());
+    }
+
+    @Override
+    public void render(ShapeRenderer shapeRenderer) {
+        container.getAll().forEach(thing ->
+            cache
+                .computeIfAbsent(thing, rendererFactory)
+                .render(shapeRenderer));
+    }
+}
+          </code></pre>
+
+          <h2>Putting it all together</h2>
+
+          <p>
+            We now have all the ingredients ready to assemble first version of our game. One last decision to make is to determine our world's size. Let's go with 800x600, this will also be size of the viewport we'll use. <br>
+            Let's initalize dependencies in the <code>Game</code> class and then inject them into the <code>Screen</code>.<br>
+            You can see that these classes will serve as integration layer for everything we've done up until this point.
+          </p>
+
+          <pre><code>
+public class AsteroidsGame extends Game {
+    public static final float WORLD_WIDTH = 800f;
+    public static final float WORLD_HEIGHT = 600f;
+    private Screen asteroids;
+
+    @Override
+    public void create() {
+        Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+        Arena arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT);
+        Player player = new Player(new KeyboardControls(), Color.WHITE);
+        Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
+        player.setShip(new Ship(player));
+
+        PlayerRenderer playerRenderer = new PlayerRenderer(player);
+        ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer&lt;&gt;(bulletsContainer, VisibleRenderer::new);
+
+        asteroids = new AsteroidsScreen(
+            viewport, shapeRenderer,
+            arena, player, bulletsContainer,
+            playerRenderer, bulletsRenderer);
+
+        setScreen(asteroids);
+    }
+
+    @Override
+    public void dispose() {
+        asteroids.dispose();
+    }
+}
+          </code></pre>
+
+          <pre><code>
+public class AsteroidsScreen extends ScreenAdapter {
+    private final Viewport viewport;
+    private final ShapeRenderer shapeRenderer;
+    private final Arena arena;
+    private final Player player;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+    private final Renderer playerRenderer;
+    private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
+
+    public AsteroidsScreen(
+            Viewport viewport, ShapeRenderer shapeRenderer,
+            Arena arena, Player player, Container&lt;Bullet&gt; bulletsContainer,
+            Renderer playerRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
+        this.viewport = viewport;
+        this.shapeRenderer = shapeRenderer;
+        this.arena = arena;
+        this.player = player;
+        this.bulletsContainer = bulletsContainer;
+        this.playerRenderer = playerRenderer;
+        this.bulletsRenderer = bulletsRenderer;
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        player.update(delta);
+        player.getShip()
+            .ifPresent(arena::ensurePlacementWithinBounds);
+        player.getShip()
+            .flatMap(Ship::obtainBullet)
+            .ifPresent(bulletsContainer::add);
+
+        bulletsContainer.update(delta);
+        bulletsContainer.getAll().stream()
+            .forEach(arena::ensurePlacementWithinBounds);
+
+        viewport.apply();
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        playerRenderer.render(shapeRenderer);
+        bulletsRenderer.render(shapeRenderer);
+        shapeRenderer.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
+
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
+    }
+}
+          </code></pre>
+
+          <p>
+            In the game loop (render method) we follow a pattern of updating first and then rendering.
+          </p>
+
+          <h2>Pause</h2>
+          <p>Let's reflect on what we've accomplished so far.<br>
+            Go ahead and run <code>desktop</code> project in Gradle (you can do that quickly with <br><code>./gradlew desktop:run</code> command). It should look something like this:
+          </p>
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/asteroids1.gif" alt="first stage of the game">
+          <p>
+            If it's not, compare your code to <a href="https://bitbucket.org/kjarm/asteroids-dev/src/66f0679a37dd55168893297c015705e1dcf569b8/1-movement/?at=master">the reference material</a> and try to spot the difference.
+          </p>
+          <p>
+            Cool, so that's a start. Now let's introduce another player. Albeit offline and immobile, it will be basis for our upcoming support for multiple players and client-server architecture.
+          </p>
+
+          <h2>Multiple Players</h2>
+
+          <h3>PlayersContainer</h3>
+
+          <p>
+            Until now we've been dealing with just one player, but now our needs call for another <code>Container</code> - a <code>PlayersContainer</code>.<br>
+            Nothing fancy will be going on there - we'll keep track of <code>Player</code>s and perform batch updates on them:
+          </p>
+
+          <pre><code>
+public class PlayersContainer implements Container&lt;Player&gt; {
+    private final List&lt;Player&gt; players;
+
+    public PlayersContainer(List&lt;Player&gt; players) {
+        this.players = players;
+    }
+
+    public PlayersContainer() {
+        this(new ArrayList&lt;&gt;());
+    }
+
+    @Override
+    public void add(Player toAdd) {
+        players.add(toAdd);
+    }
+
+    @Override
+    public List&lt;Player&gt; getAll() {
+        return players;
+    }
+
+    @Override
+    public void update(float delta) {
+        players.forEach(player -> player.update(delta));
+    }
+}
+          </code></pre>
+
+          <h3>A place to start</h3>
+
+          <p>We haven't determined yet where the <code>Ship</code> should be introduced to the world.
+            For the sake of quick feedback <code>Polygon</code>'s default (0, 0) starting point was good enough, but now we'll add starting position to the <code>Ship</code>:</p>
+
+          <pre><code>
+public Ship(Player owner, Container&lt;Bullet&gt; bulletsContainer, Vector2 startingPosition, float startingRotation) {
+    ...
+    shape.setPosition(startingPosition.x, startingPosition.y);
+    shape.setRotation(startingRotation);
+    ...
+}
+
+public Ship(Player owner, Vector2 startingPosition) {
+    this(owner, startingPosition, 0);
+}
+          </code></pre>
+
+          <h3>A way to get there</h3>
+
+          <p>
+            In the actual game the situation where player gets his ship blasted by another player and needs a new one will happen often.
+            That means we will need another entity that will take care of respawning ships - which naturally points as towards a <code>Respawner</code> name.
+            It's neither a model nor a container, it's a managing entity, hence we will introduce a new <code>manager</code> package.</p>
+          <p>
+            Our <code>Respawner</code> will have to know everything needed to determine wether a <code>Player</code> needs a new <code>Ship</code> and how to instantiate it.
+            It's logic will be quite simple: scan through <code>Player</code>s, find ones without <code>Ship</code>s and give them new one at some random point inside of arena bounds.
+          </p>
+
+          <pre><code>
+public class Respawner {
+    private static final Random random = new Random();
+    private final Container&lt;Player&gt; playersContainer;
+    private final float widthBound;
+    private final float heightBound;
+
+    public Respawner(Container&lt;Player&gt; playersContainer,
+            float widthBound, float heightBound) {
+        this.playersContainer = playersContainer;
+        this.widthBound = widthBound;
+        this.heightBound = heightBound;
+    }
+
+    public void respawn() {
+        playersContainer.getAll().stream()
+            .filter(player -> !player.getShip().isPresent())
+            .forEach(player -> player.setShip(new Ship(player, randomRespawnPoint())));
+    }
+
+    private Vector2 randomRespawnPoint() {
+        return new Vector2(random.nextInt(Math.round(widthBound)), random.nextInt(Math.round(heightBound)));
+    }
+}
+          </code></pre>
+
+          <h3>Noop Controls</h3>
+
+          <p>
+            Our immobile <code>Player</code> needs to be instantiated with <code>Controls</code> nonetheless, so let's create
+            an implementation that prevents him from moving:
+          </p>
+
+          <pre><code>
+public class NoopControls implements Controls {
+    @Override
+    public boolean forward() {
+        return false;
+    }
+
+    @Override
+    public boolean left() {
+        return false;
+    }
+
+    @Override
+    public boolean right() {
+        return false;
+    }
+
+    @Override
+    public boolean shoot() {
+        return false;
+    }
+}
+          </code></pre>
+
+          <h2>Blast Away</h2>
+
+          <p>
+            There's one last thing we'll implement before the network part: registering hits between the <code>Bullet</code>s and the <code>Player</code>s.
+          </p>
+
+          <h3>Collision Detection</h3>
+
+          <p>
+            Fundamental part of registering hits is the ability to tell when <code>Bullet</code> and <code>Player</code> collided.<br>
+            There are whole books written on the subject, but fortunately we're standing on the shoulders of a giant (LibGDX), so the algorythmic work has already been done.
+            Intuitively, being <code>Visible</code> means you can collide with something, so let's add a default method to our <code>Visible</code> interface:
+          </p>
+
+          <pre><code>
+
+public interface Visible {
+    ...
+    default boolean collidesWith(Visible anotherVisible) {
+        return Intersector.overlapConvexPolygons(this.getShape(), anotherVisible.getShape());
+    }
+}
+          </code></pre>
+
+          <p>Yup, that's it. Collision detection in one line. LibGDX's <code>Intersector</code> works great with <code>Ploygon</code>s and we'll take full advantage of that here.</p>
+
+          <h3>Handling hits</h3>
+
+          <p>
+            We'll need to introduce little changes on our models, making them react to collisions. In case of <code>Bullet</code> it will be marking it for future removal,
+            in case of <code>Player</code> it will be removing his <code>Ship</code>.
+          </p>
+
+          <pre><code>
+public class Bullet implements Visible {
+    ...
+    private boolean hasHitSomething;
+    ...
+
+
+    public void noticeHit() {
+        hasHitSomething = true;
+    }
+
+    public boolean hasHitSomething() {
+        return hasHitSomething;
+    }
+}
+          </code></pre>
+
+
+          <pre><code>
+public class Player {
+    ...
+    public Player(Controls controls, Color color) {
+        ...
+        this.ship = Optional.empty();
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = Optional.of(ship);
+    }
+
+    public void noticeHit() {
+        this.ship = Optional.empty();
+    }
+    ...
+}
+          </code></pre>
+
+          <h2><strike>Hadron</strike> Players and Bullets Collider</h2>
+
+          <p>
+            Now that we have our bits and pieces of collision-related logic spread across the code, let's wrap them up with another <code>manager</code> entity - a <code>Collider</code>.
+            As name suggest, it's going to orchestrate collision checks between objects and appropriately notify them if such collision occurs.
+          </p>
+
+          <pre><code>
+public class Collider {
+    private final Container&lt;Player&gt; playersContainer;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+
+    public Collider(Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer) {
+        this.playersContainer = playersContainer;
+        this.bulletsContainer = bulletsContainer;
+    }
+
+    public void checkCollisions() {
+        bulletsContainer.getAll().stream()
+            .forEach(bullet -> playersContainer.getAll().stream()
+                .filter(player -> player.getShip().isPresent())
+                .filter(player -> player.getShip().get().collidesWith(bullet))
+                .findFirst()
+                .ifPresent(player -> {
+                    player.noticeHit();
+                    bullet.noticeHit();
+            }));
+    }
+}
+          </code></pre>
+
+          <h2>Putting it back together again</h2>
+
+          <p>
+            Remember <code>AsteroidsGame</code> and <code>AsteroidsScreen</code>? We're going to revisit them now and add everything new we've made.
+            <code>PlayersContainer</code>, <code>Respawner</code>, <code>Collider</code> as well call methods to update their state in <code>render</code>.<br>
+          </p>
+
+          <p>First, let's update dependencies graph in <code>AsteroidsGame</code>.
+            Note that apart from a few new objects, we'll also change the way <code>Player</code>s are rendered. Now they're in a <code>Container</code>, so we'll use <code>ContainerRenderer</code> and pass <code>PlayerRenderer</code> as underlying renderer.</p>
+
+          <pre><code>
+public class AsteroidsGame extends Game {
+    ...
+    @Override
+    public void create() {
+        Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+        Arena arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT);
+        Player player1 = new Player(new KeyboardControls(), Color.WHITE);
+        Player player2 = new Player(new NoopControls(), Color.LIGHT_GRAY);
+        Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
+        Container&lt;Player&gt; playersContainer = new PlayersContainer();
+        playersContainer.add(player1);
+        playersContainer.add(player2);
+        Respawner respawner = new Respawner(playersContainer, WORLD_WIDTH, WORLD_HEIGHT);
+        Collider collider = new Collider(playersContainer, bulletsContainer);
+
+        ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
+        ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
+
+        asteroids = new AsteroidsScreen(
+            viewport, shapeRenderer,
+            playersContainer, bulletsContainer,
+            arena, respawner, collider,
+            playersRenderer, bulletsRenderer);
+
+        setScreen(asteroids);
+    }
+    ...
+}
+          </code></pre>
+
+          <p>Having initialized our dependencies, we can use them in <code>AsteroidsScreen</code>:</p>
+
+          <pre><code>
+public class AsteroidsScreen extends ScreenAdapter {
+    private final Viewport viewport;
+    private final ShapeRenderer shapeRenderer;
+    private final Arena arena;
+    private final Container&lt;Player&gt; playersContainer;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+    private final Respawner respawner;
+    private final Collider collider;
+    private final ContainerRenderer&lt;Player&gt; playersRenderer;
+    private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
+
+    public AsteroidsScreen(
+            Viewport viewport, ShapeRenderer shapeRenderer,
+            Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
+            Arena arena, Respawner respawner, Collider collider,
+            ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
+        this.viewport = viewport;
+        this.shapeRenderer = shapeRenderer;
+        this.arena = arena;
+        this.respawner = respawner;
+        this.collider = collider;
+        this.playersContainer = playersContainer;
+        this.bulletsContainer = bulletsContainer;
+        this.playersRenderer = playersRenderer;
+        this.bulletsRenderer = bulletsRenderer;
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        respawner.respawn();
+        collider.checkCollisions();
+
+        playersContainer.update(delta);
+        existingShipsStream()
+            .forEach(arena::ensurePlacementWithinBounds);
+        existingShipsStream()
+            .map(Ship::obtainBullet)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .forEach(bulletsContainer::add);
+
+        bulletsContainer.update(delta);
+        bulletsContainer.getAll().stream()
+            .forEach(arena::ensurePlacementWithinBounds);
+
+        viewport.apply();
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        playersRenderer.render(shapeRenderer);
+        bulletsRenderer.render(shapeRenderer);
+        shapeRenderer.end();
+    }
+    ...
+    private Stream&lt;Ship&gt; existingShipsStream() {
+        return playersContainer.getAll().stream()
+            .map(Player::getShip)
+            .filter(Optional::isPresent)
+            .map(Optional::get);
+    }
+}
+          </code></pre>
+
+          <p>That concludes our offline part. In the next part we'll introduce client-server infrastructure and start sending some data back and forth.<br>
+            Now, take a minute to run what's already been done and enjoy :). Until next time!
+          </p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/asteroids2.gif" alt="second stage of the game">
+
+          <h1>The server</h1>
+          <p>
+            Out of client-server architecture we’re going to develop a server first, since client has to connect to <i>something</i>.
+            In a nutshell, server will run in cycles: gather <code>Controls</code> input from <code>Player</code>s, run through game logic computations and finally send back updated game state to the clients.
+          </p>
+          <p>
+            Several key points stand out from this overview. Clients will only send <code>Controls</code> input, not their game state. This eliminates the need for client state validation on server side
+            (client can only say “my forwards key is pressed” which is always a valid possibility, rather than “I’m totally at [20x,30y]” even though it was [20x,5y] in the last frame).
+            This in turn naturally implies that the server has to run game logic to become a single source of truth.
+          </p>
+          <p>
+            In order to make it all possible clients and a server have to communicate using common format and maintain a fast two-way channel of exchanging messages.
+            They also have to have some way of uniquely identifying game objects across the network barrier, so when server says “this <code>Bullet</code> collided with this <code>Player</code>”
+            the client knows which <i>this</i> <code>Bullet</code> and <i>this</i> <code>Player</code> it is.<br>
+            Knowing this, we’re ready to implement our server-related logic.
+          </p>
+
+          <h2>Infrastructural Chores</h2>
+          <p>
+              Remember that the infrastructure is already taken care of in the supplementing repository for this article series at <a href="https://bitbucket.org/kjarm/asteroids-dev/src/66f0679a37dd55168893297c015705e1dcf569b8/3-server/?at=master">part 3: server</a>,
+          so if you’re coding along you can just delete everything in module source code and have an infrastructure up and ready.
+          </p>
+          <p>
+            Still here? A stubborn little fella, aren’t ya? Ok, first we will create a brand new <code>server</code> module,
+            alongside of other top-level module (<code>core</code>, <code>desktop</code> etc.). It will be somewhat similar to a
+            <code>desktop</code> module in a sense that it’s runnable, so we can just take <code>build.gradle</code> from <code>desktop</code>
+            and adjust names accordingly for <code>server</code>. Then we’ll create necessary <code>src/com/asteroids/game/server/</code> namespace inside.
+            Then we’ll need to go back to the Asteroids project root where we’ll include <code>server</code> module in
+            <code>settings.gradle</code>, add proper directories in <code>.gitignore</code>, and for a final mundane step, add tasks for new project declaration:
+          </p>
+
+          <pre><code>
+project(":server") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile 'com.corundumstudio.socketio:netty-socketio:1.7.12'
+    }
+}
+          </code></pre>
+
+          <p>
+            There are two interesting dependencies here.<br>
+            We will include a <a href="https://github.com/libgdx/libgdx/tree/master/backends/gdx-backend-headless">headless LibGDX backend</a> instead of a normal desktop one.
+            Why? We won’t really need a GPU in order to run a server code, so that shaves off a bit of overhead and you’ll save yourself some hassle if your hosting service
+            doesn’t provide boxes equipped with GPU at all. <code>natives-desktop</code> is just there to make headless backend work.<br>
+            Another thing is <code><a href="https://github.com/mrniko/netty-socketio">netty-socketio</a></code>. This will be our underlying workhorse socket server.
+            It’s an implementation of <a href="https://socket.io">Socket.IO</a> that suits our needs for fast bidirectional message exchange.
+          </p>
+
+          <p>
+            There’s one more place in which we’ll need to add dependencies and that’s the <code>core</code> project:
+          </p>
+
+          <pre><code>
+project(":core") {
+    ...
+    dependencies {
+        ...
+        compile "com.fasterxml.jackson.core:jackson-databind:2.8.4"
+        compile "org.slf4j:slf4j-simple:1.7.25"
+    }
+}
+          </code></pre>
+
+          <p>
+            As you may have guessed, we’re going to use plain old JSON as message format and <a href="https://github.com/FasterXML/jackson">Jackson</a> is a fine tool to convert
+            objects back and forth - “back and forth” part also explains why this is a <code>core</code> dependency rather than <code>server</code> one.<br>
+            Side note: Keep in mind that there will be a lot of messages flying between the machines and if your future game sends large
+            state messages you may want to <a href="http://java-is-the-new-c.blogspot.com/2014/10/why-protocols-are-messy-concept.html">get out of debug mode</a>. For our little Asteroids JSON will suffice.
+          </p>
+          <p>
+            <code>netty-socketio</code> uses <a href="https://www.slf4j.org/">SLF4J</a> API for logging and will complain if no implementation is found on the classpath, so we'll provide the simple one.
+          </p>
+          <p>
+            Whew. That’s it, onto the proper development now.
+          </p>
+
+          <h2>Identifying things</h2>
+
+          <p>
+            First of all, we need some way to uniquely identify those models that will need to have their state updated -
+            those will be a <code>Player</code> (with it’s <code>Ship</code>) and a <code>Bullet</code>.
+            An ability to identify a thing by id seems like a trait, so we’ll implement it in <code>Identifiable</code> interface that will be placed in <code>model</code> package:
+          </p>
+
+          <pre><code>
+public interface Identifiable {
+    UUID getId();
+    default boolean isIdEqual(UUID otherId) {
+        return getId().equals(otherId);
+    }
+}
+          </code></pre>
+
+          <p>
+            Next we’ll make a <code>Player</code> and a <code>Bullet</code> implement this interface:
+          </p>
+
+          <pre><code>
+public class Player implements Identifiable {
+    private final UUID id;
+    ...
+
+    public Player(UUID id, Controls controls, Color color) {
+        this.id = id;
+        ...
+    }
+
+    ...
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+}
+          </code></pre>
+
+          <pre><code>
+public class Bullet implements Visible, Identifiable {
+    ...
+    private final UUID id;
+    ...
+    public Bullet(UUID id, Player shooter, Vector2 startPosition, float rotation) {
+        ...
+        this.id = id;
+        ...
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+}
+          </code></pre>
+
+          <p>
+            As we’ll be able to identify models, we’ll also want to pick and remove them out of <code>Container</code>s by id.
+            Let’s declare it in the <code>Container</code> interface. Note that we’ll also need to modify our <code>Container</code>s to only accept <code>Thing</code>s that are <code>Identifiable</code>.
+          </p>
+
+          <pre><code>
+public interface Container&lt;Thing extends Identifiable&gt; {
+    ...
+    default Optional&lt;Thing&gt; getById(UUID id) {
+        return getAll().stream()
+        .filter(thing -> thing.isIdEqual(id))
+        .findAny();
+    }
+
+    default Optional&lt;Thing&gt; getById(String id) {
+        return getById(UUID.fromString(id));
+    }
+
+    default void removeById(UUID id) {
+        getAll().removeIf(thing -> thing.isIdEqual(id));
+    }
+
+    default void removeById(String id) {
+        removeById(UUID.fromString(id));
+    }
+}
+          </code></pre>
+
+          <p>We’ll also have to update <code>ContainerRenderer</code> and it’s generic bounds accordingly:</p>
+
+          <pre><code>
+public class ContainerRenderer&lt;Thing extends Identifiable&gt; implements Renderer
+          </code></pre>
+
+
+          <h2>Opening up models to obtain and set their data</h2>
+
+          <p>
+            We’ll need to pass a bunch of data to and from the server about the current state of our models,
+            so it means that they can no longer be those closed boxes of state anymore, we’ll need to open them up.<br>
+            We’ll need to know where things are to send their position. We’ve already abstracted behavior of <code>Visible</code>
+            things into an interface, and having a position (and rotation) is clearly a trait of a <code>Visible</code>
+            thing, so we’ll add methods to set and retrieve these properties on said interface:
+          </p>
+
+          <pre><code>
+public interface Visible {
+    ...
+    default Vector2 getPosition() {
+        return new Vector2(getShape().getX(), getShape().getY());
+    }
+
+    default void setPosition(Vector2 position) {
+        getShape().setPosition(position.x, position.y);
+    }
+
+    default float getRotation() {
+        return getShape().getRotation();
+    }
+
+    default void setRotation(float degrees) {
+        getShape().setRotation(degrees);
+    }
+}
+          </code></pre>
+
+          <h2>Remotely controlled Players</h2>
+
+            <p>
+              <code>Player</code>s that will be kept on the server won’t be controlled by the server - instead,
+              they’ll be controlled by the clients and those controls will be sent to the server to pass on.
+              So, they’ll be remotely controlled. Let’s implement <code>RemoteControls</code> class then,
+              it will create a mutable value objects that can be updated with data coming from the client.
+            </p>
+
+          <pre><code>
+public class RemoteControls implements Controls {
+    private boolean forward;
+    private boolean left;
+    private boolean right;
+    private boolean shoot;
+
+    @Override
+    public boolean forward() {
+        return forward;
+    }
+
+    @Override
+    public boolean left() {
+        return left;
+    }
+
+    @Override
+    public boolean right() {
+        return right;
+    }
+
+    @Override
+    public boolean shoot() {
+        return shoot;
+    }
+
+    public void forward(boolean state) {
+        forward = state;
+    }
+
+    public void left(boolean state) {
+        left = state;
+    }
+
+    public void right(boolean state) {
+        right = state;
+    }
+
+    public void shoot(boolean state) {
+        shoot = state;
+    }
+}
+          </code></pre>
+
+          <p>
+            When we’ll have <code>RemoteControls</code> we’ll want to get it out of <code>Player</code> on the server to set it’s control state.
+            This could be as simple as passing <code>RemoteControls</code> as controls to <code>Player</code> and adding a getter:
+            </p>
+
+          <pre><code>
+public Controls getControls() {
+    return controls;
+}
+          </code></pre>
+
+          <p>
+            ...yeah, ok. But we’re referring to <code>Controls</code> interface inside of <code>Player</code>
+            and we specifically want to get <code>RemoteControls</code> back.<br>
+            Maybe we could get away with a little casting:
+          </p>
+
+          <pre><code>
+public RemoteControls getRemoteControls() {
+    return (RemoteControls)controls;
+}
+          </code></pre>
+
+          <p>
+            Yuck. Nope, this is just wrong.<br>
+            Remote controls make no sense in context of plain <code>Player</code> and force-casting <code>RemoteControls</code>
+            onto whatever <code>Controls</code> there are would obfuscate the code intent.<br>
+            We’re missing a type here, and that would be a new <code>model</code> called <code>RemotePlayer</code>
+
+            <pre><code>
+public class RemotePlayer extends Player {
+    private final RemoteControls remoteControls;
+
+    public RemotePlayer(UUID id, Color color, RemoteControls remoteControls) {
+        super(id, color, remoteControls);
+        this.remoteControls = remoteControls;
+    }
+
+    public RemoteControls getRemoteControls() {
+        return remoteControls;
+    }
+}
+        </code></pre>
+
+          <p>
+            Inheriting from one model into another may initially raise your eyebrows, but the most important
+            thing here is what meaning this code will convey. <code>RemotePlayer</code> <strong>is a</strong> <code>Player</code>.
+            It’s a specialized type of <code>Player</code>, one that will always be remotely controlled
+            and we’ll have just one additional method to retrieve those <code>RemoteControls</code> in order
+            to update their state. Other than that, it’s perfectly fine to use <code>RemotePlayer</code> in whatever way you’d use a plain <code>Player</code>.
+          </p>
+          <p>
+            Sadly, <a href="https://docs.oracle.com/javase/tutorial/java/generics/inheritance.html">due to how generics are implemented in Java</a>,
+            <code>Container&lt;RemotePlayer&gt;</code> is not a subtype of <code>Container&lt;Player&gt;</code>, so we’ll
+            have to refactor the code that operates on it. Let’s start with <code>PlayersContainer</code>:
+          </p>
+
+          <pre><code>
+public class PlayersContainer&lt;PlayerType extends Player&gt; implements Container&lt;PlayerType&gt;
+          </code></pre>
+
+          <p>
+            Same thing with <code>Collider</code>:
+          </p>
+
+          <pre><code>
+public class Collider&lt;PlayerType extends Player&gt;
+          </code></pre>
+
+          <p>
+            And also <code>Respawner</code>:
+          </p>
+
+          <pre><code>
+public class Respawner&lt;PlayerType extends Player&gt;
+          </code></pre>
+
+          <p>
+            Of course, you’ll also have to change all occurrences of <code>Player</code> to <code>PlayerType</code> inside of these classes.
+          </p>
+
+          <h2>Data Transfer Objects and their mappers</h2>
+
+          <p>
+            AKA boring stuff again. Sorry, but it has to be done. We could get away with mapping JSON data directly
+            into models, but I find that ugly and confusing, so I’ll verbosely express data exchange formats instead.<br>
+            Some of the source code in this section will be omitted because otherwise it would go on and on, so in order to get the full source please refer to corresponding repo.
+        </p>
+          <p>
+            First, let’s create a new package in <code>core</code> called <code>dto</code>.
+            All our DTOs will be immutable value objects with very similar structure and we can
+            at least partially encapsulate that structure within an interface, so let’s do that:
+          </p>
+
+          <pre><code>
+public interface Dto {
+    String toJsonString();
+}
+          </code></pre>
+
+          <p>
+            Other than ability to convert itself to JSON String, a DTO has to have a corresponding static method
+            to create itself from JSON String, and a bunch of accessor methods to get data out of it.
+            We’ll also need to annotate constructor fields so that Jackson knows what’s what.<br>
+            Take an exemplary <code>ShipDto</code>:
+          </p>
+
+          <pre><code>
+public class ShipDto implements Dto {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final float x;
+    private final float y;
+    private final float rotation;
+
+    @JsonCreator
+    public ShipDto(
+            @JsonProperty("x") float x,
+            @JsonProperty("y") float y,
+            @JsonProperty("rotation") float rotation) {
+        this.x = x;
+        this.y = y;
+        this.rotation = rotation;
+    }
+
+    @Override
+    public String toJsonString() {
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while converting ShipDto to JSON", e);
+        }
+    }
+
+    public static ShipDto fromJsonString(String json) {
+        try {
+            return objectMapper.readValue(json, ShipDto.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while creating ShipDto from JSON", e);
+        }
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+}
+          </code></pre>
+
+          <p>
+            There’s really not much more to it. Just a immutable value object consisting of primitive
+            types that will get encoded as JSON out of the box. The point here is that we’ll be keeping all
+            this JSON business out of our models, which is beneficial for code readability and cleanness.
+            Code for other DTOs will be omitted because it follows the same pattern, but I’ll briefly describe
+            them all and their properties here:
+          </p>
+
+          <p>
+            <code>ControlsDto</code> - will represent <code>Controls</code> state as boolean values.
+          </p>
+          <pre><code>
+private final boolean forward;
+private final boolean left;
+private final boolean right;
+private final boolean shoot;
+          </code></pre>
+
+          <p>
+            <code>BulletDto</code> - will contain all the data necessary to create/update a <code>Bullet</code>, including shooting <code>Player</code> id.
+          </p>
+          <pre><code>
+private final String id;
+private final float x;
+private final float y;
+private final float rotation;
+private final String shooterId;
+          </code></pre>
+
+
+          <p>
+            <code>ShipDto</code> - will be similar to <code>BulletDto</code>, but won’t include <code>Player</code> id because <code>ShipDto</code> will always be nested inside of <code>PlayerDto</code>.
+          </p>
+          <pre><code>
+private final float x;
+private final float y;
+private final float rotation;
+          </code></pre>
+
+          <p>
+            <code>PlayerDto</code> - aside from <code>Player</code> properties it will also contain <code>ShipDto</code> for a given <code>Player</code>.
+          </p>
+          <pre><code>
+private final String id;
+private final String color;
+private final ShipDto shipDto;
+          </code></pre>
+
+
+          <p>
+            <code>GameStateDto</code> - will contain complete game state necessary to render a screen.
+            Specifically it will be contents of <code>PlayersContainer</code> and <code>BulletsContainer</code> encoded as <code>List</code>s of <code>PlayerDto</code> and <code>BulletDto</code>.
+          </p>
+          <pre><code>
+private final List&lt;PlayerDto&gt; players;
+private final List&lt;BulletDto&gt; bullets;
+          </code></pre>
+
+          <p>
+            <code>IntroductoryStateDto</code> - this one will be a bit special.
+            It will be sent once to a newly connected <code>Player</code> with <code>PlayerDto</code> containing its introductory data
+            (id assigned by the server, ship position) as well as <code>GameStateDto</code> of the game right until this new <code>Player</code> joined.
+          </p>
+
+          <pre><code>
+private final PlayerDto connected;
+private final GameStateDto gameState;
+          </code></pre>
+
+          <p>
+            Onto the mappers now, which we’ll place in a <code>mapper</code> package inside of previously introduced <code>dto</code>.
+            A mapper will be a bridge between <code>Dto</code>s and models. Every model that needs to be synced over the network
+            (<code>Player</code>, <code>Ship</code> etc.) will have it’s own mapper that will be responsible for things
+            like creating <code>Dto</code>s from models, setting models state according to <code>Dto</code> and so on.
+            They will be entirely stateless and therefore consist of static methods only.
+            Again, as in case of <code>Dto</code>s, mappers will be somewhat similar to each other and it would be redundant
+            to show the code of them all here, so let’s take a look at example <code>ShipMapper</code>:
+          </p>
+
+          <pre><code>
+public class ShipMapper {
+    public static ShipDto fromShip(Ship ship) {
+        Vector2 shipPosition = ship.getPosition();
+        return new ShipDto(shipPosition.x, shipPosition.y, ship.getRotation());
+    }
+}
+          </code></pre>
+
+          <p>
+            There are more of them here, and that will conclude this section.
+            After all this is done, we’ll be able to finally start working on the actual server implementation.
+          </p>
+
+          <h2>Connection</h2>
+
+          <p>
+            ...is the name of the package that will contain our, well, connection-related code.
+            We’ll make such package inside <code>core</code> first, and it will contain declaration of high-level
+            <code>Event</code>s that can happen in the client-server communication.
+          </p>
+
+          <pre><code>
+public enum Event {
+    PLAYER_CONNECTING,
+    PLAYER_CONNECTED,
+    OTHER_PLAYER_CONNECTED,
+    OTHER_PLAYER_DISCONNECTED,
+    CONTROLS_SENT,
+    GAME_STATE_SENT
+}
+          </code></pre>
+
+          <p>
+            Let’s go briefly through them all:<br>
+            <code>PLAYER_CONNECTING</code> will be sent by the client to the server when this client wants to join the game.<br>
+            <code>PLAYER_CONNECTED</code> will be sent by the server to the client when connecting process is finished and the client is ready to participate in the game.<br>
+            <code>OTHER_PLAYER_CONNECTED</code> will be sent by the server to the remaining clients other than the one that just joined to let them know that it happened.<br>
+            <code>OTHER_PLAYER_DISCONNECTED</code> will be the same as previous, but it will let remaining clients know that some other client has just left.<br>
+            <code>CONTROLS_SENT</code> will be sent by the client to the server and will contain current state of client’s controls.<br>
+            <code>GAME_STATE_SENT</code> will be sent by the server to all the clients to let them know about the current state of the game.<br>
+          </p>
+
+          <p>
+            Based on those events we’re going to build a <code>Server</code> that will react to them and send them to the clients.
+            Even though we’ll use SocketIO for that, there’s no reason to not have some other <code>Server</code> implementation in the future, so we’ll start with a common interface.<br>
+            It’s going to be placed in another package named <code>connection</code> just like the recent one, but this time we’ll create it in the <code>server</code> module.
+          </p>
+
+          <pre><code>
+public interface Server {
+    void start();
+    void onPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
+    void onPlayerDisconnected(Consumer&lt;UUID&gt; handler);
+    void onPlayerSentControls(BiConsumer&lt;UUID, ControlsDto&gt; handler);
+    void broadcast(GameStateDto gameState);
+    void sendIntroductoryStateToConnected(IntroductoryStateDto introductoryState);
+    void notifyOtherPlayersAboutConnected(PlayerDto connected);
+}
+          </code></pre>
+
+          <p>
+            This will give us an overview of <code>Server</code> responsibilities. It’ll provide ability to react to 3 types of events:
+            any <code>Player</code> connecting, disconnecting and sending controls, and also be able to send 3 types of data: game state broadcast for all,
+            introductory data for newly connected <code>Player</code> and notification about that <code>Player</code> to the remaining <code>Players</code>.<br>
+            As you may expect, there’ll have to be something above the <code>Server</code>, that will supply it with data to act upon.
+            This is true, in that sense the <code>Server</code> will be a tool that’s used by game logic
+            (pretty similar to <code>AsteroidsScreen</code> you’ve seen earlier), but for now let’s focus on implementing SocketIO variant of the <code>Server</code>.
+          </p>
+
+          <p>
+            In a constructor, we’ll initialize <code>SocketIOServer</code> with desired host and port.
+            It’ll be ready to connect whenever we’ll call a <code>start</code> method.
+            We’ll also set up exceptions behavior and set up events, more on that later.
+          </p>
+
+          <pre><code>
+public class SocketIoServer implements Server {
+    private static final Logger logger = LoggerFactory.getLogger(SocketIoServer.class);
+    private final SocketIOServer socketio;
+    private Consumer&lt;PlayerDto&gt; playerJoinedHandler;
+    private BiConsumer&lt;UUID, ControlsDto&gt; playerSentControlsHandler;
+    private Consumer&lt;UUID&gt; playerLeftHandler;
+
+    public SocketIoServer(String host, int port) {
+        Configuration config = new Configuration();
+        config.setHostname(host);
+        config.setPort(port);
+
+        config = setupExceptionListener(config);
+        socketio = new SocketIOServer(config);
+        setupEvents();
+    }
+
+    @Override
+    public void start() {
+        Configuration config = socketio.getConfiguration();
+        socketio.start();
+        logger.info("Game server started at " + config.getHostname() + ":" + config.getPort());
+    }
+            </code></pre>
+
+          <p>
+            Event handler methods will enable us to expose <code>Server</code> events to higher level layer:
+          </p>
+
+          <pre><code>
+    @Override
+    public void onPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
+        playerJoinedHandler = handler;
+    }
+
+    @Override
+    public void onPlayerDisconnected(Consumer&lt;UUID&gt; handler) {
+        playerLeftHandler = handler;
+    }
+
+    @Override
+    public void onPlayerSentControls(BiConsumer&lt;UUID, ControlsDto&gt; handler) {
+        playerSentControlsHandler = handler;
+    }
+
+            </code></pre>
+
+          <p>
+            These methods will enable higher level layer to communicate events to clients:
+          </p>
+
+          <pre><code>
+    @Override
+    public void broadcast(GameStateDto gameState) {
+        sendEvent(socketio.getBroadcastOperations(), Event.GAME_STATE_SENT, gameState);
+    }
+
+    @Override
+    public void sendIntroductoryDataToConnected(PlayerDto connected, GameStateDto gameState) {
+        socketio.getAllClients().stream()
+            .filter(client -> client.getSessionId().equals(UUID.fromString(connected.getId())))
+            .findAny()
+            .ifPresent(client -> sendEvent(client, Event.PLAYER_CONNECTED,
+                new IntroductoryStateDto(connected, gameState)));
+    }
+
+    @Override
+    public void notifyOtherPlayersAboutConnected(PlayerDto connected) {
+        socketio.getAllClients().stream()
+            .filter(client -> !client.getSessionId().equals(UUID.fromString(connected.getId())))
+            .forEach(client -> sendEvent(client, Event.OTHER_PLAYER_CONNECTED, connected));
+    }
+            </code></pre>
+
+        <p>
+          Next, we'll need to handle low level connection logic before exposing it to event handlers.<br>
+          <code>PLAYER_CONNECTING</code> is most interesting here, so we'll take a closer look at it.
+          Whenever <code>Player</code> is connecting, it won't yet have an id - we need to assign it.
+          In this case, it will make most sense to assign <code>Player</code> with the same id as it's assigned socket client,
+          because that will make it easier to perform some operations later (ie. handle disconnections).
+          Then we'll pass this new <code>Player</code>'s <code>Dto</code> to higher layer.
+        </p>
+
+          <pre><code>
+    private void setupEvents() {
+        addEventListener(Event.PLAYER_CONNECTING, (client, json, ackSender) -> {
+            PlayerDto connecting = PlayerDto.fromJsonString(json);
+            PlayerDto withAssignedId = new PlayerDto(client.getSessionId().toString(),
+            connecting.getColor(), connecting.getShipDto());
+            playerJoinedHandler.accept(withAssignedId);
+        });
+
+        addEventListener(Event.CONTROLS_SENT, (client, json, ackSender) -> {
+            ControlsDto dto = ControlsDto.fromJsonString(json);
+            playerSentControlsHandler.accept(client.getSessionId(), dto);
+        });
+
+        socketio.addDisconnectListener(client -> {
+            UUID id = client.getSessionId();
+            playerLeftHandler.accept(id);
+            sendEvent(socketio.getBroadcastOperations(), Event.OTHER_PLAYER_DISCONNECTED, id::toString);
+        });
+    }
+
+            </code></pre>
+
+          <p>
+            Lastly, we'll have server exceptions logging and some small helper methods.
+            This will be just a bit of boilerplate we need to ease our work with the server.
+          </p>
+
+          <pre><code>
+
+    private Configuration setupExceptionListener(Configuration config) {
+        // event exception handling - to keep it simple just throw them as runtime exceptions
+        config.setExceptionListener(new ExceptionListenerAdapter() {
+            @Override
+            public void onEventException(Exception e, List&lt;Object&gt; data, SocketIOClient client) {
+                throw new RuntimeException(e);
+            }
+
+            @Override
+            public void onDisconnectException(Exception e, SocketIOClient client) {
+                throw new RuntimeException(e);
+            }
+
+            @Override
+            public void onConnectException(Exception e, SocketIOClient client) {
+                throw new RuntimeException(e);
+            }
+
+            @Override
+            public boolean exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+                // connection error, log and move along
+                if(cause instanceof IOException) {
+                    logger.warn(cause.getMessage());
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        return config;
+    }
+
+    private void addEventListener(Event eventName, DataListener&lt;String&gt; listener) {
+        socketio.addEventListener(eventName.toString(), String.class, listener);
+    }
+
+    private void sendEvent(ClientOperations client, Event eventName, Dto data) {
+        client.sendEvent(eventName.toString(), data.toJsonString());
+    }
+}
+          </code></pre>
+
+          <h2>Using the connection</h2>
+
+          <p>
+            In previous section the notion of higher level layer using <code>Server</code> was brought up a few times.
+            Now we'll implement it. Basically it's going to be a variation on the <code>AsteroidsScreen</code>, but
+            it will register events and gather input from them. It'll also conduct sending events to <code>Player</code>s.<br>
+            Let's create <code>AsteroidsServerScreen</code> inside <code>server</code> module:
+          </p>
+
+          <pre><code>
+public class AsteroidsServerScreen extends ScreenAdapter {
+    private final Server server;
+    private final Container&lt;RemotePlayer&gt; playersContainer;
+    private final BulletsContainer bulletsContainer;
+    private final Arena arena;
+    private final Respawner respawner;
+    private final Collider collider;
+
+    public AsteroidsServerScreen(Server server,
+            Container&lt;RemotePlayer&gt; playersContainer, BulletsContainer bulletsContainer,
+            Arena arena, Respawner respawner, Collider collider) {
+        this.server = server;
+        this.playersContainer = playersContainer;
+        this.bulletsContainer = bulletsContainer;
+        this.arena = arena;
+        this.respawner = respawner;
+        this.collider = collider;
+    }
+
+            </code></pre>
+
+          <p>
+            After server will be injected we can start listening to events. <code>onPlayerConnected</code> is particularly
+            interesting, so let's examine it in detail.<br>
+            When <code>Player</code> will send it's representation as <code>PlayerDto</code> we will create a <code>RemotePlayer</code> to keep on the server,
+            spawn a place for it's <code>Ship</code> using <code>Respawner</code> and when that's done send <code>IntroductoryStateDto</code> to that <code>Player</code>
+            with information about it's newly spawned <code>Ship</code> and general game state. We'll also <code>notifyOtherPlayersAboutConnected</code>.
+        </p>
+
+          <pre><code>
+    @Override
+    public void show() {
+        server.onPlayerConnected(playerDto -> {
+            RemotePlayer connected = PlayerMapper.remotePlayerFromDto(playerDto);
+            respawner.respawnFor(connected);
+            PlayerDto connectedDto = PlayerMapper.fromPlayer(connected);
+            GameStateDto gameStateDto = GameStateMapper.fromState(playersContainer, bulletsContainer);
+
+            server.sendIntroductoryDataToConnected(connectedDto, gameStateDto);
+            server.notifyOtherPlayersAboutConnected(connectedDto);
+            playersContainer.add(connected);
+        });
+
+        server.onPlayerDisconnected(id -> {
+            playersContainer.removeById(id);
+            bulletsContainer.removeByPlayerId(id);
+        });
+
+        server.onPlayerSentControls((id, controlsDto) -> {
+            playersContainer
+            .getById(id)
+            .ifPresent(sender -> ControlsMapper
+            .setRemoteControlsByDto(controlsDto, sender.getRemoteControls()));
+        });
+
+        server.start();
+    }
+
+            </code></pre>
+
+          <p>
+            <code>render</code> method will be almost the same as in <code>AsteroidsScreen</code> except that it will lack
+            rendering (since we won't need any), but it will instead <code>broadcast</code> game state to all the connected
+            <code>Player</code>s at the end of each frame.
+          </p>
+
+          <pre><code>
+    @Override
+    public void render(float delta) {
+        respawner.respawn();
+        collider.checkCollisions();
+
+        playersContainer.update(delta);
+        existingShipsStream()
+            .forEach(arena::ensurePlacementWithinBounds);
+        existingShipsStream()
+            .map(Ship::obtainBullet)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .forEach(bulletsContainer::add);
+
+        bulletsContainer.update(delta);
+        bulletsContainer.getAll().stream()
+            .forEach(arena::ensurePlacementWithinBounds);
+
+        server.broadcast(GameStateMapper.fromState(playersContainer, bulletsContainer));
+    }
+
+    private Stream&lt;Ship&gt; existingShipsStream() {
+        return playersContainer.getAll().stream()
+            .map(Player::getShip)
+            .filter(Optional::isPresent)
+            .map(Optional::get);
+    }
+}
+          </code></pre>
+
+          <h2>Almost there</h2>
+
+          <p>
+            At this point we will have two things remaining to conclude the server part (for now).<br>
+            First one will be an equivalent of <code>AsteroidsGame</code> that will configure and inject dependencies into <code>AsteroidsServerScreen</code>.
+            Only new stuff here is reading server's host and port from environment variables:
+          </p>
+
+          <pre><code>
+public class AsteroidsServerGame extends Game {
+    private Screen asteroids;
+
+    @Override
+    public void create() {
+        Arena arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT);
+        BulletsContainer bulletsContainer = new BulletsContainer();
+        Container&lt;RemotePlayer&gt; playersContainer = new PlayersContainer<>();
+        Respawner respawner = new Respawner<>(playersContainer, WORLD_WIDTH, WORLD_HEIGHT);
+        Collider collider = new Collider<>(playersContainer, bulletsContainer);
+
+        Map&lt;String, String&gt; env = System.getenv();
+        String host = env.getOrDefault("HOST", "localhost");
+        int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
+        Server server = new SocketIoServer(host, port);
+
+        asteroids = new AsteroidsServerScreen(
+            server,
+            playersContainer, bulletsContainer,
+            arena, respawner, collider);
+
+        setScreen(asteroids);
+    }
+
+    @Override
+    public void dispose() {
+        asteroids.dispose();
+    }
+}
+          </code></pre>
+
+          <p>
+            Lastly, in order for the <code>server</code> module to be runnable in a similar manner as <code>desktop</code>, we're going to need a launcher:
+          </p>
+
+          <pre><code>
+public class AsteroidsServerLauncher {
+    public static void main(String[] args) {
+        new HeadlessApplication(new AsteroidsServerGame());
+    }
+}
+          </code></pre>
+
+          <h2>This is it</h2>
+
+          <p>
+            Let's give our server a spin with <code>./gradlew server:run</code> (on Linux/macOS) or <code>gradlew server:run</code> (on Windows) and see it in action!
+          </p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/server.gif" alt="second stage of the game">
+
+          <p>
+            We got it! This is what we've been working for this entire part.
+          <p>
+          <p>
+            Yeah.
+          </p>
+          <p>
+            Your face right now:
+          </p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/disappointed.jpg" alt="disappointed face">
+
+          <p>
+            I know, it seems underwhelming. But I'll make up for it - it's going to get cool when we'll implement a client side, and that's what next part will be all about. Stay tuned :)
+          </p>
+
+            <h1>The client</h1>
+
+            <p>
+                Now that we have server ready, we can start working on the client side.
+                Conceptually at this point the client will be something that sends Player’s Controls to the server,
+                receives a game state and is able to render it. No movement or collisions will be
+                computed on the client side, instead the server will manipulate game objects like puppets.
+                Later this will change a little as we introduce lag compensation techniques for the client,
+                but for now that would be all.
+            </p>
+
+            <h2>Infrastructural chores, again</h2>
+
+            <p>
+                Remember when we've introduced <code>server</code> module in the previous part? This will be quite similar,
+                except that new module will be called <code>client</code> and it won’t be runnable (as opposed to <code>desktop</code>).
+                Although we could just lump all the client side code into <code>desktop</code>, it would go against
+                LibGDX’s multiplatform nature and we wouldn’t be able to use our universal client side logic in
+                future <code>html</code>, <code>android</code> or <code>ios</code> projects, therefore let’s keep it separated.<br>
+                We’ll go ahead and create the <code>client</code> module, copy <code>build.gradle</code> from <code>core</code>,
+                create <code>/src/com/asteroids/game/client</code> namespace and take a breath, that’ll be half the work done.
+                Then we’ll go up to the project root, include <code>client</code> in <code>settings.gradle</code> and open up <code>build.gradle</code>.<br>
+
+                There will be one addition and one change in the build process. <code>desktop</code> will no longer depend on <code>core</code>,
+                it will instead depend on <code>client</code> which in turn will depend on <code>core</code>.
+                This is because in a sense, <code>desktop</code> will be a subset of <code>client</code> - it’s one
+                possible <code>client</code>, just like <code>html</code> would be another. Here’s how <code>client</code>
+                will look and how <code>desktop</code> will change:
+            </p>
+
+            <pre><code>
+project(":desktop") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":client")
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":client") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "io.socket:socket.io-client:0.8.2"
+    }
+}
+            </code></pre>
+
+            <p>You’ll notice that we’ve included <a href="https://github.com/socketio/socket.io-client-java">SocketIO client</a> to be able to talk to our SocketIO server.</p>
+
+            <h2>Extending mappers</h2>
+
+            <p>
+                Lastly we’ve introduced a couple of <code>mapper</code>s to help tie our <code>Dto</code>s with the
+                rest of the game code. It’s time to extend them a little in order to cover client’s needs.
+                Some of these changes will contain a bit of logic, so contrary to how they were introduced
+                we’llnow go through these changes individually.<br>
+                Changes that we’re going to introduce will have to do with creating and updating game models.
+                Creation will take place when <code>Dto</code>s coming from the server are describing models
+                nowhere to be found on the client, and update will be performed whenever they already exist.
+                We won’t handle deleting models in mappers because we won’t need a mapper to perform deletion.
+            </p>
+
+            <h2>Bullet Mapper</h2>
+
+            <p>
+                We know that a <code>Bullet</code> belongs to a <code>Player</code>, so in order to introduce new
+                <code>Bullet</code> we’ll need a <code>Container</code> of available <code>Players</code> passed along <code>BulletDto</code>.
+                Updating will be easier, as we’ll just set the position of the particular <code>Bullet</code>.
+            </p>
+
+            <pre><code>
+public class BulletMapper {
+    ...
+    public static Bullet fromDto(BulletDto dto, Container&lt;Player&gt; playersContainer) {
+        Player shooter = playersContainer.getById(dto.getShooterId())
+            .orElseThrow(() -> new RuntimeException("Cannot find Player of id " + dto.getShooterId() + " to create a Bullet."));
+        return new Bullet(UUID.fromString(dto.getId()), shooter,
+            new Vector2(dto.getX(), dto.getY()), dto.getRotation());
+    }
+
+    public static void updateByDto(Bullet bullet, BulletDto dto) {
+        bullet.setPosition(new Vector2(dto.getX(), dto.getY()));
+    }
+}
+            </code></pre>
+
+            <h2>Ship Mapper</h2>
+
+            <p>
+                When mapping from <code>ShipDto</code> there’ll be a possibility that a <code>Player</code> won’t have
+                any <code>Ship</code> at the moment, therefore we’ll need to handle a null <code>ShipDto</code> case
+                (which will eventually get transformed into empty <code>Optional</code> through <code>Player</code>’s setter).
+                Otherwise we’ll return brand new <code>Ship</code>.<br>
+                Updating will set <code>Ship</code>’s position and rotation according to <code>ShipDto</code>.
+            </p>
+
+            <pre><code>
+public class ShipMapper {
+    ...
+    public static Ship fromDto(ShipDto dto, Player owner) {
+        if(dto == null) return null;
+        return new Ship(owner, new Vector2(dto.getX(), dto.getY()), dto.getRotation());
+    }
+
+    public static void updateByDto(Ship ship, ShipDto dto) {
+        ship.setPosition(new Vector2(dto.getX(), dto.getY()));
+        ship.setRotation(dto.getRotation());
+    }
+}
+            </code></pre>
+
+            <h2>Player Mapper</h2>
+
+            <p>
+                We’ve already seen one interesting method in <code>PlayerMapper</code>, <code>remotePlayerFromDto</code>,
+                that was used on the server to map incoming <code>PlayerDto</code>s to <code>Player</code>s. Now we’re going
+                to introduce it’s client side counterpart which will also create a <code>Player</code>, but there will be two differences.
+            </p>
+            <p>
+                Firstly, it will construct these new <code>Player</code>s with <code>NoopControls</code> because their <code>Ship</code>s
+                will be updated directly from <code>ShipDto</code>s coming from the server rather than any sort of <code>Controls</code>.<br>
+                Secondly, it’ll pass some of the work to <code>ShipMapper</code> in order to deal with <code>Ship</code>-related mapping.
+                <code>updateByDto</code> won’t actually deal with any of <code>Player</code>’s own properties (because we don’t have any
+                that could change during the course of the game), but rather delegate work to <code>ShipMapper</code> based on whether
+                the <code>Player</code> has a <code>Ship</code> or not.
+            </p>
+
+            <pre><code>
+public class PlayerMapper {
+    ...
+    public static Player localPlayerFromDto(PlayerDto dto) {
+        Player player = new Player(UUID.fromString(dto.getId()), new NoopControls(), Color.valueOf(dto.getColor()));
+        player.setShip(ShipMapper.fromDto(dto.getShipDto(), player));
+        return player;
+    }
+
+    public static void updateByDto(Player player, PlayerDto dto) {
+        Optional&lt;Ship&gt; currentShip = player.getShip();
+        ShipDto shipDto = dto.getShipDto();
+
+        if(currentShip.isPresent() && shipDto != null) {
+            ShipMapper.updateByDto(currentShip.get(), shipDto);
+        }
+        else {
+            player.setShip(ShipMapper.fromDto(shipDto, player));
+        }
+    }
+}
+            </code></pre>
+
+            <h2>Controls Mapper</h2>
+
+            <p>
+                Lastly, we’ll extend <code>ControlsMapper</code>.<br>
+                Not much will happen here as we’ll just add method to dump <code>Controls</code> state into <code>ControlsDto</code>.
+            </p>
+
+            <pre><code>
+public class ControlsMapper {
+    ...
+    public static ControlsDto mapToDto(Controls controls) {
+        return new ControlsDto(
+            controls.forward(),
+            controls.left(),
+            controls.right(),
+            controls.shoot()
+        );
+    }
+}
+            </code></pre>
+
+            <h2>You don't get to choose what skin color you're born with</h2>
+            <p>
+                We'll need some way of distinguishing between all the different <code>Player</code>s being visible
+                on the same screen. In more serious game that would be a nickname and chosen color, but ain’t nobody got time
+                for that, so we’ll just declare list of possible <code><a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/graphics/Color.html">Color</a></code>s that a Player can have and assign those at random.<br>
+                The list will be declared in the <code>Player</code> model:
+            </p>
+
+            <pre><code>
+public class Player implements Identifiable {
+    public static final List&lt;Color&gt; POSSIBLE_COLORS = Arrays.asList(
+        Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY);
+    ...
+}
+            </code></pre>
+
+            <p>We’ll also create a <code>Randomize</code> tool inside <code>core/util</code> package:</p>
+
+            <pre><code>
+public class Randomize {
+    public static &lt;Thing&gt; Thing fromList(List&lt;Thing&gt; things) {
+        return things.stream()
+            .skip((int) (things.size() * Math.random()))
+            .findAny()
+            .get();
+    }
+}
+            </code></pre>
+
+            <h2>Moving things around</h2>
+
+            <p>
+                Some of the things currently being in <code>core</code> won’t really make sense on server side, so we can move them to <code>client</code> module.
+            <p>
+            <p>
+                First obvious candidate will be <code>rendering</code> package, we can just move it as a whole.<br>
+                Secondly, we’ll create <code>controls</code> package inside <code>client</code> module and move
+                <code>KeyboardControls</code> there, as there’s no point to have them on the server.
+            </p>
+
+            <h2>Connection, again</h2>
+
+            <p>
+                Having flashbacks from the previous part yet?<br>
+                We’ll have to introduce <code>connection</code> package one more time, on the client side.
+                It’ll contain <code>Client</code> interface, analogous to the <code>Server</code>, which will
+                declare events and actions that we’ll be able to handle.
+            </p>
+
+            <pre><code>
+public interface Client {
+    void connect(PlayerDto playerDto);
+    void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler);
+    void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
+    void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler);
+    void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler);
+    void sendControls(ControlsDto controlsDto);
+    boolean isConnected();
+}
+            </code></pre>
+
+            <p>
+                Apart from <code>connect</code> and <code>isConnected</code> these methods should ring a bell.
+                They’ll be very much related to those already declared on the server side, completing the picture of our overall connection scheme.
+            </p>
+
+            <p>
+                We’ll need a concrete implementation of <code>Client</code> interface to be able to connect
+                with our <code>SocketIOServer</code>. <code>connect</code> method will be particularly interesting,
+                as it’ll be responsible for conducting full <code>Player</code> initialization before handing
+                control over to game logic. Right after low-level socket connection will be established,
+                we’ll inform the <code>Server</code> who the <code>Player</code> is and wait for <code>IntroductoryStateDto</code>
+                to be sent back to consider ourselves connected.<br>
+                <code>SocketIoClient</code> won’t do much more beyond establishing connection and transforming
+                JSON strings to <code>Dto</code>s, leaving most of the game work for upper layer.
+            </p>
+
+            <pre><code>
+public class SocketIoClient implements Client {
+    private final Socket socket;
+    private ConnectionState state = ConnectionState.NOT_CONNECTED;
+    private Consumer&lt;IntroductoryStateDto&gt; playerConnectedHandler;
+    private Consumer&lt;PlayerDto&gt; otherPlayerConnectedHandler;
+    private Consumer&lt;String&gt; otherPlayerDisconnectedHandler;
+    private Consumer&lt;GameStateDto&gt; gameStateReceivedHandler;
+
+    private enum ConnectionState {
+        NOT_CONNECTED,
+        CONNECTING,
+        CONNECTED;
+    }
+
+    public SocketIoClient(String protocol, String host, int port) {
+        String url = protocol + "://" + host + ":" + port;
+        try {
+            this.socket = IO.socket(url);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Wrong URL provided for socket connection: " + url, e);
+        }
+        setupEvents();
+    }
+
+    @Override
+    public void connect(PlayerDto playerDto) {
+        if(state == ConnectionState.NOT_CONNECTED) {
+            state = ConnectionState.CONNECTING;
+            socket.on(Socket.EVENT_CONNECT, response -> emit(socket, Event.PLAYER_CONNECTING, playerDto));
+            on(socket, Event.PLAYER_CONNECTED, response -> {
+                String gameStateDto = (String)response[0];
+                playerConnectedHandler.accept(IntroductoryStateDto.fromJsonString(gameStateDto));
+                state = ConnectionState.CONNECTED;
+            });
+            socket.connect();
+        }
+    }
+
+    @Override
+    public void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler) {
+        playerConnectedHandler = handler;
+    }
+
+    @Override
+    public void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
+        otherPlayerConnectedHandler = handler;
+    }
+
+    @Override
+    public void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler) {
+        otherPlayerDisconnectedHandler = handler;
+    }
+
+    @Override
+    public void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler) {
+        gameStateReceivedHandler = handler;
+    }
+
+    @Override
+    public void sendControls(ControlsDto controlsDto) {
+        emit(socket, Event.CONTROLS_SENT, controlsDto);
+    }
+
+    @Override
+    public boolean isConnected() {
+        return state == ConnectionState.CONNECTED;
+    }
+
+    private void setupEvents() {
+        on(socket, Event.OTHER_PLAYER_CONNECTED, response -> {
+            String gameStateDtoJson = (String) response[0];
+            otherPlayerConnectedHandler.accept(PlayerDto.fromJsonString(gameStateDtoJson));
+        });
+
+        on(socket, Event.OTHER_PLAYER_DISCONNECTED, response -> {
+            String playerId = (String) response[0];
+            otherPlayerDisconnectedHandler.accept(playerId);
+        });
+
+        on(socket, Event.GAME_STATE_SENT, response -> {
+            String gameStateDtoJson = (String) response[0];
+            GameStateDto dto = GameStateDto.fromJsonString(gameStateDtoJson);
+            gameStateReceivedHandler.accept(dto);
+        });
+    }
+
+    private void emit(Socket socket, Event eventName, Dto payload) {
+        socket.emit(eventName.toString(), payload.toJsonString());
+    }
+
+    private void on(Socket socket, Event eventName, Emitter.Listener handler) {
+        socket.on(eventName.toString(), handler);
+    }
+}
+            </code></pre>
+
+          <h2>Using the connection</h2>
+
+          <p>
+            Let’s use <code>SocketIoClient</code> in the client <code>Screen</code> and utilize connection logic we’ve been working on.
+            <code>AsteroidsClientScreen</code> will be responsible for sending and handling connection events, and applying
+            their results to the game loop. It won’t compute any collisions or positions (yet), but merely be
+            there to render game state received by the server and send <code>Player</code>s <code>Controls</code>.
+          </p>
+
+          <pre><code>
+public class AsteroidsClientScreen extends ScreenAdapter {
+    private final Controls localControls;
+    private final Client client;
+    private final Viewport viewport;
+    private final ShapeRenderer shapeRenderer;
+    private final Container&lt;Player&gt; playersContainer;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+    private final ContainerRenderer&lt;Player&gt; playersRenderer;
+    private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
+    private Player localPlayer;
+
+    public AsteroidsClientScreen(
+            Controls localControls, Client client,
+            Viewport viewport, ShapeRenderer shapeRenderer,
+            Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
+            ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
+        this.localControls = localControls;
+        this.client = client;
+        this.viewport = viewport;
+        this.playersContainer = playersContainer;
+        this.bulletsContainer = bulletsContainer;
+        this.shapeRenderer = shapeRenderer;
+        this.playersRenderer = playersRenderer;
+        this.bulletsRenderer = bulletsRenderer;
+    }
+          </code></pre>
+
+          <p>
+            Similarly to how we did it earlier, we’ll implement event handlers in <code>show</code> method.
+          </p>
+
+          <pre><code>
+    @Override
+    public void show() {
+          </code></pre>
+
+          <p>
+            When connection is established and <code>Server</code> responded with <code>IntroductoryStateDto</code>,
+            we’ll loop through it’s contents to update local <code>Player</code>'s <code>Ship</code> state and populate <code>Container</code>s with other <code>Player</code>s and <code>Bullet</code>s.
+          </p>
+
+          <pre><code>
+        client.onConnected(introductoryStateDto -> {
+            localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected());
+            playersContainer.add(localPlayer);
+            GameStateDto gameStateDto = introductoryStateDto.getGameState();
+            gameStateDto.getPlayers().stream()
+                .map(PlayerMapper::localPlayerFromDto)
+                .forEach(playersContainer::add);
+
+            gameStateDto.getBullets().stream()
+                .map(bulletDto -> BulletMapper.fromDto(bulletDto, playersContainer))
+                .forEach(bulletsContainer::add);
+        });
+          </code></pre>
+
+          <p>
+            Whenever other <code>Player</code> connects or disconnects, we need to reconcile that with local <code>playersContainer</code>.
+          </p>
+
+          <pre><code>
+        client.onOtherPlayerConnected(connectedDto -> {
+            Player connected = PlayerMapper.localPlayerFromDto(connectedDto);
+            playersContainer.add(connected);
+        });
+
+        client.onOtherPlayerDisconnected(playersContainer::removeById);
+          </code></pre>
+
+          <p>
+            When we’ll receive the game state there will be a couple of interesting things going on,
+            so let’s walk through them. At first, we’ll update existing <code>Player</code>s (and subsequently their <code>Ship</code>s too),
+            which will be pretty straightforward:
+          </p>
+
+          <pre><code>
+        client.onGameStateReceived(gameStateDto -> {
+            gameStateDto.getPlayers().stream()
+                .forEach(playerDto -> playersContainer
+                    .getById(playerDto.getId())
+                    .ifPresent(player -> PlayerMapper.updateByDto(player, playerDto)));
+          </code></pre>
+
+          <p>
+            For <code>Bullet</code>s we’ll need a bit more work to do, mostly because contrary to
+            <code>Player</code> we don’t have dedicated events for when <code>Bullet</code> was introduced or removed
+            (there would be a lot of them).<br>
+            If <code>Bullet</code> coming from the <code>Server</code> doesn’t exist yet, we’ll need to add it. If it’s there, we’ll need to update.
+            Finally, if it’s present in our local game but not on the <code>Server</code>, we'll need to delete it locally.
+          </p>
+
+          <pre><code>
+            gameStateDto.getBullets().stream()
+                .forEach(bulletDto -> {
+                    Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
+                    if(!bullet.isPresent()) {
+                        bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
+                    } else {
+                        BulletMapper.updateByDto(bullet.get(), bulletDto);
+                    }
+                });
+
+            List&lt;String&gt; existingBulletIds = gameStateDto.getBullets().stream()
+                .map(BulletDto::getId)
+                .collect(toList());
+
+            bulletsContainer.getAll().stream()
+                .map(Bullet::getId)
+                .map(Object::toString)
+                .filter(id -> !existingBulletIds.contains(id))
+                .collect(toList())
+                .forEach(bulletsContainer::removeById);
+        });
+          </code></pre>
+
+          <p>
+            Why <code>.filter().collect().forEach()</code>instead of just <code>.filter().forEach()</code>?
+            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#NonInterference">Because you shouldn’t modify Stream’s underlying List during pipeline execution.</a>
+            </p>
+          <p>
+            We'll end our work in <code>show</code> by executing connection request for local <code>Player</code>
+          </p>
+
+          <pre><code>
+        client.connect(new PlayerDto(null, Randomize.fromList(Player.POSSIBLE_COLORS).toString(), null));
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if(!client.isConnected()) return;
+
+        client.sendControls(ControlsMapper.mapToDto(localControls));
+
+        viewport.apply();
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        playersRenderer.render(shapeRenderer);
+        bulletsRenderer.render(shapeRenderer);
+        shapeRenderer.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
+
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
+    }
+}
+          </code></pre>
+
+          <h2>Client game</h2>
+
+          <p>
+            As we did before, we’ll configure and inject dependencies in the <code>Game</code> class, this time it will be <code>AsteroidsClientGame</code>:
+          </p>
+
+          <pre><code>
+public class AsteroidsClientGame extends Game {
+    private Screen asteroids;
+
+    @Override
+    public void create() {
+        Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
+        ShapeRenderer shapeRenderer =  new ShapeRenderer();
+        Controls localControls = new KeyboardControls();
+
+        Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
+        Container&lt;Player&gt; playersContainer = new PlayersContainer<>();
+
+        ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
+        ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
+
+        Map&lt;String, String&gt; env = System.getenv();
+        String protocol = env.getOrDefault("PROTOCOL", "http");
+        String host = env.getOrDefault("HOST", "localhost");
+        int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
+        Client client = new SocketIoClient(protocol, host, port);
+
+        asteroids = new AsteroidsClientScreen(
+            localControls, client,
+            viewport, shapeRenderer,
+            playersContainer, bulletsContainer,
+            playersRenderer, bulletsRenderer);
+
+        setScreen(asteroids);
+    }
+
+    @Override
+    public void dispose() {
+        asteroids.dispose();
+    }
+}
+          </code></pre>
+
+          <p>
+            While we’re at it, we can delete most of <code>AsteroidsGame</code> in core since we won’t need it anymore.
+            What will still be shared between the <code>client</code> and the <code>server</code> are world dimensions, so they’ll be all that’s left in this class:
+          </p>
+
+          <pre><code>
+public class AsteroidsGame {
+    public static final float WORLD_WIDTH = 800f;
+    public static final float WORLD_HEIGHT = 600f;
+}
+          </code></pre>
+
+          <p>
+            Naturally, <code>desktop</code>'s <code>DesktopLauncher</code> will now have to use <code>AsteroidsClientGame</code> instead of <code>AsteroidsGame</code>:
+          </p>
+
+          <pre><code>
+public class DesktopLauncher {
+    public static void main (String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        new LwjglApplication(new AsteroidsClientGame(), config);
+    }
+}
+          </code></pre>
+
+          <h2>An actual multiplayer</h2>
+
+          <p>
+            If everything went smooth, you should now be able to run the server and two clients and see that they're connected.
+            On Linux/macOS it would be <code>./gradlew server:run</code> and <code>./gradlew desktop:run</code>, on Windows you'd use <code>gradlew.bat</code> instead of <code>./gradlew</code>.
+        </p>
+          <p>
+            Here's how launch procedure looks from IntelliJ IDEA:
+          </p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-launch.gif" alt="launching server and clients">
+
+          <p>And here's the game in action:</p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-playing.gif" alt="multiplayer in action">
+
+        </div>
+
+        <footer class="post-footer">
+                    </footer><!-- .entry-footer -->
+    <div class="sumome-share-client-wrapper sumome-share-client-wrapper-center sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div data-sumome-share-pos="bca" class="sumome-share-client sumome-share-client-bottom-center-article sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div class="sumome-share-client-animated sumome-share-client-share sumome-share-client-share-share sumome-share-client-count" data-sumome-share="share" style="background: rgb(255, 255, 255); color: black;"><span style="bottom: auto; top: 11.5px;"><strong>34</strong><br>Shares</span></div><a title="Facebook" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="facebook" href="javascript:void(0);" style="background: rgb(59, 89, 152); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/facebook-white-60.png" alt="Facebook"><span>17</span></a><a title="LinkedIn" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="linkedin" href="javascript:void(0);" style="background: rgb(0, 123, 182); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/linkedin-white-60.png" alt="LinkedIn"><span>17</span></a><a title="Twitter" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="twitter" href="javascript:void(0);" style="background: rgb(0, 172, 237); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/twitter-white-60.png" alt="Twitter"></a><a title="Google+" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="googleplus" href="javascript:void(0);" style="background: rgb(221, 75, 57); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/googleplus-white-60.png" alt="Google+"></a><a title="YC Hacker News" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="ychackernews" href="javascript:void(0);" style="background: rgb(252, 102, 32); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/ychackernews-white-60.png" alt="YC Hacker News"></a><a title="StumbleUpon" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="stumbleupon" href="javascript:void(0);" style="background: rgb(235, 72, 35); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/stumbleupon-white-60.png" alt="StumbleUpon"></a></div></div></article><!-- #post-## -->
+                <div class="post-meta">
+                    
+<div class="comments-section-wrapper">
+    <h1 class="post-content-title comment-title">Comments</h1>
+    <div id="comments" class="comments-area">
+        <ol class="comment-list">
+                    </ol><!-- .comment-list -->
+    </div><!-- .comments-area -->
+</div>
+<div class="comment-form-wrapper">
+    	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.schibsted.pl/blog/back-end/serverless-architecture-aws-lambda/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="http://www.schibsted.pl/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" aria-required="true" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="11004" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="6e8cfdc79b"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1491247125480"></form>
+			</div><!-- #respond -->
+	</div>
+                </div>
+        
+        
+        </main><!-- .site-main -->
+
+                
+            <aside class="related">
+                <header class="related-header">
+                    More articles from Schibsted Tech Polska                </header>
+                <article id="post-8515" class="post--list post-8515 post type-post status-publish format-standard has-post-thumbnail hentry category-back-end category-blog tag-amazon tag-aws tag-kinesis tag-microservices tag-queue tag-sns tag-sqs">
+
+    <div class="post-meta--list">
+        <div class="post-meta-thumbnail--list">
+            <img width="1999" height="1332" src="./Serverless architecture - Amazon Web Services Lambda_files/Choosing-the-best-AWS-Messaging-Service.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2016/05/09153926/Choosing-the-best-AWS-Messaging-Service.jpg 1999w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2016/05/09153926/Choosing-the-best-AWS-Messaging-Service-300x200.jpg 300w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2016/05/09153926/Choosing-the-best-AWS-Messaging-Service-768x512.jpg 768w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2016/05/09153926/Choosing-the-best-AWS-Messaging-Service-1024x682.jpg 1024w, http://d2uetvsama7sl8.cloudfront.net/prod/wp-content/uploads/2016/05/09153926/Choosing-the-best-AWS-Messaging-Service-810x540.jpg 810w" sizes="(max-width: 1999px) 100vw, 1999px">        </div>
+
+        <div class="post-meta-date--list">
+            <span class="post-meta-date-fragment--list">10. 05.</span>
+            <span class="post-meta-date-fragment--list">2016</span>
+        </div>
+    </div>
+
+    <div class="post-content--list">
+        <header class="entry-header">
+            <h2 class="post-content-title--list"><a href="http://www.schibsted.pl/blog/choosing-best-aws-messaging-service/" class="post-content-title-link--list" rel="bookmark">Choosing the best AWS Messaging Service</a></h2>
+                    </header><!-- .entry-header -->
+
+        <div class="post-content-excerpt--list">
+            <p>When you start working with microservices or when you want to decouple the components of your architecture you can use one of three existing services with slightly similar features on Amazon Web Services (AWS): SQS, SNS and Kinesis. Which service is proper for your projects? Let’s try to find the …</p>
+
+            <a class="post-content-excerpt-link--list arrowed-link--with-hover" href="http://www.schibsted.pl/blog/choosing-best-aws-messaging-service/">
+                Continue reading
+                <span class="arrowed-link-icon icon-arrow-right2"></span>
+            </a>
+        </div>
+
+    </div><!-- .entry-content -->
+</article><!-- #post-## -->
+            </aside>
+            </div><!-- .content-area -->
+
+	</div>
+
+            <div class="newsletter">
+            <h4 class="newsletter-label">
+                Get the latest job positions, hear about our events and learn how we work
+            </h4>
+
+            <a href="http://schibsted.us8.list-manage.com/subscribe?u=d4ded1667b2f702091c755719&amp;id=bd5db08bbb" class="btn-newslettermail">
+                Subscribe <span class="btn-newslettermail-extension">to our newsletter</span>
+            </a>
+        </div>
+    
+    <footer data-role="footer">
+        <div class="footer-preamble spp">
+            <div class="footer-featured">
+                
+                            </div>
+
+            <div class="pixel-pattern footer-pattern">
+                <div class="pixel-pattern-pixel"></div>
+            </div>
+        </div>
+
+        <div class="footer-container">
+            <div class="footer-social-links">
+                <a href="https://www.linkedin.com/company/2907318"><span class="icon-linkedin"></span></a><a href="http://facebook.com/SchibstedTechPolska"><span class="icon-facebook2"></span></a><a href="http://youtube.com/schibstedtechpolska"><span class="icon-youtube3"></span></a>                            </div>
+
+            <div class="footer-content">
+                
+                <span>Copyright © Schibsted Tech Polska</span>
+            </div>
+        <div>
+    </div></div></footer>
+</div>
+
+<button id="responsive-menu-button" class="responsive-menu-button  responsive-menu-boring" type="button" aria-label="Menu"><span class="responsive-menu-box"><span class="responsive-menu-inner"></span></span></button><div id="responsive-menu-container" class="
+  push-right  ">
+  <div id="responsive-menu-wrapper">
+    <div id="responsive-menu-title">Menu</div><ul id="responsive-menu" class=""><li id="responsive-menu-item-3341" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/about-us/" class="responsive-menu-item-link">About us</a></li><li id="responsive-menu-item-3342" class=" menu-item menu-item-type-post_type menu-item-object-page current_page_parent responsive-menu-item"><a href="http://www.schibsted.pl/news/" class="responsive-menu-item-link">News</a></li><li id="responsive-menu-item-3343" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/career/" class="responsive-menu-item-link">Career</a></li><li id="responsive-menu-item-3879" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/contact/" class="responsive-menu-item-link">Contact</a></li><li id="responsive-menu-item-3344" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/blog/" class="responsive-menu-item-link">Blog</a></li></ul>  </div>
+</div>
+<iframe id="sumome-jquery-iframe" style="display: none;" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource.html"></iframe><script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/form.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/jquery.form.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/www.schibsted.pl\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"sending":"Sending ...","cached":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/scripts.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/pagination.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/magicsuggest.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var jobPositions = "[\"Summer Internship - iOS and Android - Gda\\u0144sk\",\"Java\\\/Scala Developer - Krak\\u00f3w\",\"Summer Internship - Frontend and iOS - Krak\\u00f3w\",\"Frontend Developer - Krak\\u00f3w\",\"JavaScript Fullstack Developer - Krak\\u00f3w\",\"JavaScript Developer - Krak\\u00f3w\",\"Frontend Developer (with PHP knowledge) - Krak\\u00f3w\",\"DevOps (test automation background) - Gda\\u0144sk\",\"DevOps (databases oriented) - Gda\\u0144sk\",\"PHP Fullstack Developer - Gda\\u0144sk\",\"Frontend Developer - Gda\\u0144sk\",\"iOS Developer - Gda\\u0144sk\",\"Open application\"]";
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/script.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/management-carousel.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/slick.min.js"></script>
+<script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/wp-embed.min.js"></script>
+<script>(function() {
+var _fbq = window._fbq || (window._fbq = []);
+if (!_fbq.loaded)
+{ var fbds = document.createElement('script'); fbds.async = true; fbds.src = '//connect.facebook.net/en_US/fbds.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(fbds, s); _fbq.loaded = true; }
+_fbq.push(['addPixelId', '441257389362262']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript>&lt;img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=441257389362262&amp;ev=PixelInitialized" /&gt;</noscript><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"695186ec17","applicationID":"6414632","transactionName":"Z1YBYEYAXhdWVUFbWV4cIldACF8KGEVcXFFcVk5DXRVYSVZDQVpZQg==","queueTime":0,"applicationTime":710,"atts":"SxECFg4aTRk=","errorBeacon":"bam.nr-data.net","agent":""}</script>
+
+
+<!-- Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/
+
+ Served from: www.schibsted.pl @ 2017-04-03 20:58:50 by W3 Total Cache --><a href="javascript:void(0);" title="Sumo" style="background-color: rgb(0, 115, 183); border-radius: 3px 0px 0px 3px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px; position: fixed; z-index: 2147483647; padding: 0px; width: 44px; height: 40px; text-indent: -10000px; opacity: 1; display: block !important; top: 40px; right: -40px;"><span style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; margin-left: 4px; margin-right: 0px; border-radius: 3px 0px 0px 3px;">Sumo</span><span style="display: block; width: 40px; height: 40px; background: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDQ3MUVFMDFFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDQ3MUVFMDBFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MWQ0NjIyOGEtNzVmNi00ZGU0LThiY2MtYTg3NTY0ZDI2MWE1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+8JtvywAAAKhQTFRFzOPxSJvLA3W4Mo7FBna5w97u8vj7EHy8a67VhbzdsdTpVaLPh73d9/v9C3m6QZfJbq/WXKbR3u32JIfB3ez1KorDir/eBHW4+/3+rtPoZarUG4K/LIvDDnu7ocvkf7nbdrTY9fr8E328WKPQO5PITJ3MPpXJstXptdbq+Pv9cbHXaq3VU6HOkMLgnMnjDHq62uv1/P3+6/T53Oz1cLDX/f7+AHO3////ptOZ5QAAADh0Uk5T/////////////////////////////////////////////////////////////////////////wA7XBHKAAAAmUlEQVR42sSRRxLCMAxFRSq9907ovebr/jdDMWYGxmZL3sIqbyFbJv4B/VlkVlerKALTD3G46Mx3AOR1UZ/TsDxW6W0gfYRNVfTCFu2AWpAMgMItMW+zQJU2UjWI29D0+e5KWNPMk+A9Om+B/UgOJyCuwMJCrpuziYkIsglfRByZ/XM3eXnBFEu1kpMpjq9dxQYp/OAXTwEGAB7Rc1xVnPemAAAAAElFTkSuQmCC&quot;) 8px 8px no-repeat white; margin-left: 4px; border-radius: 3px 0px 0px 3px; margin-right: 0px;"></span></a><iframe style="display: none;" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource(1).html"></iframe><div style="position:fixed;top:0;left:0;overflow:hidden;"><label for="focus_retriever" style="position:absolute;left:-1000px;">Focus Retriever</label><input style="position:absolute;left:-1000px;" type="text" name="focus_retriever" value="" id="focus_retriever" readonly="true"></div><div class="sumome-share-client-wrapper sumome-share-client-wrapper-left-page sumome-share-client-counts sumome-share-client-light sumome-share-client-medium" style="top: 320px;"><div class="sumome-share-client-show"><span></span></div><div data-sumome-share-pos="lp" class="sumome-share-client sumome-share-client-left-page sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div class="sumome-share-client-animated sumome-share-client-share sumome-share-client-share-share sumome-share-client-count" data-sumome-share="share" style="background: rgb(255, 255, 255); color: black;"><span style="bottom: auto; top: 11.5px;"><strong>34</strong><br>Shares</span></div><a title="Facebook" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="facebook" href="javascript:void(0);" style="background: rgb(59, 89, 152); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/facebook-white-60.png" alt="Facebook"><span>17</span></a><a title="LinkedIn" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="linkedin" href="javascript:void(0);" style="background: rgb(0, 123, 182); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/linkedin-white-60.png" alt="LinkedIn"><span>17</span></a><a title="Twitter" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="twitter" href="javascript:void(0);" style="background: rgb(0, 172, 237); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/twitter-white-60.png" alt="Twitter"></a><a title="Google+" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="googleplus" href="javascript:void(0);" style="background: rgb(221, 75, 57); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/googleplus-white-60.png" alt="Google+"></a><a title="YC Hacker News" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="ychackernews" href="javascript:void(0);" style="background: rgb(252, 102, 32); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/ychackernews-white-60.png" alt="YC Hacker News"></a><a title="StumbleUpon" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="stumbleupon" href="javascript:void(0);" style="background: rgb(235, 72, 35); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/stumbleupon-white-60.png" alt="StumbleUpon"></a></div><div class="sumome-share-client-hide"><span></span></div></div></body><autoscroll></autoscroll></html>
