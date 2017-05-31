@@ -991,7 +991,7 @@ public interface Container&lt;Thing&gt; {
 
           <pre><code>
 public class BulletsContainer implements Container&lt;Bullet&gt; {
-    private List&lt;Bullet&gt; bullets;
+    private final List&lt;Bullet&gt; bullets;
 
     public BulletsContainer(List&lt;Bullet&gt; bullets) {
         this.bullets = bullets;
@@ -1014,9 +1014,7 @@ public class BulletsContainer implements Container&lt;Bullet&gt; {
     @Override
     public void update(float delta) {
         bullets.forEach(bullet -> bullet.update(delta));
-        bullets = bullets.stream()
-            .filter(Bullet::isInRange)
-            .collect(toList());
+        bullets.removeIf(bullet -> !bullet.isInRange());
     }
 }
           </code></pre>
@@ -1425,6 +1423,19 @@ public class Player {
         this.ship = Optional.empty();
     }
     ...
+}
+          </code></pre>
+
+          <p>We'll also need to remove <code>Bullet</code>s that have hit something, that will be another job of <code>BulletsContainer</code>:</p>
+
+          <pre><code>
+public class BulletsContainer implements Container&lt;Bullet&gt; {
+    ...
+    @Override
+    public void update(float delta) {
+        ...
+        bullets.removeIf(bullet -> !bullet.isInRange() || bullet.hasHitSomething());
+    }
 }
           </code></pre>
 
