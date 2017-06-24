@@ -8,7 +8,7 @@
     <link rel="profile" href="http://gmpg.org/xfn/11">
     <link rel="pingback" href="http://www.schibsted.pl/xmlrpc.php">
     <link rel="shortcut icon" href="http://www.schibsted.pl/wp-content/themes/schibsted-pl/favicon.ico">
-    <title>Lag Compensation in Multiplayer Games</title>
+    <title>Developing lag compensated multiplayer games</title>
     
 <!-- Google Tag Manager for WordPress by DuracellTomi - http://duracelltomi.com -->
 <script data-cfasync="false" type="text/javascript">
@@ -90,7 +90,6 @@ var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Cl
 <link rel="shortlink" href="http://www.schibsted.pl/?p=11004">
 <link rel="alternate" type="application/json+oembed" href="http://www.schibsted.pl/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.schibsted.pl%2Fblog%2Fback-end%2Fserverless-architecture-aws-lambda%2F">
 <link rel="alternate" type="text/xml+oembed" href="http://www.schibsted.pl/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.schibsted.pl%2Fblog%2Fback-end%2Fserverless-architecture-aws-lambda%2F&amp;format=xml">
-<script data-cfasync="false" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource" data-sumo-platform="wordpress" data-sumo-site-id="758b6009851ce163f3f37a7a1910e0d6515a9f14780f69975942413b76509999" async=""></script>
 <!-- Google Tag Manager for WordPress by DuracellTomi -->
 <script data-cfasync="false" type="text/javascript">
 	dataLayer.push({"visitorLoginState":"logged-out","pageTitle":"Serverless architecture - Amazon Web Services Lambda","pagePostType":"post","pagePostType2":"single-post","pageCategory":["back-end","blog"],"pageAttributes":["aws","cloud","datadog","faas","lambda","serverless"],"pagePostAuthor":"Marek Smęt"});
@@ -620,11 +619,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         Krystian Jarmicki                    </h3>
                 </a>
 
-                                    <span>Software Engineer</span>
                             </div>
 
           <style>
-            p code {
+            p code, li code {
               padding: 0.2em
               margin: 0;
               font-size: 85%;
@@ -636,7 +634,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 content: "\00a0";
             }
           </style>
-            <h1 class="post-content-title">Lag compensation in multiplayer games</h1>
+            <h1 class="post-content-title">Developing lag compensated multiplayer games</h1>
             <p>Developing a smooth multiplayer action games takes a lot of consideration. What data exactly should be exchanged between clients and the server?
               Should server run the game logic or just broadcast the data? Should clients run the game logic or just render the data?
               If you’ve ever found yourself stuck trying to answer these questions (or just have a general curiosity towards this topic), read on!</p>
@@ -828,7 +826,7 @@ public class Ship implements Visible {
     private final Container&lt;Bullet&gt; bulletsContainer;
     private final Polygon shape;
     private final Vector2 velocity;
-    private float rotation;
+    private float rotationVelocity;
     private Instant lastShot;
     private boolean canShoot;
     private boolean wantsToShoot;
@@ -888,11 +886,11 @@ public class Ship implements Visible {
     }
 
     private void rotateLeft(float delta) {
-        rotation += delta * ROTATION;
+        rotationVelocity += delta * ROTATION;
     }
 
     private void rotateRight(float delta) {
-        rotation -= delta * ROTATION;
+        rotationVelocity -= delta * ROTATION;
     }
 
     private void applyMovement(float delta) {
@@ -900,12 +898,12 @@ public class Ship implements Visible {
 
         velocity.x -= delta * DRAG * velocity.x;
         velocity.y -= delta * DRAG * velocity.y;
-        rotation -= delta * DRAG * rotation;
+        rotationVelocity -= delta * DRAG * rotationVelocity;
 
         float x = delta * velocity.x;
         float y = delta * velocity.y;
         shape.translate(x, y);
-        shape.rotate(rotation);
+        shape.rotate(rotationVelocity);
     }
 
     private void applyShootingPossibility() {
@@ -2172,7 +2170,6 @@ public class SocketIoServer implements Server {
 
         config = setupExceptionListener(config);
         socketio = new SocketIOServer(config);
-        setupEvents();
     }
 
     @Override
@@ -2180,6 +2177,7 @@ public class SocketIoServer implements Server {
         Configuration config = socketio.getConfiguration();
         socketio.start();
         logger.info("Game server started at " + config.getHostname() + ":" + config.getPort());
+        setupEvents();
     }
             </code></pre>
 
@@ -2621,8 +2619,7 @@ public class ShipMapper {
                 to introduce it’s client side counterpart which will also create a <code>Player</code>, but there will be two differences.
             </p>
             <p>
-                Firstly, it will construct these new <code>Player</code>s with <code>NoopControls</code> because their <code>Ship</code>s
-                will be updated directly from <code>ShipDto</code>s coming from the server rather than any sort of <code>Controls</code>.<br>
+                Firstly, it will construct these new <code>Player</code>s with provided <code>Controls</code> .<br>
                 Secondly, it’ll pass some of the work to <code>ShipMapper</code> in order to deal with <code>Ship</code>-related mapping.
                 <code>updateByDto</code> won’t actually deal with any of <code>Player</code>’s own properties (because we don’t have any
                 that could change during the course of the game), but rather delegate work to <code>ShipMapper</code> based on whether
@@ -2632,8 +2629,8 @@ public class ShipMapper {
             <pre><code>
 public class PlayerMapper {
     ...
-    public static Player localPlayerFromDto(PlayerDto dto) {
-        Player player = new Player(UUID.fromString(dto.getId()), new NoopControls(), Color.valueOf(dto.getColor()));
+    public static Player localPlayerFromDto(PlayerDto dto, Controls controls) {
+        Player player = new Player(UUID.fromString(dto.getId()), controls, Color.valueOf(dto.getColor()));
         player.setShip(ShipMapper.fromDto(dto.getShipDto(), player));
         return player;
     }
@@ -2652,457 +2649,1535 @@ public class PlayerMapper {
 }
             </code></pre>
 
-            <h2>Controls Mapper</h2>
+    <h2>Controls Mapper</h2>
 
-            <p>
-                Lastly, we’ll extend <code>ControlsMapper</code>.<br>
-                Not much will happen here as we’ll just add method to dump <code>Controls</code> state into <code>ControlsDto</code>.
-            </p>
+    <p>
+	Lastly, we’ll extend <code>ControlsMapper</code>.<br>
+	Not much will happen here as we’ll just add method to dump <code>Controls</code> state into <code>ControlsDto</code>.
+    </p>
 
-            <pre><code>
+    <pre><code>
 public class ControlsMapper {
-    ...
-    public static ControlsDto mapToDto(Controls controls) {
-        return new ControlsDto(
-            controls.forward(),
-            controls.left(),
-            controls.right(),
-            controls.shoot()
-        );
-    }
+...
+public static ControlsDto mapToDto(Controls controls) {
+return new ControlsDto(
+    controls.forward(),
+    controls.left(),
+    controls.right(),
+    controls.shoot()
+);
 }
-            </code></pre>
+}
+    </code></pre>
 
-            <h2>You don't get to choose what skin color you're born with</h2>
-            <p>
-                We'll need some way of distinguishing between all the different <code>Player</code>s being visible
-                on the same screen. In more serious game that would be a nickname and chosen color, but ain’t nobody got time
-                for that, so we’ll just declare list of possible <code><a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/graphics/Color.html">Color</a></code>s that a Player can have and assign those at random.<br>
-                The list will be declared in the <code>Player</code> model:
-            </p>
+    <h2>You don't get to choose what skin color you're born with</h2>
+    <p>
+	We'll need some way of distinguishing between all the different <code>Player</code>s being visible
+	on the same screen. In more serious game that would be a nickname and chosen color, but ain’t nobody got time
+	for that, so we’ll just declare list of possible <code><a href="https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/graphics/Color.html">Color</a></code>s that a Player can have and assign those at random.<br>
+	The list will be declared in the <code>Player</code> model:
+    </p>
 
-            <pre><code>
+    <pre><code>
 public class Player implements Identifiable {
-    public static final List&lt;Color&gt; POSSIBLE_COLORS = Arrays.asList(
-        Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY);
-    ...
+public static final List&lt;Color&gt; POSSIBLE_COLORS = Arrays.asList(
+Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY);
+...
 }
-            </code></pre>
+    </code></pre>
 
-            <p>We’ll also create a <code>Randomize</code> tool inside <code>core/util</code> package:</p>
+    <p>We’ll also create a <code>Randomize</code> tool inside <code>core/util</code> package:</p>
 
-            <pre><code>
+    <pre><code>
 public class Randomize {
-    public static &lt;Thing&gt; Thing fromList(List&lt;Thing&gt; things) {
-        return things.stream()
-            .skip((int) (things.size() * Math.random()))
-            .findAny()
-            .get();
-    }
+public static &lt;Thing&gt; Thing fromList(List&lt;Thing&gt; things) {
+return things.stream()
+    .skip((int) (things.size() * Math.random()))
+    .findAny()
+    .get();
 }
-            </code></pre>
+}
+    </code></pre>
 
-            <h2>Moving things around</h2>
+    <h2>Moving things around</h2>
 
-            <p>
-                Some of the things currently being in <code>core</code> won’t really make sense on server side, so we can move them to <code>client</code> module.
-            <p>
-            <p>
-                First obvious candidate will be <code>rendering</code> package, we can just move it as a whole.<br>
-                Secondly, we’ll create <code>controls</code> package inside <code>client</code> module and move
-                <code>KeyboardControls</code> there, as there’s no point to have them on the server.
-            </p>
+    <p>
+	Some of the things currently being in <code>core</code> won’t really make sense on server side, so we can move them to <code>client</code> module.
+    <p>
+    <p>
+	First obvious candidate will be <code>rendering</code> package, we can just move it as a whole.<br>
+	Secondly, we’ll create <code>controls</code> package inside <code>client</code> module and move
+	<code>KeyboardControls</code> there, as there’s no point to have them on the server.
+    </p>
 
-            <h2>Connection, again</h2>
+    <h2>Connection, again</h2>
 
-            <p>
-                Having flashbacks from the previous part yet?<br>
-                We’ll have to introduce <code>connection</code> package one more time, on the client side.
-                It’ll contain <code>Client</code> interface, analogous to the <code>Server</code>, which will
-                declare events and actions that we’ll be able to handle.
-            </p>
+    <p>
+	Having flashbacks from the previous part yet?<br>
+	We’ll have to introduce <code>connection</code> package one more time, on the client side.
+	It’ll contain <code>Client</code> interface, analogous to the <code>Server</code>, which will
+	declare events and actions that we’ll be able to handle.
+    </p>
 
-            <pre><code>
+    <pre><code>
 public interface Client {
-    void connect(PlayerDto playerDto);
-    void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler);
-    void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
-    void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler);
-    void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler);
-    void sendControls(ControlsDto controlsDto);
-    boolean isConnected();
+void connect(PlayerDto playerDto);
+void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler);
+void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
+void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler);
+void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler);
+void sendControls(ControlsDto controlsDto);
+boolean isConnected();
 }
-            </code></pre>
+    </code></pre>
 
-            <p>
-                Apart from <code>connect</code> and <code>isConnected</code> these methods should ring a bell.
-                They’ll be very much related to those already declared on the server side, completing the picture of our overall connection scheme.
-            </p>
+    <p>
+	Apart from <code>connect</code> and <code>isConnected</code> these methods should ring a bell.
+	They’ll be very much related to those already declared on the server side, completing the picture of our overall connection scheme.
+    </p>
 
-            <p>
-                We’ll need a concrete implementation of <code>Client</code> interface to be able to connect
-                with our <code>SocketIOServer</code>. <code>connect</code> method will be particularly interesting,
-                as it’ll be responsible for conducting full <code>Player</code> initialization before handing
-                control over to game logic. Right after low-level socket connection will be established,
-                we’ll inform the <code>Server</code> who the <code>Player</code> is and wait for <code>IntroductoryStateDto</code>
-                to be sent back to consider ourselves connected.<br>
-                <code>SocketIoClient</code> won’t do much more beyond establishing connection and transforming
-                JSON strings to <code>Dto</code>s, leaving most of the game work for upper layer.
-            </p>
+    <p>
+	We’ll need a concrete implementation of <code>Client</code> interface to be able to connect
+	with our <code>SocketIOServer</code>. <code>connect</code> method will be particularly interesting,
+	as it’ll be responsible for conducting full <code>Player</code> initialization before handing
+	control over to game logic. Right after low-level socket connection will be established,
+	we’ll inform the <code>Server</code> who the <code>Player</code> is and wait for <code>IntroductoryStateDto</code>
+	to be sent back to consider ourselves connected.<br>
+	<code>SocketIoClient</code> won’t do much more beyond establishing connection and transforming
+	JSON strings to <code>Dto</code>s, leaving most of the game work for upper layer.
+    </p>
 
-            <pre><code>
+    <pre><code>
 public class SocketIoClient implements Client {
-    private final Socket socket;
-    private ConnectionState state = ConnectionState.NOT_CONNECTED;
-    private Consumer&lt;IntroductoryStateDto&gt; playerConnectedHandler;
-    private Consumer&lt;PlayerDto&gt; otherPlayerConnectedHandler;
-    private Consumer&lt;String&gt; otherPlayerDisconnectedHandler;
-    private Consumer&lt;GameStateDto&gt; gameStateReceivedHandler;
+private final Socket socket;
+private ConnectionState state = ConnectionState.NOT_CONNECTED;
+private Consumer&lt;IntroductoryStateDto&gt; playerConnectedHandler;
+private Consumer&lt;PlayerDto&gt; otherPlayerConnectedHandler;
+private Consumer&lt;String&gt; otherPlayerDisconnectedHandler;
+private Consumer&lt;GameStateDto&gt; gameStateReceivedHandler;
 
-    private enum ConnectionState {
-        NOT_CONNECTED,
-        CONNECTING,
-        CONNECTED;
-    }
-
-    public SocketIoClient(String protocol, String host, int port) {
-        String url = protocol + "://" + host + ":" + port;
-        try {
-            this.socket = IO.socket(url);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Wrong URL provided for socket connection: " + url, e);
-        }
-        setupEvents();
-    }
-
-    @Override
-    public void connect(PlayerDto playerDto) {
-        if(state == ConnectionState.NOT_CONNECTED) {
-            state = ConnectionState.CONNECTING;
-            socket.on(Socket.EVENT_CONNECT, response -> emit(socket, Event.PLAYER_CONNECTING, playerDto));
-            on(socket, Event.PLAYER_CONNECTED, response -> {
-                String gameStateDto = (String)response[0];
-                playerConnectedHandler.accept(IntroductoryStateDto.fromJsonString(gameStateDto));
-                state = ConnectionState.CONNECTED;
-            });
-            socket.connect();
-        }
-    }
-
-    @Override
-    public void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler) {
-        playerConnectedHandler = handler;
-    }
-
-    @Override
-    public void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
-        otherPlayerConnectedHandler = handler;
-    }
-
-    @Override
-    public void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler) {
-        otherPlayerDisconnectedHandler = handler;
-    }
-
-    @Override
-    public void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler) {
-        gameStateReceivedHandler = handler;
-    }
-
-    @Override
-    public void sendControls(ControlsDto controlsDto) {
-        emit(socket, Event.CONTROLS_SENT, controlsDto);
-    }
-
-    @Override
-    public boolean isConnected() {
-        return state == ConnectionState.CONNECTED;
-    }
-
-    private void setupEvents() {
-        on(socket, Event.OTHER_PLAYER_CONNECTED, response -> {
-            String gameStateDtoJson = (String) response[0];
-            otherPlayerConnectedHandler.accept(PlayerDto.fromJsonString(gameStateDtoJson));
-        });
-
-        on(socket, Event.OTHER_PLAYER_DISCONNECTED, response -> {
-            String playerId = (String) response[0];
-            otherPlayerDisconnectedHandler.accept(playerId);
-        });
-
-        on(socket, Event.GAME_STATE_SENT, response -> {
-            String gameStateDtoJson = (String) response[0];
-            GameStateDto dto = GameStateDto.fromJsonString(gameStateDtoJson);
-            gameStateReceivedHandler.accept(dto);
-        });
-    }
-
-    private void emit(Socket socket, Event eventName, Dto payload) {
-        socket.emit(eventName.toString(), payload.toJsonString());
-    }
-
-    private void on(Socket socket, Event eventName, Emitter.Listener handler) {
-        socket.on(eventName.toString(), handler);
-    }
+private enum ConnectionState {
+NOT_CONNECTED,
+CONNECTING,
+CONNECTED;
 }
-            </code></pre>
 
-          <h2>Using the connection</h2>
+public SocketIoClient(String protocol, String host, int port) {
+String url = protocol + "://" + host + ":" + port;
+try {
+    this.socket = IO.socket(url);
+} catch (URISyntaxException e) {
+    throw new RuntimeException("Wrong URL provided for socket connection: " + url, e);
+}
+}
+
+@Override
+public void connect(PlayerDto playerDto) {
+if(state == ConnectionState.NOT_CONNECTED) {
+    state = ConnectionState.CONNECTING;
+    socket.on(Socket.EVENT_CONNECT, response -> emit(socket, Event.PLAYER_CONNECTING, playerDto));
+    on(socket, Event.PLAYER_CONNECTED, response -> {
+	String gameStateDto = (String)response[0];
+	playerConnectedHandler.accept(IntroductoryStateDto.fromJsonString(gameStateDto));
+	state = ConnectionState.CONNECTED;
+	setupEvents();
+    });
+    socket.connect();
+}
+}
+
+@Override
+public void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler) {
+playerConnectedHandler = handler;
+}
+
+@Override
+public void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
+otherPlayerConnectedHandler = handler;
+}
+
+@Override
+public void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler) {
+otherPlayerDisconnectedHandler = handler;
+}
+
+@Override
+public void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler) {
+gameStateReceivedHandler = handler;
+}
+
+@Override
+public void sendControls(ControlsDto controlsDto) {
+emit(socket, Event.CONTROLS_SENT, controlsDto);
+}
+
+@Override
+public boolean isConnected() {
+return state == ConnectionState.CONNECTED;
+}
+
+private void setupEvents() {
+on(socket, Event.OTHER_PLAYER_CONNECTED, response -> {
+    String gameStateDtoJson = (String) response[0];
+    otherPlayerConnectedHandler.accept(PlayerDto.fromJsonString(gameStateDtoJson));
+});
+
+on(socket, Event.OTHER_PLAYER_DISCONNECTED, response -> {
+    String playerId = (String) response[0];
+    otherPlayerDisconnectedHandler.accept(playerId);
+});
+
+on(socket, Event.GAME_STATE_SENT, response -> {
+    String gameStateDtoJson = (String) response[0];
+    GameStateDto dto = GameStateDto.fromJsonString(gameStateDtoJson);
+    gameStateReceivedHandler.accept(dto);
+});
+}
+
+private void emit(Socket socket, Event eventName, Dto payload) {
+socket.emit(eventName.toString(), payload.toJsonString());
+}
+
+private void on(Socket socket, Event eventName, Emitter.Listener handler) {
+socket.on(eventName.toString(), handler);
+}
+}
+    </code></pre>
+
+  <h2>Using the connection</h2>
+
+  <p>
+    Let’s use <code>SocketIoClient</code> in the client <code>Screen</code> and utilize connection logic we’ve been working on.
+    <code>AsteroidsClientScreen</code> will be responsible for sending and handling connection events, and applying
+    their results to the game loop. It won’t compute any collisions or positions (yet), but merely be
+    there to render game state received by the server and send <code>Player</code>s <code>Controls</code>.
+  </p>
+
+  <pre><code>
+public class AsteroidsClientScreen extends ScreenAdapter {
+private final Controls localControls;
+private final Client client;
+private final Viewport viewport;
+private final ShapeRenderer shapeRenderer;
+private final Container&lt;Player&gt; playersContainer;
+private final Container&lt;Bullet&gt; bulletsContainer;
+private final ContainerRenderer&lt;Player&gt; playersRenderer;
+private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
+private Player localPlayer;
+
+public AsteroidsClientScreen(
+    Controls localControls, Client client,
+    Viewport viewport, ShapeRenderer shapeRenderer,
+    Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
+    ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
+this.localControls = localControls;
+this.client = client;
+this.viewport = viewport;
+this.playersContainer = playersContainer;
+this.bulletsContainer = bulletsContainer;
+this.shapeRenderer = shapeRenderer;
+this.playersRenderer = playersRenderer;
+this.bulletsRenderer = bulletsRenderer;
+}
+  </code></pre>
+
+  <p>
+    Similarly to how we did it earlier, we’ll implement event handlers in <code>show</code> method.
+  </p>
+
+  <pre><code>
+@Override
+public void show() {
+  </code></pre>
+
+  <p>
+    When connection is established and <code>Server</code> responded with <code>IntroductoryStateDto</code>,
+    we’ll loop through it’s contents to update local <code>Player</code>'s <code>Ship</code> state and populate <code>Container</code>s with other <code>Player</code>s and <code>Bullet</code>s.<br>
+    For now we'll pass <code>NoopControls</code> because <code>Ship</code>s will be updated directly from <code>ShipDto</code>s coming from the server rather than any sort of local <code>Controls</code>.
+  </p>
+
+  <pre><code>
+client.onConnected(introductoryStateDto -> {
+    localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected(), new NoopControls());
+    playersContainer.add(localPlayer);
+    GameStateDto gameStateDto = introductoryStateDto.getGameState();
+    gameStateDto.getPlayers().stream()
+	.map(playerDto -> PlayerMapper.localPlayerFromDto(playerDto, new NoopControls()))
+	.forEach(playersContainer::add);
+
+    gameStateDto.getBullets().stream()
+	.map(bulletDto -> BulletMapper.fromDto(bulletDto, playersContainer))
+	.forEach(bulletsContainer::add);
+});
+  </code></pre>
+
+  <p>
+    Whenever other <code>Player</code> connects or disconnects, we need to reconcile that with local <code>playersContainer</code>.
+  </p>
+
+  <pre><code>
+client.onOtherPlayerConnected(connectedDto -> {
+    Player connected = PlayerMapper.localPlayerFromDto(connectedDto, new NoopControls());
+    playersContainer.add(connected);
+});
+
+client.onOtherPlayerDisconnected(playersContainer::removeById);
+  </code></pre>
+
+  <p>
+    When we’ll receive the game state there will be a couple of interesting things going on,
+    so let’s walk through them. At first, we’ll update existing <code>Player</code>s (and subsequently their <code>Ship</code>s too),
+    which will be pretty straightforward:
+  </p>
+
+  <pre><code>
+client.onGameStateReceived(gameStateDto -> {
+    gameStateDto.getPlayers().stream()
+	.forEach(playerDto -> playersContainer
+	    .getById(playerDto.getId())
+	    .ifPresent(player -> PlayerMapper.updateByDto(player, playerDto)));
+  </code></pre>
+
+  <p>
+    For <code>Bullet</code>s we’ll need a bit more work to do, mostly because contrary to
+    <code>Player</code> we don’t have dedicated events for when <code>Bullet</code> was introduced or removed
+    (there would be a lot of them).<br>
+    If <code>Bullet</code> coming from the <code>Server</code> doesn’t exist yet, we’ll need to add it. If it’s there, we’ll need to update.
+    Finally, if it’s present in our local game but not on the <code>Server</code>, we'll need to delete it locally.
+  </p>
+
+  <pre><code>
+    gameStateDto.getBullets().stream()
+	.forEach(bulletDto -> {
+	    Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
+	    if(!bullet.isPresent()) {
+		bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
+	    } else {
+		BulletMapper.updateByDto(bullet.get(), bulletDto);
+	    }
+	});
+
+    List&lt;String&gt; existingBulletIds = gameStateDto.getBullets().stream()
+	.map(BulletDto::getId)
+	.collect(toList());
+
+    bulletsContainer.getAll().stream()
+	.map(Bullet::getId)
+	.map(Object::toString)
+	.filter(id -> !existingBulletIds.contains(id))
+	.collect(toList())
+	.forEach(bulletsContainer::removeById);
+});
+  </code></pre>
+
+  <p>
+    Why <code>.filter().collect().forEach()</code>instead of just <code>.filter().forEach()</code>?
+    <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#NonInterference">Because you shouldn’t modify Stream’s underlying List during pipeline execution.</a>
+    </p>
+  <p>
+    We'll end our work in <code>show</code> by executing connection request for local <code>Player</code>
+  </p>
+
+  <pre><code>
+client.connect(new PlayerDto(null, Randomize.fromList(Player.POSSIBLE_COLORS).toString(), null));
+}
+
+@Override
+public void render(float delta) {
+Gdx.gl.glClearColor(0, 0, 0, 1);
+Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+if(!client.isConnected()) return;
+
+client.sendControls(ControlsMapper.mapToDto(localControls));
+
+viewport.apply();
+shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+playersRenderer.render(shapeRenderer);
+bulletsRenderer.render(shapeRenderer);
+shapeRenderer.end();
+}
+
+@Override
+public void resize(int width, int height) {
+viewport.update(width, height, true);
+}
+
+@Override
+public void dispose() {
+shapeRenderer.dispose();
+}
+}
+  </code></pre>
+
+  <h2>Client game</h2>
+
+  <p>
+    As we did before, we’ll configure and inject dependencies in the <code>Game</code> class, this time it will be <code>AsteroidsClientGame</code>:
+  </p>
+
+  <pre><code>
+public class AsteroidsClientGame extends Game {
+private Screen asteroids;
+
+@Override
+public void create() {
+Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
+ShapeRenderer shapeRenderer =  new ShapeRenderer();
+Controls localControls = new KeyboardControls();
+
+Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
+Container&lt;Player&gt; playersContainer = new PlayersContainer<>();
+
+ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
+ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
+
+Map&lt;String, String&gt; env = System.getenv();
+String protocol = env.getOrDefault("PROTOCOL", "http");
+String host = env.getOrDefault("HOST", "localhost");
+int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
+Client client = new SocketIoClient(protocol, host, port);
+
+asteroids = new AsteroidsClientScreen(
+    localControls, client,
+    viewport, shapeRenderer,
+    playersContainer, bulletsContainer,
+    playersRenderer, bulletsRenderer);
+
+setScreen(asteroids);
+}
+
+@Override
+public void dispose() {
+asteroids.dispose();
+}
+}
+  </code></pre>
+
+  <p>
+    While we’re at it, we can delete most of <code>AsteroidsGame</code> in core since we won’t need it anymore.
+    What will still be shared between the <code>client</code> and the <code>server</code> are world dimensions, so they’ll be all that’s left in this class:
+  </p>
+
+  <pre><code>
+public class AsteroidsGame {
+public static final float WORLD_WIDTH = 800f;
+public static final float WORLD_HEIGHT = 600f;
+}
+  </code></pre>
+
+  <p>
+    Naturally, <code>desktop</code>'s <code>DesktopLauncher</code> will now have to use <code>AsteroidsClientGame</code> instead of <code>AsteroidsGame</code>:
+  </p>
+
+  <pre><code>
+public class DesktopLauncher {
+public static void main (String[] arg) {
+LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+new LwjglApplication(new AsteroidsClientGame(), config);
+}
+}
+  </code></pre>
+
+  <h2>An actual multiplayer</h2>
+
+  <p>
+    If everything went smooth, you should now be able to run the server and two clients and see that they're connected.
+    On Linux/macOS it would be <code>./gradlew server:run</code> and <code>./gradlew desktop:run</code>, on Windows you'd use <code>gradlew.bat</code> instead of <code>./gradlew</code>.
+</p>
+  <p>
+    Here's how launch procedure looks from IntelliJ IDEA:
+  </p>
+
+  <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-launch.gif" alt="launching server and clients">
+
+          <p>And here's the game in action:</p>
+
+          <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-playing.gif" alt="multiplayer in action">
+
+          <p>That's it for this part. Next time we'll introduce proper lag compensation to make the game feel smooth even when there are latencies between clients and the server.</p>
+
+          <h1>Lag compensation</h1>
+          <p>
+            Render-only client we came up with works nicely when network latency is close to 0, but that’s almost never the case
+            on the internet. There’s no way to avoid lags, by the sheer laws of physics. Even in a perfect world, if you’d have an
+            optical fiber connection setup between Los Angeles and New York and your signal traveled at the speed of light,
+            you’d still have latency of about 13ms. Now add a bunch of network hops with all kinds of bridges, routers, gateways,
+            proxies and whatnot and you’re realistically looking at 100ms lag at best, all the way up to barely playable 300+ms.
+            It may not sound like much, but now I’ll demonstrate to you that in fact it is.
+          </p>
+
+          <h2>Introducing delays</h2>
 
           <p>
-            Let’s use <code>SocketIoClient</code> in the client <code>Screen</code> and utilize connection logic we’ve been working on.
-            <code>AsteroidsClientScreen</code> will be responsible for sending and handling connection events, and applying
-            their results to the game loop. It won’t compute any collisions or positions (yet), but merely be
-            there to render game state received by the server and send <code>Player</code>s <code>Controls</code>.
+            We’ll make a class that lets us perform delayed actions. It will be capable of creating instances bound to a specific amount of delay time.
+            By default we’ll use daemon threads for that, because we don’t care for delayed tasks after main thread has returned.<br>
+            Because when we’ll create this class we’ll know nothing about the types of tasks that it will perform, we’ll put it in general <code>core/util</code> package.
           </p>
 
           <pre><code>
-public class AsteroidsClientScreen extends ScreenAdapter {
-    private final Controls localControls;
-    private final Client client;
-    private final Viewport viewport;
-    private final ShapeRenderer shapeRenderer;
-    private final Container&lt;Player&gt; playersContainer;
-    private final Container&lt;Bullet&gt; bulletsContainer;
-    private final ContainerRenderer&lt;Player&gt; playersRenderer;
-    private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
-    private Player localPlayer;
+public class Delay {
+    private final long amount;
+    private final Timer timer;
 
-    public AsteroidsClientScreen(
-            Controls localControls, Client client,
-            Viewport viewport, ShapeRenderer shapeRenderer,
-            Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
-            ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
-        this.localControls = localControls;
-        this.client = client;
-        this.viewport = viewport;
-        this.playersContainer = playersContainer;
-        this.bulletsContainer = bulletsContainer;
-        this.shapeRenderer = shapeRenderer;
-        this.playersRenderer = playersRenderer;
-        this.bulletsRenderer = bulletsRenderer;
+    public Delay(long amount) {
+        this(amount, new Timer(true));
     }
+
+    public Delay(long amount, Timer timer) {
+        this.amount = amount;
+        this.timer = timer;
+    }
+
+    public void execute(Runnable task) {
+        if(amount == 0) {
+            task.run();
+            return;
+        }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                task.run();
+            }
+        }, amount);
+    }
+}
           </code></pre>
 
-          <p>
-            Similarly to how we did it earlier, we’ll implement event handlers in <code>show</code> method.
-          </p>
+	<p>
+	  Now let’s hook it up to both the `SocketIoClient` and the `SocketIoServer`:
+	</p>
 
-          <pre><code>
+	<pre><code>
+public class SocketIoClient implements Client {
+    ...
+    private final Delay delay;
+    ...
+    public SocketIoClient(String protocol, String host, int port, Delay delay) {
+        ...
+        this.delay = delay;
+    }
+    ...
+    private void emit(Socket socket, Event eventName, Dto payload) {
+        delay.execute(() -&gt; socket.emit(eventName.toString(), payload.toJsonString()));
+        ;
+    }
+    ...
+}
+	</pre></code>
+
+	<pre><code>
+public class SocketIoServer implements Server {
+     ...
+    private final Delay delay;
+    ...
+    public SocketIoServer(String host, int port, Delay delay) {
+        ...
+        this.delay = delay;
+    }
+    ...
+    private void sendEvent(ClientOperations client, Event eventName, Dto data) {
+        delay.execute(() -&gt; client.sendEvent(eventName.toString(), data.toJsonString()));
+    }
+}
+	</pre></code>
+
+<p>
+We’ll inject both Delays with 100ms amount of time in <code>AsteroidsServerGame</code> and <code>AsteroidsClientGame</code>:
+</p>
+
+<pre><code>
+Server server = new SocketIoServer(host, port, new Delay(100));
+</pre></code>
+<pre><code>
+Client client = new SocketIoClient(protocol, host, port, new Delay(100));
+</pre></code>
+
+<p>
+Combined delays along with cross-process communication, game loop computation lag etc. will sum up to about 210ms. Run the game and try to play it.
+</p>
+
+<p>
+It sucks, right? Well, it should. 200+ms is a noticeable delay between keypress and things actually happening, and it’s super frustrating when you’re trying to shoot an enemy and he flees before delayed bullet reaches him. But we’ll alleviate that.
+</p>
+
+<h2>General approach</h2>
+
+<p>
+There are three entity types that we can apply lag compensation techniques for: the local <code>Player</code>, other <code>Player</code>s and <code>Bullet</code>s. These techniques will differ in details, but they’ll also share a fundamental pattern: due to network latencies we cannot know exact state of the entity when we need to render it, but we can give it our best guess and apply corrections later, if needed. In other words, we’re going to pretend that we know how things are, show that, and hope our bluff isn’t way off.<br>
+Before you move on I highly recommend you read <a href="http://www.gabrielgambetta.com/fpm1.html">an excellent series on developing fast-paced multiplayer games by Gabriel Gambetta</a>. A lot of techniques shown here will be implementations of concepts shown there. 
+</p>
+
+<h2>Players lag compensation</h2>
+
+<p>
+Lag compensation for a local <code>Player</code> is most likely to match the actual state because we have most data to do it correctly. Here’s the gist: we’ll continue to calculate <code>Player</code>'s position based on <code>Controls</code> as if it was purely local and eventually reconcile state with server response. Given that we’ll run the same game logic and physics on the client and the server and there’ll be no randomness involved, we should be able to come up with correct position most of the time and the server will just confirm that. Exception might be a situation when <code>Player</code> was shot down and we haven’t received its new position yet.
+</p>
+
+<h2>Local controls</h2>
+
+<p>
+Ok, so right now with the server calculating all the game logic and the client only rendering it we have something like this:
+</p>
+
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/no-compensation.png" alt="no compensation">
+
+<p>
+But we really want the server to only confirm local state so it can look seamless:
+<p>
+
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/local-controls-compensation.png" alt="local controls compensation">
+
+<p>
+That should be easy enough, right? We’ll just make <code>localPlayer</code> use <code>localControls</code> and then server state will be just confirmation of what we already have on the client side. Let’s do just that.
+</p>
+
+<p>
+First, we’ll pass <code>localControls</code> rather than <code>new NoopControls()</code> when <code>Player</code> connects in <code>AsteroidsClientScreen</code>:
+</p>
+
+<pre><code>
+...
     @Override
     public void show() {
-          </code></pre>
+        client.onConnected(introductoryStateDto -&gt; {
+            localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected(), localControls);
+...
+</pre></code>
 
-          <p>
-            When connection is established and <code>Server</code> responded with <code>IntroductoryStateDto</code>,
-            we’ll loop through it’s contents to update local <code>Player</code>'s <code>Ship</code> state and populate <code>Container</code>s with other <code>Player</code>s and <code>Bullet</code>s.
-          </p>
+<p>
+And we’ll also update <code>playersContainer</code> in the <code>render</code> in order to apply controls, right after they’re sent to the server:
+</p>
+<pre><code>
+...
+        client.sendControls(ControlsMapper.mapToDto(localControls));
+        playersContainer.update(delta);
+...
+</pre></code>
 
-          <pre><code>
-        client.onConnected(introductoryStateDto -> {
-            localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected());
+<p>
+Now let’s run the game and check out how our newly developed compensation works.
+</p>
+
+<p>
+Well, does it? Nope, not at all. There’s hardly any change and now the ship is doing a weird little dance of going forwards and backwards before it finally moves.
+</p>
+
+<p>
+Reason for that is we’re constantly updating based on the state from the server, but this state is from the past. By the time the server receives client input, processes it and sends it back it’s a whole other situation on the client side, but this past state gets accepted and applied. Let’s zoom in a bit on previous flow to get a better grasp of it:
+</p>
+
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/bad-compensation.png" alt="bad compensation">
+
+<p>
+To address this issue we’ll have to treat the server’s response as both validation of past state for everything that we can compute locally (like <code>Player</code>’s or <code>Bullet</code>’s next position) and as an update on everything that we can’t compute locally (like new <code>Bullet</code> being shot by other <code>Player</code> or new spawn position for the <code>Ship</code>).
+In order to achieve that we’ll need to keep indexed states locally - state 1, state 2, state N - and refer to them whenever server responds to check if our past state N is the same as server’s just received state N. If so then great, we can just move on, as illustrated below:
+</p>
+
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/good-compensation.png" alt="good compensation">
+
+<p>
+From the client's perspective:
+</p>
+<ul>
+<li>At state 0 Ship was at 0x, 0y and the player pressed key up</li>
+<li>At state 1 Ship moved to 0x, 1y</li>
+<li>At state 2 nothing significant happened</li>
+<li>At state 3 the client received server’s state 0, which said that Ship was then at 0x, y0</li>
+<li>At state 4 the client received server’s state 1, which said that Ship was then at 0x, 1y</li>
+</ul>
+
+<p>
+All the client states saved locally matched states sent by the server, so for the player it looked like the game was instantly responsive, even though it took 200ms for a whole state roundtrip and validation. That’s a win.
+</p>
+<p>
+But what if there was a difference in states? Let’s say that due to some glitch one player’s <code>render</code> loop is called with slightly higher delta than others, resulting in a faster perceived <code>Ship</code> movement - so everytime he presses an arrow he locally goes forward not 1, but 1.5 unit. Of course the server is oblivious to that, as it should be, but how is it going to get reconciled on the client side?
+</p>
+
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/rerun-compensation.png" alt="good compensation">
+
+<p>
+...so in the end, <code>Ship</code> is at 2.5y at the client side. Wait, what? How did that happen?
+</p>
+
+<ul>
+<li>At state 0 <code>Ship</code> was at 0x, 0y and the player pressed key up</li>
+<li>At state 1 <code>Ship</code> moved to 0x, 1.5y</li>
+<li>At state 2 player pressed key up again</li>
+<li>At state 3 <code>Ship</code> moved to 0x, 3y</li>
+<li>At state 4 the client received <code>GameStateDto</code> saying that at state 1 it’s <code>Ship</code> should’ve been at 0x 1y, not 0x 1.5y as it was computed locally. So local history was rewinded to state 1 according to the server (0x 1y) and then all the player actions from states 2 to 4 were reapplied and passed through game loop instantly. Through states 2 to 4 player has performed one action - up key press, which locally means going 1.5 unit, therefore in the end Ship is seen on the client at (1 + 1.5)y. Client might be still glitchy, but it gets corrected as smoothly as possible.</li>
+</ul>
+
+<p>
+From those examples we can extract an algorithm for dealing with <code>Ship</code> latencies:
+</p>
+
+<ul>
+<li>Whenever <code>ControlsDto</code> is sent to the server, mark it using an index</li>
+<li>Compute <code>GameStateDto</code> locally according to the <code>Controls</code> and save them both, along with index number and <code>render</code>’s delta</li>
+<li>When <code>GameStateDto</code> with index matching one sent with <code>ControlsDto</code> comes from the server, discard all saved states with lower index and compare locally stored <code>GameStateDto</code> with arriving one</li>
+<li>If they’re equal don’t do anything</li>
+<li>If they’re not equal, apply <code>GameStateDto</code> from the server and run game logic locally from received server index until last saved local index, using saved <code>ControlsDto</code> and delta</li>
+</ul>
+
+
+<h2>Back to the code</h2>
+<p>
+Ok, so here’s the plan: we’ll need to add indexes to <code>ControlsDto</code> and <code>GameStateDto</code>, make <code>GameStateDto</code>s comparable by equality, keep some sort of local history that’s able to rewind and rerun game loop and also keep indexes per client on the server. Smooth sailing.
+</p>
+
+<h2>Indexed Dtos and Mappers</h2>
+<p>
+Let’s tackle indexing <code>Dto</code>s first. Specifically, we’ll need to wrap our already existing <code>Dto</code>s with indexes, so let’s create a wrapper that is also a <code>Dto</code>:
+</p>
+
+<pre><code>
+public class IndexedDto&lt;UnderlyingDto extends Dto&gt; implements Dto {
+    protected static final ObjectMapper objectMapper = new ObjectMapper();
+    private final UnderlyingDto dto;
+    private final long index;
+ 
+    public IndexedDto(
+            @JsonProperty("dto") UnderlyingDto dto,
+            @JsonProperty("index") long index) {
+        this.dto = dto;
+        this.index = index;
+    }
+ 
+    @Override
+    public String toJsonString() {
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while converting IndexedDto to JSON", e);
+        }
+    }
+ 
+    public UnderlyingDto getDto() {
+        return dto;
+    }
+ 
+    public long getIndex() {
+        return index;
+    }
+}
+</pre></code>
+
+<p>
+Unfortunately due to fact that there is no way to find out the runtime type of generic type parameters, we’ll need an additional class for any <code>Dto</code> that we want to wrap with index. In our case those will be <code>IndexedControlsDto</code> and <code>IndexedGameStateDto</code>:
+</p>
+
+<pre><code>
+public class IndexedControlsDto extends IndexedDto&lt;ControlsDto&gt; {
+    public IndexedControlsDto(
+            @JsonProperty("dto") ControlsDto dto,
+            @JsonProperty("index") long index) {
+        super(dto, index);
+    }
+ 
+    public static IndexedControlsDto fromJsonString(String json) {
+        try {
+            return objectMapper.readValue(json, IndexedControlsDto.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while creating IndexedControlsDto from JSON", e);
+        }
+    }
+}
+ 
+public class IndexedGameStateDto extends IndexedDto&lt;GameStateDto&gt; {
+    public IndexedGameStateDto(
+            @JsonProperty("dto") GameStateDto dto,
+            @JsonProperty("index") long index) {
+        super(dto, index);
+    }
+ 
+    public static IndexedGameStateDto fromJsonString(String json) {
+        try {
+            return objectMapper.readValue(json, IndexedGameStateDto.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while creating IndexedGameStateDto from JSON", e);
+        }
+    }
+}
+</pre></code>
+
+<p>
+One last piece we’ll need to complete indexed <code>Dto</code>s puzzle is a <code>Mapper</code> for them. It won’t do anything else than just wrap existing <code>Dto</code>s with indexes:
+</p>
+
+<pre><code>
+public class IndexedDtoMapper {
+    public static &lt;UnderlyingDto extends Dto&gt; IndexedDto&lt;UnderlyingDto&gt;
+    wrapWithIndex(UnderlyingDto dto, long index) {
+        return new IndexedDto&lt;&gt;(dto, index);
+    }
+}
+</pre></code>
+
+<h2>Game State Dto equality</h2>
+<p>
+While we’re on the subject of <code>Dto</code>s, let’s introduce equality comparison to them. All we want is a standard <code>equals</code> and <code>hashCode</code> override. We’ll start with <code>GameStateDto</code> and work our way downwards from there, into types referred from <code>GameStateDto</code>: <code>PlayerDto</code>, <code>ShipDto</code> and <code>BulletDto</code>. I’ll omit the code here since it’s very rudimentary, but we need it nonetheless.
+</p>
+
+<h2>Necessary adjustments</h2>
+
+<p>
+There are a couple of changes we’ll need to get out of the way before we can proceed.
+</p>
+
+<p>
+First of all, our compensations will revolve around movement only. Right now we have both movement updates and other internal state updates entangled in <code>update</code> methods of <code>Player</code>, <code>Ship</code> and <code>Container</code>. We’ll need to refactor that in order to get more fine-grained control.<br>
+This is how our models and containers will change:
+</p>
+
+<pre><code>
+public class Ship implements Visible {
+    ...
+    public void update() {
+        applyShootingPossibility();
+    }
+ 
+    public void move(float delta) {
+        applyMovement(delta);
+    }
+    ...
+}
+</pre></code>
+ 
+<pre><code>
+public class Player implements Identifiable {
+    ...
+    public void update() {
+        ship.ifPresent(Ship::update);
+    }
+ 
+    public void move(float delta) {
+        ship.ifPresent(ship -&gt; {
+            ship.control(controls, delta);
+            ship.move(delta);
+        });
+    }
+    ...
+}
+</pre></code>
+
+<pre><code>
+public interface Container&lt;Thing extends Identifiable&gt; {
+    ...
+    void move(float delta);
+    ...
+}
+</pre></code>
+ 
+<pre><code>
+public class PlayersContainer&lt;PlayerType extends Player&gt; implements Container&lt;PlayerType&gt; {
+    ...
+    @Override
+    public void update(float delta) {
+        players.forEach(player -&gt; player.update(delta));
+    }
+ 
+    @Override
+    public void move(float delta) {
+        players.forEach(player -&gt; player.move(delta));
+    }
+}
+</pre></code>
+
+<pre><code>
+public class BulletsContainer implements Container&lt;Bullet&gt; {
+    ...
+    @Override
+    public void update(float delta) {
+        bullets.removeIf(bullet -&gt; !bullet.isInRange() || bullet.hasHitSomething());
+    }
+ 
+    @Override
+    public void move(float delta) {
+        bullets.forEach(bullet -&gt; bullet.move(delta));
+    }
+}
+</pre></code>
+ 
+<p>
+Remember to find usages of <code>PlayersContainer</code> and <code>BulletsContainer</code> <code>update</code> methods and change them to two calls: <code>move</code> and <code>update</code> so that our code still behaves like before. Look for <code>update</code> calls on both client and server side. We’ll make sense out of this split later.
+</p>
+ 
+<p>
+Next we’ll need to open a <code>Ship</code> a little bit more. Apart from position and rotation, we’ll also synchronize <code>velocity</code> and <code>rotationVelocity</code>. This will allow us to make better state predictions.
+</p>
+
+<pre><code>
+public class Ship implements Visible {
+    ...
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+ 
+    public void setVelocity(Vector2 velocity) {
+        this.velocity.set(velocity);
+    }
+ 
+    public float getRotationVelocity() {
+        return rotationVelocity;
+    }
+ 
+    public void setRotationVelocity(float rotationVelocity) {
+        this.rotationVelocity = rotationVelocity;
+    }
+    ...
+}
+</pre></code>
+ 
+<p>
+We’ll need to update a <code>ShipDto</code> accordingly to these properties. Below you’ll find type declarations, I’ll omit code for initialization and getters here since it’s trivial.
+</p>
+
+<pre><code>
+public class ShipDto implements Dto {
+    ...
+    private final float velocityX;
+    private final float velocityY;
+    private final float rotationVelocity;
+    ...
+}
+</pre></code>
+
+<p>
+In order to put this additional data to some use we’ll need to include it in <code>ShipMapper</code>, when we’ll be mapping <code>Dto</code> from <code>Ship</code> and also when updating <code>Ship</code> by <code>Dto</code>:
+</p>
+
+<pre><code>
+public class ShipMapper {
+    public static ShipDto fromShip(Ship ship) {
+        Vector2 shipPosition = ship.getPosition();
+        Vector2 velocity = ship.getVelocity();
+        return new ShipDto(shipPosition.x, shipPosition.y, ship.getRotation(),
+                velocity.x, velocity.y, ship.getRotationVelocity());
+    }
+    ...
+    public static void updateByDto(Ship ship, ShipDto dto) {
+        ship.setPosition(new Vector2(dto.getX(), dto.getY()));
+        ship.setRotation(dto.getRotation());
+        ship.setVelocity(new Vector2(dto.getVelocityX(), dto.getVelocityY()));
+        ship.setRotationVelocity(dto.getRotationVelocity());
+    }
+}
+</pre></code>
+
+<p>
+Last thing that we’ll need to do is to make <code>Player</code>’s controls mutable. Reason for that is when we’ll rewind and rerun game loop we’ll need to be able to set it’s <code>Controls</code> state to whatever <code>ControlsDto</code> says it was at that moment, and that’s not possible with regular <code>Controls</code> (<code>KeyboardControls</code> in our case). This will make a lot more sense to you when we’ll get to client side synchronization.
+Code change is trivial: just remove <code>final</code> keyword for <code>controls</code> property in <code>Player</code> class and give it a getter and a setter.
+</p>
+
+<h2>Server side synchronization</h2>
+
+<p>
+Server won’t be very involved in compensating for lags, it’ll just need to keep state indexes for clients. We’ll create the <code>synchronization</code> package inside of <code>connection</code> and put a <code>StateIndexByClient</code> class there that will do just that:
+</p>
+
+<pre><code>
+public class StateIndexByClient {
+    private final Map&lt;UUID, Long&gt; indexes;
+ 
+    public StateIndexByClient(Map&lt;UUID, Long&gt; indexes) {
+        this.indexes = indexes;
+    }
+ 
+    public StateIndexByClient() {
+        this(new HashMap&gt;&gt;());
+    }
+ 
+    public Long lastIndexFor(UUID id) {
+        Long sequence = indexes.get(id);
+        if(sequence == null) return -1L;
+        return sequence;
+    }
+ 
+    public void setIndexFor(UUID id, Long value) {
+        indexes.put(id, value);
+    }
+}
+</pre></code>
+
+<p>
+There will be a slight change in how server receives and sends data - it won’t receive <code>ControlsDto</code> and send <code>GameStateDto</code> anymore, but <code>IndexedControlsDto</code> and <code>IndexedGameStateDto</code>, since we need to know what <code>GameStateDto</code> was computed for which <code>ControlsDto</code>.
+</p>
+
+<p>
+First, we’ll inject <code>StateIndexByClient</code> instance into <code>SocketIoServer</code>:
+</p>
+<pre><code>
+Server server = new SocketIoServer(host, port, new StateIndexByClient(), new Delay(100));
+</pre></code>
+ 
+<pre><Code>
+public class SocketIoServer implements Server {
+    ...
+    private final StateIndexByClient stateIndexByClient;
+    ...
+    public SocketIoServer(String host, int port, StateIndexByClient stateIndexByClient, Delay delay) {
+        ...
+        this.stateIndexByClient = stateIndexByClient;
+        ...
+    }
+    ...
+}
+</pre></code>
+
+<p>
+We’ll need some way of obtaining index for soon to be computed state. It will come with <code>ControlsDto</code> from the client side, so we need to store it then for a particular client:
+</p>
+<pre><code>
+    private void setupEvents() {
+        ...
+        addEventListener(Event.CONTROLS_SENT, (client, json, ackSender) -&gt; {
+            IndexedDto<ControlsDto> indexedDto = IndexedControlsDto.fromJsonString(json);
+            stateIndexByClient.setIndexFor(client.getSessionId(), indexedDto.getIndex());
+            playerSentControlsHandler.accept(client.getSessionId(), indexedDto.getDto());
+        });
+        ...
+    }
+</pre></code>
+ 
+<p>
+Since we won’t broadcast to all the clients simultaneously anymore but rather do it in sequence, with index dedicated for each client, our <code>SocketIoServer</code>’s broadcast method will change the most:
+</p>
+ 
+<pre><code>
+    ...
+    @Override
+    public void broadcast(GameStateDto gameState) {
+        socketio.getAllClients().stream()
+                .forEach(client -&gt; {
+                    Dto indexedDto = IndexedDtoMapper.wrapWithIndex(
+                            gameState, stateIndexByClient.lastIndexFor(client.getSessionId()));
+                    sendEvent(client, Event.GAME_STATE_SENT, indexedDto);
+                });
+    }
+    ...
+</pre></code>
+
+<h2>Client side synchronization</h2>
+
+<p>
+This is where the most interesting things will happen. We’ll introduce a bunch of trickery to pretend that the game reacts to player input instantly rather than waits for the server. First, let’s create package <code>synchronization</code> inside of <code>connection</code> and gather everything that encompases local state (index, delta when game loop ran, <code>ControlsDto</code> sent to the server and <code>GameStateDto</code> computed locally according to these controls) in a value class:
+</p>
+
+<pre><code>
+class LocalState {
+    private final long index;
+    private final float delta;
+    private final ControlsDto controlsDto;
+    private final GameStateDto gameStateAfterLoop;
+ 
+    LocalState(long index, float delta, ControlsDto controlsDto, GameStateDto gameStateAfterLoop) {
+        this.index = index;
+        this.delta = delta;
+        this.controlsDto = controlsDto;
+        this.gameStateAfterLoop = gameStateAfterLoop;
+    }
+ 
+    public boolean gameStateMatches(GameStateDto serverState) {
+        return gameStateAfterLoop.equals(serverState);
+    }
+ 
+    public long getIndex() {
+        return index;
+    }
+ 
+    public float getDelta() {
+        return delta;
+    }
+ 
+    public ControlsDto getControlsDto() {
+        return controlsDto;
+    }
+}
+</pre></code>
+
+<p>
+Now we’ll move on to the actual synchronization. A class that we’re going to implement will keep track of previous locally computed states and whenever a server state arrives it will compare it with what has been saved locally and apply corrections if needed, using callbacks to game loops.
+</p>
+
+<pre><code>
+public class LocalStateSynchronizer {
+    private long currentIndex;
+    private final List<LocalState> recordedStates;
+    private final RemoteControls synchronizationControls;
+    private Consumer<GameStateDto> gameStateUpdater;
+    private Consumer<Float> gameLogicRunner;
+    private Supplier<GameStateDto> gameStateSupplier;
+    private Player localPlayer;
+</pre></code>
+ 
+<p>
+Properties of this class deserve an explanation:
+</p>
+<ul>
+<li><code>currentIndex</code> is what we’ll use for indexing <code>ControlsDto</code> that will be sent to the server</li>
+<li><code>recordedStates</code> will hold, well, recorded <code>LocalState</code>s</li>
+<li><code>synchronizationControls</code> will be temporarily injected to the <code>localPlayer</code> in order to control it when we’ll rerun game loop</li>
+<li><code>gameStateUpdater</code> will be responsible for somewhat similar things that <code>Client</code>’s <code>onGameStateReceived</code> handler was - updating models according to newly arrived state</li>
+<li><code>gameLogicRunner</code> will be a portion of game loop taken from <code>AsteroidServerScreen</code>’s <code>render</code> method, the one that calls <code>move</code> on <code>Container</code>s</li>
+<li><code>gameStateSupplier</code> will be a way for us to obtain <code>GameStateDto</code> of current client state</li>
+<li><code>localPlayer</code> is pretty much self explanatory</li>
+</ul>
+
+<pre><code>
+    public LocalStateSynchronizer(List&lt;LocalState&gt; recordedStates, RemoteControls synchronizationControls) {
+        this.recordedStates = recordedStates;
+        this.synchronizationControls = synchronizationControls;
+    }
+ 
+    public LocalStateSynchronizer() {
+        this(Collections.synchronizedList(new ArrayList&lt;&gt;()), new RemoteControls());
+    }
+ 
+    public void updateAccordingToGameState(Consumer&lt;GameStateDto&gt; updater) {
+        gameStateUpdater = updater;
+    }
+ 
+    public void runGameLogic(Consumer&lt;Float&gt; runner) {
+        gameLogicRunner = runner;
+    }
+ 
+    public void setLocalPlayer(Player localPlayer) {
+        this.localPlayer = localPlayer;
+    }
+ 
+    public void supplyGameState(Supplier&lt;GameStateDto&gt; supplier) {
+        gameStateSupplier = supplier;
+    }
+</pre></code>
+
+<p>
+Current index will be obtained before sending <code>ControlsDto</code> to the server.
+</p>
+
+<pre><code>
+    public long getCurrentIndex() {
+        return currentIndex;
+    }
+</pre></code>
+
+<p>
+State will be recorded right after computation according to <code>Controls</code> mentioned above.
+</p>
+ 
+<pre><code>
+    public void recordState(float delta, ControlsDto controlsDto) {
+        recordedStates.add(new LocalState(currentIndex, delta, controlsDto, gameStateSupplier.get()));
+        currentIndex++;
+    }
+</pre></code>
+ 
+<p>
+If there are local states ahead of the server and latest server state is not equal to corresponding state on the client side, we’ll need to instantly return to that state and rerun game logic based on that corrected state.
+</p>
+ 
+<pre><code>
+    public void synchronize(IndexedDto<GameStateDto> latestState) {
+        discardSnapshotsUntil(latestState.getIndex());
+        if(recordedStates.size() == 0) return;
+        if(recordedStates.get(0).gameStateMatches(latestState.getDto())) return;
+ 
+        returnToLatestServerState(latestState);
+        rerunGameLogic();
+    }
+ 
+    private void rerunGameLogic() {
+        Controls playerOriginalControls = localPlayer.getControls();
+        localPlayer.setControls(synchronizationControls);
+        for(int i = 1; i < recordedStates.size(); i++) {
+            LocalState localState = recordedStates.get(i);
+            ControlsMapper.setRemoteControlsByDto(localState.getControlsDto(), synchronizationControls);
+            gameLogicRunner.accept(localState.getDelta());
+            recordedStates.set(i, updateState(localState));
+        }
+        localPlayer.setControls(playerOriginalControls);
+    }
+ 
+    private void returnToLatestServerState(IndexedDto&lt;GameStateDto&gt; latestState) {
+        gameStateUpdater.accept(latestState.getDto());
+        recordedStates.set(0, updateState(recordedStates.get(0)));
+    }
+ 
+    private void discardSnapshotsUntil(long boundaryIndex) {
+        recordedStates.removeIf(localState -&gt; localState.getIndex() &lt; boundaryIndex);
+    }
+ 
+    private LocalState updateState(LocalState oldState) {
+        return new LocalState(oldState.getIndex(), oldState.getDelta(), oldState.getControlsDto(), gameStateSupplier.get());
+    }
+}
+</pre></code>
+
+<h2>Client integration</h2>
+
+<p>
+So we have the tool for synchronization. Let’s move one layer up and use it in <code>SocketIoClient</code> to mark <code>ControlsDto</code> with appropriate index, and to perform state synchronization when server responds. Remember when we’ve introduced <code>IndexedDto</code>s on the server? We’re going to use them now.<br>
+Additionally, we’ll keep track of indexes of received game states. There’s a chance that due to the network glitches, states might come out of order. If that happens (newly received state has lower index than one we’ve already seen) we’re going to ignore the state completely, since there’s no point in computing it anymore.
+</p>
+
+<pre><code>
+public class SocketIoClient implements Client {
+    ...
+    private final LocalStateSynchronizer localStateSynchronizer;
+    ...
+    private long lastReceivedGameStateIndex = -1;
+ 
+ 
+    
+    public SocketIoClient(String protocol, String host, int port, LocalStateSynchronizer localStateSynchronizer, Delay delay) {
+        ...
+        this.localStateSynchronizer = localStateSynchronizer;
+        ...
+    }
+    ...
+    @Override
+    public void sendControls(ControlsDto controlsDto) {
+        long index = localStateSynchronizer.getCurrentIndex();
+        pingWatcher.acknowledgeSendForIndex(index);
+        emit(socket, Event.CONTROLS_SENT,
+                IndexedDtoMapper.wrapWithIndex(controlsDto, index));
+    }
+    ...
+    private void setupEvents() {
+        ...
+        on(socket, Event.GAME_STATE_SENT, response -&gt; {
+            String gameStateDtoJson = (String) response[0];
+            IndexedDto<GameStateDto> indexedDto = IndexedGameStateDto.fromJsonString(gameStateDtoJson);
+            if(indexedDto.getIndex() <= lastReceivedGameStateIndex) return;
+            lastReceivedGameStateIndex = indexedDto.getIndex();
+            gameStateReceivedHandler.accept(indexedDto.getDto());
+            localStateSynchronizer.synchronize(indexedDto);
+        });
+    }
+    ...
+}
+</pre></code>
+
+<p>
+That’s all good, but it feels incomplete, doesn’t it? I mean, what about <code>gameStateUpdater</code>, <code>gameLogicRunner</code> and <code>gameStateSupplier</code>? All of that will be handled from layer above, where our game logic related code lives. One more time we need to move up, into <code>AsteroidsClientScreen</code>.
+</p>
+
+<h2>Players lag compensation: the final round</h2>
+
+<p>
+It seems that we’re ahead of the final step now - plugging it all together in <code>AsteroidsClientScreen</code>. Most significant change here will be that we’ll pass executable code into <code>localStateSynchronizer</code> so it can actually perform game actions. The way we’ll be handling <code>Player</code>s in <code>Client</code> event listeners will also change because we’ll have to take lag compensation into account.
+</p>
+
+<pre><code>
+public class AsteroidsClientScreen extends ScreenAdapter {
+    ...
+    private final LocalStateSynchronizer localStateSynchronizer;
+    ...
+    private final Arena arena;
+    ...
+ 
+    public AsteroidsClientScreen(
+            Controls localControls, Client client,  LocalStateSynchronizer localStateSynchronizer,
+            Viewport viewport, ShapeRenderer shapeRenderer,
+            Container<Player> playersContainer, Container<Bullet> bulletsContainer,
+            ContainerRenderer<Player> playersRenderer, ContainerRenderer<Bullet> bulletsRenderer,
+            Arena arena) {
+        ...
+        this.localStateSynchronizer = localStateSynchronizer;
+        ...
+        this.arena = arena;
+    }
+ 
+    @Override
+    public void show() {
+        client.onConnected(introductoryStateDto -&gt; {
+            localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected(), localControls);
+            localStateSynchronizer.setLocalPlayer(localPlayer);
             playersContainer.add(localPlayer);
+ 
             GameStateDto gameStateDto = introductoryStateDto.getGameState();
             gameStateDto.getPlayers().stream()
-                .map(PlayerMapper::localPlayerFromDto)
-                .forEach(playersContainer::add);
-
+                    .map(playerDto -&gt; PlayerMapper.localPlayerFromDto(playerDto, new NoopControls()))
+                    .forEach(playersContainer::add);
+ 
             gameStateDto.getBullets().stream()
-                .map(bulletDto -> BulletMapper.fromDto(bulletDto, playersContainer))
-                .forEach(bulletsContainer::add);
+                    .map(bulletDto -&gt; BulletMapper.fromDto(bulletDto, playersContainer))
+                    .forEach(bulletsContainer::add);
         });
-          </code></pre>
-
-          <p>
-            Whenever other <code>Player</code> connects or disconnects, we need to reconcile that with local <code>playersContainer</code>.
-          </p>
-
-          <pre><code>
-        client.onOtherPlayerConnected(connectedDto -> {
-            Player connected = PlayerMapper.localPlayerFromDto(connectedDto);
+ 
+        client.onOtherPlayerConnected(connectedDto -&gt; {
+            Player connected = PlayerMapper.localPlayerFromDto(connectedDto, new NoopControls());
             playersContainer.add(connected);
         });
-
+ 
         client.onOtherPlayerDisconnected(playersContainer::removeById);
-          </code></pre>
-
-          <p>
-            When we’ll receive the game state there will be a couple of interesting things going on,
-            so let’s walk through them. At first, we’ll update existing <code>Player</code>s (and subsequently their <code>Ship</code>s too),
-            which will be pretty straightforward:
-          </p>
-
-          <pre><code>
-        client.onGameStateReceived(gameStateDto -> {
-            gameStateDto.getPlayers().stream()
-                .forEach(playerDto -> playersContainer
-                    .getById(playerDto.getId())
-                    .ifPresent(player -> PlayerMapper.updateByDto(player, playerDto)));
-          </code></pre>
-
-          <p>
-            For <code>Bullet</code>s we’ll need a bit more work to do, mostly because contrary to
-            <code>Player</code> we don’t have dedicated events for when <code>Bullet</code> was introduced or removed
-            (there would be a lot of them).<br>
-            If <code>Bullet</code> coming from the <code>Server</code> doesn’t exist yet, we’ll need to add it. If it’s there, we’ll need to update.
-            Finally, if it’s present in our local game but not on the <code>Server</code>, we'll need to delete it locally.
-          </p>
-
-          <pre><code>
+</pre></code>
+ 
+<p>
+Note that now when we receive <code>GameStateDto</code> we’ll immediately deal with <code>Bullet</code>s only as they're not lag compensated.
+</p>
+ 
+<pre><code>
+        client.onGameStateReceived(gameStateDto -&gt; {
             gameStateDto.getBullets().stream()
-                .forEach(bulletDto -> {
-                    Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
-                    if(!bullet.isPresent()) {
-                        bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
-                    } else {
-                        BulletMapper.updateByDto(bullet.get(), bulletDto);
-                    }
-                });
-
-            List&lt;String&gt; existingBulletIds = gameStateDto.getBullets().stream()
-                .map(BulletDto::getId)
-                .collect(toList());
-
+                    .forEach(bulletDto -&gt; {
+                        Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
+                        if(!bullet.isPresent()) {
+                            bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
+                        } else {
+                            BulletMapper.updateByDto(bullet.get(), bulletDto);
+                        }
+                    });
+ 
+            List<String> existingBulletIds = gameStateDto.getBullets().stream()
+                    .map(BulletDto::getId)
+                    .collect(toList());
+ 
             bulletsContainer.getAll().stream()
-                .map(Bullet::getId)
-                .map(Object::toString)
-                .filter(id -> !existingBulletIds.contains(id))
-                .collect(toList())
-                .forEach(bulletsContainer::removeById);
+                    .map(Bullet::getId)
+                    .map(Object::toString)
+                    .filter(id -&gt; !existingBulletIds.contains(id))
+                    .collect(toList())
+                    .forEach(bulletsContainer::removeById);
         });
-          </code></pre>
+</pre></code>
+ 
+<p>
+This method will be similar to the one above, but it will be run by the <code>LocalStateSynchronizer</code> as a start of synchronization process (set last known server state, then apply local states).
+</p>
+ 
+<pre><code>
+        localStateSynchronizer.updateAccordingToGameState(gameStateDto -&gt; {
+            gameStateDto.getPlayers().stream()
+                    .forEach(playerDto -&gt; playersContainer
+                            .getById(playerDto.getId())
+                            .ifPresent(player -&gt; PlayerMapper.updateByDto(player, playerDto)));
+        });
+</pre></code>
+ 
+<p>
+Next method will be a way for <code>LocalStateSynchronizer</code> to get to current game state.
+</p>
+ 
+<pre><code>
+        localStateSynchronizer.supplyGameState(() -&gt; GameStateMapper.fromState(playersContainer, bulletsContainer));
+</pre></code>
+ 
+<p>
+Here we’ll instruct synchronizer how to run game logic after applying server state. We’ll use method reference, because that’s the exact same logic that we’ll also run when computing local predicted state.
+</p>
 
-          <p>
-            Why <code>.filter().collect().forEach()</code>instead of just <code>.filter().forEach()</code>?
-            <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#NonInterference">Because you shouldn’t modify Stream’s underlying List during pipeline execution.</a>
-            </p>
-          <p>
-            We'll end our work in <code>show</code> by executing connection request for local <code>Player</code>
-          </p>
-
-          <pre><code>
+<pre><code>
+        localStateSynchronizer.runGameLogic(this::runGameLogic);
+ 
         client.connect(new PlayerDto(null, Randomize.fromList(Player.POSSIBLE_COLORS).toString(), null));
     }
-
+ 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+ 
         if(!client.isConnected()) return;
-
+ 
         client.sendControls(ControlsMapper.mapToDto(localControls));
+</pre></code>
+ 
+<p>
+Here’s how our state recording will work: run the game logic, and then save resulting state with <code>delta</code> and <code>Controls</code> data that was used to compute it.
+</p>
 
+<pre><code>
+        runGameLogic(delta);
+        localStateSynchronizer.recordState(delta,
+                ControlsMapper.mapToDto(localControls));
+ 
         viewport.apply();
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         playersRenderer.render(shapeRenderer);
         bulletsRenderer.render(shapeRenderer);
         shapeRenderer.end();
+        client.unlockEventListeners();
     }
-
+ 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
-
+ 
     @Override
     public void dispose() {
         shapeRenderer.dispose();
     }
+ 
+    private void runGameLogic(float delta) {
+        playersContainer.getAll().stream()
+                .map(Player::getShip)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(arena::ensurePlacementWithinBounds);
+        playersContainer.move(delta);
+    }
 }
-          </code></pre>
+</pre></code>
 
-          <h2>Client game</h2>
-
-          <p>
-            As we did before, we’ll configure and inject dependencies in the <code>Game</code> class, this time it will be <code>AsteroidsClientGame</code>:
-          </p>
-
-          <pre><code>
+<p>
+Only thing left to do is to inject new dependencies at <code>AsteroidsClientGame</code>
+</p>
+ 
+<pre><code>
 public class AsteroidsClientGame extends Game {
-    private Screen asteroids;
-
+    ...
     @Override
     public void create() {
-        Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
-        ShapeRenderer shapeRenderer =  new ShapeRenderer();
-        Controls localControls = new KeyboardControls();
-
-        Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
-        Container&lt;Player&gt; playersContainer = new PlayersContainer<>();
-
-        ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
-        ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
-
-        Map&lt;String, String&gt; env = System.getenv();
-        String protocol = env.getOrDefault("PROTOCOL", "http");
-        String host = env.getOrDefault("HOST", "localhost");
-        int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
-        Client client = new SocketIoClient(protocol, host, port);
-
+        ...
+        Arena arena = new Arena(WORLD_WIDTH, WORLD_HEIGHT);
+        ...
+        LocalStateSynchronizer localStateSynchronizer = new LocalStateSynchronizer();
+        Client client = new SocketIoClient(protocol, host, port, localStateSynchronizer, new Delay(100));
+ 
         asteroids = new AsteroidsClientScreen(
-            localControls, client,
-            viewport, shapeRenderer,
-            playersContainer, bulletsContainer,
-            playersRenderer, bulletsRenderer);
-
-        setScreen(asteroids);
+                localControls, client, localStateSynchronizer,
+                viewport, shapeRenderer,
+                playersContainer, bulletsContainer,
+                playersRenderer, bulletsRenderer, arena);
+        ...
     }
+}
+</pre></code>
 
+<p>
+Sweet! Let’s spin it up and see our newly developed synchronizer in action!
+</p>
+ 
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/trouble.gif" alt="flickering game">
+
+<p>
+What the...
+</p>
+
+<h2>Bonus level: threads synchronization</h2>
+ 
+<p>
+Ok, it was supposed to be smooth, what’s with all the flickering?<br>
+Turns out we have mutable state shared between threads (also known as “debugging this crap was an ordeal”). Event handlers attached to SocketIoClient are running on different threads than rendering loop, so at any given moment we can be in the middle of updating/synchronizing state according to events and rendering the exact same state. Even worse, we’re performing loops in <code>LocalStateSynchronizer.rerunGameLogic</code>, so it’s not as easy as “just use immutable or concurrent data types”. State synchronization should either be applied fully or not at all, like a transaction.
+</p>
+ 
+<p>
+Fortunately, there’s an easy way out of it without sacrificing too much performance.<br>
+We know that render loop has to run once every 16ms. We should not mutate state elsewhere when it happens, but locking for a few ms once every 16ms isn’t that bad. We’ll receive game state events from the server at about same pace, and we should also process one at a time, that’s the second constraint. Between local game loop and events there should be plenty of time for event handlers to compute everything and be ready to render next frame, so we’ll take that.
+</p>
+ 
+<p>
+First, let’s extend <code>Client</code> interface with method for locking event handlers:
+</p>
+
+<pre><code>
+public interface Client {
+    ...
+    void lockEventListeners();
+    void unlockEventListeners();
+    ...
+}
+</pre></code>
+
+<p>
+Then we’ll need to implement them in our <code>SocketIoClient</code>:
+</p>
+ 
+<pre><code>
+public class SocketIoClient implements Client {
+    ...
+    private final Lock eventListenersLock;
+    ….
+ 
+    public SocketIoClient(String protocol, String host, int port, Lock eventListenersLock,
+                          LocalStateSynchronizer localStateSynchronizer, Delay delay) {
+        ...
+        this.eventListenersLock = eventListenersLock;
+        ...
+    }
+    ...
     @Override
-    public void dispose() {
-        asteroids.dispose();
+    public void lockEventListeners() {
+        eventListenersLock.lock();
     }
-}
-          </code></pre>
-
-          <p>
-            While we’re at it, we can delete most of <code>AsteroidsGame</code> in core since we won’t need it anymore.
-            What will still be shared between the <code>client</code> and the <code>server</code> are world dimensions, so they’ll be all that’s left in this class:
-          </p>
-
-          <pre><code>
-public class AsteroidsGame {
-    public static final float WORLD_WIDTH = 800f;
-    public static final float WORLD_HEIGHT = 600f;
-}
-          </code></pre>
-
-          <p>
-            Naturally, <code>desktop</code>'s <code>DesktopLauncher</code> will now have to use <code>AsteroidsClientGame</code> instead of <code>AsteroidsGame</code>:
-          </p>
-
-          <pre><code>
-public class DesktopLauncher {
-    public static void main (String[] arg) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        new LwjglApplication(new AsteroidsClientGame(), config);
+ 
+    @Override
+    public void unlockEventListeners() {
+        eventListenersLock.unlock();
     }
-}
-          </code></pre>
+    ...
+    private void on(Socket socket, Event eventName, Emitter.Listener handler) {
+        socket.on(eventName.toString(), response -&gt; {
+            eventListenersLock.lock();
+            try {
+                handler.call(response);
+            }
+            finally {
+                eventListenersLock.unlock();
+            }
+        });
+    }
+</pre></code>
+ 
+<p>
+In order to lock event handlers while render loop is going and open it up again when it finishes, we’ll need to use these new methods inside of <code>AsteroidsClientScreen.render</code>:
+</p>
+ 
+<pre><code>
+    ...
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+ 
+        if(!client.isConnected()) return;
+        client.lockEventListeners();
+        ...
+        client.unlockEventListeners();
+    }
+</pre></code>
+ 
+<p>
+And we can’t forget to inject some <code>Lock</code> implementation into <code>SocketIoClient</code> in <code>AsteroidsClientGame</code>:
+</p>
+ 
+<pre><code>
+        Client client = new SocketIoClient(protocol, host, port, new ReentrantLock(), localStateSynchronizer, new Delay(100));
+</pre></code>
+ 
+<p>
+After all is said and done, our game should look way smoother:
+</p>
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/smoother.gif" alt="smoother game">
 
-          <h2>An actual multiplayer</h2>
+<p>Funny thing is, we're kind of getting other <code>Player</code>s lag compensation for free. We cannot know their <code>Controls</code> state in the present, but we do know their velocities form the past, and based on that we can make good enough preditions about where they will be next. This technique is called "Dead reckoning" by the way, and that's a cool name.
+</p>
 
-          <p>
-            If everything went smooth, you should now be able to run the server and two clients and see that they're connected.
-            On Linux/macOS it would be <code>./gradlew server:run</code> and <code>./gradlew desktop:run</code>, on Windows you'd use <code>gradlew.bat</code> instead of <code>./gradlew</code>.
-        </p>
-          <p>
-            Here's how launch procedure looks from IntelliJ IDEA:
-          </p>
+<p>
+So this is it. You’ve reached the final paragraphs in this series. Thank you for reading and I hope you've enjoyed it.
+</p>
 
-          <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-launch.gif" alt="launching server and clients">
+<h2>Wait, what about lag compensation for bullets? Or thread synchronization on the server?</h2>
 
-          <p>And here's the game in action:</p>
+<p>
+That’s true, we haven’t cover these. In fact, we haven't cover <strong>a lot</strong> more than just these. But you’re a big boy (or girl) now. You don’t need me to show you things anymore. You’re well equipped to explore and experiment on your own.<br>
+Go do it, be bold, learn as much as you can and have fun while you’re at it! :)
+</p>
 
-          <img src="./Serverless architecture - Amazon Web Services Lambda_files/game-playing.gif" alt="multiplayer in action">
+<img src="./Serverless architecture - Amazon Web Services Lambda_files/out.gif" alt="smoother game">
+</p>
+
+
 
         </div>
 
         <footer class="post-footer">
                     </footer><!-- .entry-footer -->
-    <div class="sumome-share-client-wrapper sumome-share-client-wrapper-center sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div data-sumome-share-pos="bca" class="sumome-share-client sumome-share-client-bottom-center-article sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div class="sumome-share-client-animated sumome-share-client-share sumome-share-client-share-share sumome-share-client-count" data-sumome-share="share" style="background: rgb(255, 255, 255); color: black;"><span style="bottom: auto; top: 11.5px;"><strong>34</strong><br>Shares</span></div><a title="Facebook" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="facebook" href="javascript:void(0);" style="background: rgb(59, 89, 152); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/facebook-white-60.png" alt="Facebook"><span>17</span></a><a title="LinkedIn" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="linkedin" href="javascript:void(0);" style="background: rgb(0, 123, 182); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/linkedin-white-60.png" alt="LinkedIn"><span>17</span></a><a title="Twitter" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="twitter" href="javascript:void(0);" style="background: rgb(0, 172, 237); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/twitter-white-60.png" alt="Twitter"></a><a title="Google+" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="googleplus" href="javascript:void(0);" style="background: rgb(221, 75, 57); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/googleplus-white-60.png" alt="Google+"></a><a title="YC Hacker News" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="ychackernews" href="javascript:void(0);" style="background: rgb(252, 102, 32); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/ychackernews-white-60.png" alt="YC Hacker News"></a><a title="StumbleUpon" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="stumbleupon" href="javascript:void(0);" style="background: rgb(235, 72, 35); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/stumbleupon-white-60.png" alt="StumbleUpon"></a></div></div></article><!-- #post-## -->
+</article><!-- #post-## -->
                 <div class="post-meta">
                     
 <div class="comments-section-wrapper">
@@ -3203,7 +4278,6 @@ public class DesktopLauncher {
   <div id="responsive-menu-wrapper">
     <div id="responsive-menu-title">Menu</div><ul id="responsive-menu" class=""><li id="responsive-menu-item-3341" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/about-us/" class="responsive-menu-item-link">About us</a></li><li id="responsive-menu-item-3342" class=" menu-item menu-item-type-post_type menu-item-object-page current_page_parent responsive-menu-item"><a href="http://www.schibsted.pl/news/" class="responsive-menu-item-link">News</a></li><li id="responsive-menu-item-3343" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/career/" class="responsive-menu-item-link">Career</a></li><li id="responsive-menu-item-3879" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/contact/" class="responsive-menu-item-link">Contact</a></li><li id="responsive-menu-item-3344" class=" menu-item menu-item-type-post_type menu-item-object-page responsive-menu-item"><a href="http://www.schibsted.pl/blog/" class="responsive-menu-item-link">Blog</a></li></ul>  </div>
 </div>
-<iframe id="sumome-jquery-iframe" style="display: none;" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource.html"></iframe><script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/form.js"></script>
 <script type="text/javascript" src="./Serverless architecture - Amazon Web Services Lambda_files/jquery.form.min.js"></script>
 <script type="text/javascript">
 /* <![CDATA[ */
@@ -3234,6 +4308,6 @@ window._fbq.push(['track', 'PixelInitialized', {}]);
 <noscript>&lt;img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=441257389362262&amp;ev=PixelInitialized" /&gt;</noscript><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"695186ec17","applicationID":"6414632","transactionName":"Z1YBYEYAXhdWVUFbWV4cIldACF8KGEVcXFFcVk5DXRVYSVZDQVpZQg==","queueTime":0,"applicationTime":710,"atts":"SxECFg4aTRk=","errorBeacon":"bam.nr-data.net","agent":""}</script>
 
 
-<!-- Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/
+<!-- Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/ -->
 
- Served from: www.schibsted.pl @ 2017-04-03 20:58:50 by W3 Total Cache --><a href="javascript:void(0);" title="Sumo" style="background-color: rgb(0, 115, 183); border-radius: 3px 0px 0px 3px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px; position: fixed; z-index: 2147483647; padding: 0px; width: 44px; height: 40px; text-indent: -10000px; opacity: 1; display: block !important; top: 40px; right: -40px;"><span style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; margin-left: 4px; margin-right: 0px; border-radius: 3px 0px 0px 3px;">Sumo</span><span style="display: block; width: 40px; height: 40px; background: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDQ3MUVFMDFFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDQ3MUVFMDBFMjVDMTFFNjlFQjhBRjdGODU5MDJBMDUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxZDQ2MjI4YS03NWY2LTRkZTQtOGJjYy1hODc1NjRkMjYxYTUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MWQ0NjIyOGEtNzVmNi00ZGU0LThiY2MtYTg3NTY0ZDI2MWE1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+8JtvywAAAKhQTFRFzOPxSJvLA3W4Mo7FBna5w97u8vj7EHy8a67VhbzdsdTpVaLPh73d9/v9C3m6QZfJbq/WXKbR3u32JIfB3ez1KorDir/eBHW4+/3+rtPoZarUG4K/LIvDDnu7ocvkf7nbdrTY9fr8E328WKPQO5PITJ3MPpXJstXptdbq+Pv9cbHXaq3VU6HOkMLgnMnjDHq62uv1/P3+6/T53Oz1cLDX/f7+AHO3////ptOZ5QAAADh0Uk5T/////////////////////////////////////////////////////////////////////////wA7XBHKAAAAmUlEQVR42sSRRxLCMAxFRSq9907ovebr/jdDMWYGxmZL3sIqbyFbJv4B/VlkVlerKALTD3G46Mx3AOR1UZ/TsDxW6W0gfYRNVfTCFu2AWpAMgMItMW+zQJU2UjWI29D0+e5KWNPMk+A9Om+B/UgOJyCuwMJCrpuziYkIsglfRByZ/XM3eXnBFEu1kpMpjq9dxQYp/OAXTwEGAB7Rc1xVnPemAAAAAElFTkSuQmCC&quot;) 8px 8px no-repeat white; margin-left: 4px; border-radius: 3px 0px 0px 3px; margin-right: 0px;"></span></a><iframe style="display: none;" src="./Serverless architecture - Amazon Web Services Lambda_files/saved_resource(1).html"></iframe><div style="position:fixed;top:0;left:0;overflow:hidden;"><label for="focus_retriever" style="position:absolute;left:-1000px;">Focus Retriever</label><input style="position:absolute;left:-1000px;" type="text" name="focus_retriever" value="" id="focus_retriever" readonly="true"></div><div class="sumome-share-client-wrapper sumome-share-client-wrapper-left-page sumome-share-client-counts sumome-share-client-light sumome-share-client-medium" style="top: 320px;"><div class="sumome-share-client-show"><span></span></div><div data-sumome-share-pos="lp" class="sumome-share-client sumome-share-client-left-page sumome-share-client-counts sumome-share-client-light sumome-share-client-medium"><div class="sumome-share-client-animated sumome-share-client-share sumome-share-client-share-share sumome-share-client-count" data-sumome-share="share" style="background: rgb(255, 255, 255); color: black;"><span style="bottom: auto; top: 11.5px;"><strong>34</strong><br>Shares</span></div><a title="Facebook" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="facebook" href="javascript:void(0);" style="background: rgb(59, 89, 152); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/facebook-white-60.png" alt="Facebook"><span>17</span></a><a title="LinkedIn" class="sumome-share-client-animated sumome-share-client-share sumome-share-client-count" data-sumome-share="linkedin" href="javascript:void(0);" style="background: rgb(0, 123, 182); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/linkedin-white-60.png" alt="LinkedIn"><span>17</span></a><a title="Twitter" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="twitter" href="javascript:void(0);" style="background: rgb(0, 172, 237); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/twitter-white-60.png" alt="Twitter"></a><a title="Google+" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="googleplus" href="javascript:void(0);" style="background: rgb(221, 75, 57); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/googleplus-white-60.png" alt="Google+"></a><a title="YC Hacker News" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="ychackernews" href="javascript:void(0);" style="background: rgb(252, 102, 32); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/ychackernews-white-60.png" alt="YC Hacker News"></a><a title="StumbleUpon" class="sumome-share-client-animated sumome-share-client-share" data-sumome-share="stumbleupon" href="javascript:void(0);" style="background: rgb(235, 72, 35); color: rgb(255, 255, 255);"><img src="./Serverless architecture - Amazon Web Services Lambda_files/stumbleupon-white-60.png" alt="StumbleUpon"></a></div><div class="sumome-share-client-hide"><span></span></div></div></body><autoscroll></autoscroll></html>
+</div></body><autoscroll></autoscroll></html>
