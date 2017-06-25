@@ -2659,14 +2659,14 @@ public class PlayerMapper {
     <pre><code>
 public class ControlsMapper {
 ...
-public static ControlsDto mapToDto(Controls controls) {
-return new ControlsDto(
-    controls.forward(),
-    controls.left(),
-    controls.right(),
-    controls.shoot()
-);
-}
+    public static ControlsDto mapToDto(Controls controls) {
+        return new ControlsDto(
+            controls.forward(),
+            controls.left(),
+            controls.right(),
+            controls.shoot()
+        );
+    }
 }
     </code></pre>
 
@@ -2680,9 +2680,9 @@ return new ControlsDto(
 
     <pre><code>
 public class Player implements Identifiable {
-public static final List&lt;Color&gt; POSSIBLE_COLORS = Arrays.asList(
-Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY);
-...
+    public static final List&lt;Color&gt; POSSIBLE_COLORS = Arrays.asList(
+        Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY);
+    ...
 }
     </code></pre>
 
@@ -2690,12 +2690,12 @@ Color.WHITE, Color.GRAY, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY
 
     <pre><code>
 public class Randomize {
-public static &lt;Thing&gt; Thing fromList(List&lt;Thing&gt; things) {
-return things.stream()
-    .skip((int) (things.size() * Math.random()))
-    .findAny()
-    .get();
-}
+    public static &lt;Thing&gt; Thing fromList(List&lt;Thing&gt; things) {
+        return things.stream()
+            .skip((int) (things.size() * Math.random()))
+            .findAny()
+            .get();
+    }
 }
     </code></pre>
 
@@ -2721,13 +2721,13 @@ return things.stream()
 
     <pre><code>
 public interface Client {
-void connect(PlayerDto playerDto);
-void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler);
-void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
-void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler);
-void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler);
-void sendControls(ControlsDto controlsDto);
-boolean isConnected();
+    void connect(PlayerDto playerDto);
+    void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler);
+    void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler);
+    void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler);
+    void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler);
+    void sendControls(ControlsDto controlsDto);
+    boolean isConnected();
 }
     </code></pre>
 
@@ -2749,98 +2749,98 @@ boolean isConnected();
 
     <pre><code>
 public class SocketIoClient implements Client {
-private final Socket socket;
-private ConnectionState state = ConnectionState.NOT_CONNECTED;
-private Consumer&lt;IntroductoryStateDto&gt; playerConnectedHandler;
-private Consumer&lt;PlayerDto&gt; otherPlayerConnectedHandler;
-private Consumer&lt;String&gt; otherPlayerDisconnectedHandler;
-private Consumer&lt;GameStateDto&gt; gameStateReceivedHandler;
+    private final Socket socket;
+    private ConnectionState state = ConnectionState.NOT_CONNECTED;
+    private Consumer&lt;IntroductoryStateDto&gt; playerConnectedHandler;
+    private Consumer&lt;PlayerDto&gt; otherPlayerConnectedHandler;
+    private Consumer&lt;String&gt; otherPlayerDisconnectedHandler;
+    private Consumer&lt;GameStateDto&gt; gameStateReceivedHandler;
 
-private enum ConnectionState {
-NOT_CONNECTED,
-CONNECTING,
-CONNECTED;
-}
+    private enum ConnectionState {
+        NOT_CONNECTED,
+        CONNECTING,
+        CONNECTED;
+    }
 
-public SocketIoClient(String protocol, String host, int port) {
-String url = protocol + "://" + host + ":" + port;
-try {
-    this.socket = IO.socket(url);
-} catch (URISyntaxException e) {
-    throw new RuntimeException("Wrong URL provided for socket connection: " + url, e);
-}
-}
+    public SocketIoClient(String protocol, String host, int port) {
+        String url = protocol + "://" + host + ":" + port;
+        try {
+            this.socket = IO.socket(url);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Wrong URL provided for socket connection: " + url, e);
+        }
+    }
 
-@Override
-public void connect(PlayerDto playerDto) {
-if(state == ConnectionState.NOT_CONNECTED) {
-    state = ConnectionState.CONNECTING;
-    socket.on(Socket.EVENT_CONNECT, response -> emit(socket, Event.PLAYER_CONNECTING, playerDto));
-    on(socket, Event.PLAYER_CONNECTED, response -> {
-	String gameStateDto = (String)response[0];
-	playerConnectedHandler.accept(IntroductoryStateDto.fromJsonString(gameStateDto));
-	state = ConnectionState.CONNECTED;
-	setupEvents();
-    });
-    socket.connect();
-}
-}
+    @Override
+    public void connect(PlayerDto playerDto) {
+        if(state == ConnectionState.NOT_CONNECTED) {
+            state = ConnectionState.CONNECTING;
+            socket.on(Socket.EVENT_CONNECT, response -> emit(socket, Event.PLAYER_CONNECTING, playerDto));
+            on(socket, Event.PLAYER_CONNECTED, response -> {
+                String gameStateDto = (String)response[0];
+                playerConnectedHandler.accept(IntroductoryStateDto.fromJsonString(gameStateDto));
+                state = ConnectionState.CONNECTED;
+                setupEvents();
+            });
+            socket.connect();
+        }
+    }
 
-@Override
-public void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler) {
-playerConnectedHandler = handler;
-}
+    @Override
+    public void onConnected(Consumer&lt;IntroductoryStateDto&gt; handler) {
+        playerConnectedHandler = handler;
+    }
 
-@Override
-public void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
-otherPlayerConnectedHandler = handler;
-}
+    @Override
+    public void onOtherPlayerConnected(Consumer&lt;PlayerDto&gt; handler) {
+        otherPlayerConnectedHandler = handler;
+    }
 
-@Override
-public void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler) {
-otherPlayerDisconnectedHandler = handler;
-}
+    @Override
+    public void onOtherPlayerDisconnected(Consumer&lt;String&gt; handler) {
+        otherPlayerDisconnectedHandler = handler;
+    }
 
-@Override
-public void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler) {
-gameStateReceivedHandler = handler;
-}
+    @Override
+    public void onGameStateReceived(Consumer&lt;GameStateDto&gt; handler) {
+        gameStateReceivedHandler = handler;
+    }
 
-@Override
-public void sendControls(ControlsDto controlsDto) {
-emit(socket, Event.CONTROLS_SENT, controlsDto);
-}
+    @Override
+    public void sendControls(ControlsDto controlsDto) {
+        emit(socket, Event.CONTROLS_SENT, controlsDto);
+    }
 
-@Override
-public boolean isConnected() {
-return state == ConnectionState.CONNECTED;
-}
+    @Override
+    public boolean isConnected() {
+        return state == ConnectionState.CONNECTED;
+    }
 
-private void setupEvents() {
-on(socket, Event.OTHER_PLAYER_CONNECTED, response -> {
-    String gameStateDtoJson = (String) response[0];
-    otherPlayerConnectedHandler.accept(PlayerDto.fromJsonString(gameStateDtoJson));
-});
+    private void setupEvents() {
+        on(socket, Event.OTHER_PLAYER_CONNECTED, response -> {
+            String gameStateDtoJson = (String) response[0];
+            otherPlayerConnectedHandler.accept(PlayerDto.fromJsonString(gameStateDtoJson));
+        });
 
-on(socket, Event.OTHER_PLAYER_DISCONNECTED, response -> {
-    String playerId = (String) response[0];
-    otherPlayerDisconnectedHandler.accept(playerId);
-});
+        on(socket, Event.OTHER_PLAYER_DISCONNECTED, response -> {
+            String playerId = (String) response[0];
+            otherPlayerDisconnectedHandler.accept(playerId);
+        });
 
-on(socket, Event.GAME_STATE_SENT, response -> {
-    String gameStateDtoJson = (String) response[0];
-    GameStateDto dto = GameStateDto.fromJsonString(gameStateDtoJson);
-    gameStateReceivedHandler.accept(dto);
-});
-}
+        on(socket, Event.GAME_STATE_SENT, response -> {
+            String gameStateDtoJson = (String) response[0];
+            GameStateDto dto = GameStateDto.fromJsonString(gameStateDtoJson);
+            gameStateReceivedHandler.accept(dto);
+        });
+    }
 
-private void emit(Socket socket, Event eventName, Dto payload) {
-socket.emit(eventName.toString(), payload.toJsonString());
-}
+    private void emit(Socket socket, Event eventName, Dto payload) {
+        socket.emit(eventName.toString(), payload.toJsonString());
+    }
 
-private void on(Socket socket, Event eventName, Emitter.Listener handler) {
-socket.on(eventName.toString(), handler);
-}
+    private void on(Socket socket, Event eventName, Emitter.Listener handler) {
+        socket.on(eventName.toString(), handler);
+    }
 }
     </code></pre>
 
@@ -2855,30 +2855,30 @@ socket.on(eventName.toString(), handler);
 
   <pre><code>
 public class AsteroidsClientScreen extends ScreenAdapter {
-private final Controls localControls;
-private final Client client;
-private final Viewport viewport;
-private final ShapeRenderer shapeRenderer;
-private final Container&lt;Player&gt; playersContainer;
-private final Container&lt;Bullet&gt; bulletsContainer;
-private final ContainerRenderer&lt;Player&gt; playersRenderer;
-private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
-private Player localPlayer;
+    private final Controls localControls;
+    private final Client client;
+    private final Viewport viewport;
+    private final ShapeRenderer shapeRenderer;
+    private final Container&lt;Player&gt; playersContainer;
+    private final Container&lt;Bullet&gt; bulletsContainer;
+    private final ContainerRenderer&lt;Player&gt; playersRenderer;
+    private final ContainerRenderer&lt;Bullet&gt; bulletsRenderer;
+    private Player localPlayer;
 
-public AsteroidsClientScreen(
-    Controls localControls, Client client,
-    Viewport viewport, ShapeRenderer shapeRenderer,
-    Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
-    ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
-this.localControls = localControls;
-this.client = client;
-this.viewport = viewport;
-this.playersContainer = playersContainer;
-this.bulletsContainer = bulletsContainer;
-this.shapeRenderer = shapeRenderer;
-this.playersRenderer = playersRenderer;
-this.bulletsRenderer = bulletsRenderer;
-}
+    public AsteroidsClientScreen(
+            Controls localControls, Client client,
+            Viewport viewport, ShapeRenderer shapeRenderer,
+            Container&lt;Player&gt; playersContainer, Container&lt;Bullet&gt; bulletsContainer,
+            ContainerRenderer&lt;Player&gt; playersRenderer, ContainerRenderer&lt;Bullet&gt; bulletsRenderer) {
+        this.localControls = localControls;
+        this.client = client;
+        this.viewport = viewport;
+        this.playersContainer = playersContainer;
+        this.bulletsContainer = bulletsContainer;
+        this.shapeRenderer = shapeRenderer;
+        this.playersRenderer = playersRenderer;
+        this.bulletsRenderer = bulletsRenderer;
+    }
   </code></pre>
 
   <p>
@@ -2886,8 +2886,8 @@ this.bulletsRenderer = bulletsRenderer;
   </p>
 
   <pre><code>
-@Override
-public void show() {
+    @Override
+    public void show() {
   </code></pre>
 
   <p>
@@ -2897,18 +2897,18 @@ public void show() {
   </p>
 
   <pre><code>
-client.onConnected(introductoryStateDto -> {
-    localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected(), new NoopControls());
-    playersContainer.add(localPlayer);
-    GameStateDto gameStateDto = introductoryStateDto.getGameState();
-    gameStateDto.getPlayers().stream()
-	.map(playerDto -> PlayerMapper.localPlayerFromDto(playerDto, new NoopControls()))
-	.forEach(playersContainer::add);
+        client.onConnected(introductoryStateDto -> {
+            localPlayer = PlayerMapper.localPlayerFromDto(introductoryStateDto.getConnected(), new NoopControls());
+            playersContainer.add(localPlayer);
+            GameStateDto gameStateDto = introductoryStateDto.getGameState();
+            gameStateDto.getPlayers().stream()
+                .map(playerDto -> PlayerMapper.localPlayerFromDto(playerDto, new NoopControls()))
+                .forEach(playersContainer::add);
 
-    gameStateDto.getBullets().stream()
-	.map(bulletDto -> BulletMapper.fromDto(bulletDto, playersContainer))
-	.forEach(bulletsContainer::add);
-});
+            gameStateDto.getBullets().stream()
+                .map(bulletDto -> BulletMapper.fromDto(bulletDto, playersContainer))
+                .forEach(bulletsContainer::add);
+        });
   </code></pre>
 
   <p>
@@ -2916,12 +2916,12 @@ client.onConnected(introductoryStateDto -> {
   </p>
 
   <pre><code>
-client.onOtherPlayerConnected(connectedDto -> {
-    Player connected = PlayerMapper.localPlayerFromDto(connectedDto, new NoopControls());
-    playersContainer.add(connected);
-});
+        client.onOtherPlayerConnected(connectedDto -> {
+            Player connected = PlayerMapper.localPlayerFromDto(connectedDto, new NoopControls());
+            playersContainer.add(connected);
+        });
 
-client.onOtherPlayerDisconnected(playersContainer::removeById);
+        client.onOtherPlayerDisconnected(playersContainer::removeById);
   </code></pre>
 
   <p>
@@ -2931,11 +2931,11 @@ client.onOtherPlayerDisconnected(playersContainer::removeById);
   </p>
 
   <pre><code>
-client.onGameStateReceived(gameStateDto -> {
-    gameStateDto.getPlayers().stream()
-	.forEach(playerDto -> playersContainer
-	    .getById(playerDto.getId())
-	    .ifPresent(player -> PlayerMapper.updateByDto(player, playerDto)));
+        client.onGameStateReceived(gameStateDto -> {
+            gameStateDto.getPlayers().stream()
+                .forEach(playerDto -> playersContainer
+                    .getById(playerDto.getId())
+                    .ifPresent(player -> PlayerMapper.updateByDto(player, playerDto)));
   </code></pre>
 
   <p>
@@ -2947,27 +2947,27 @@ client.onGameStateReceived(gameStateDto -> {
   </p>
 
   <pre><code>
-    gameStateDto.getBullets().stream()
-	.forEach(bulletDto -> {
-	    Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
-	    if(!bullet.isPresent()) {
-		bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
-	    } else {
-		BulletMapper.updateByDto(bullet.get(), bulletDto);
-	    }
-	});
+            gameStateDto.getBullets().stream()
+                .forEach(bulletDto -> {
+                    Optional&lt;Bullet&gt; bullet = bulletsContainer.getById(bulletDto.getId());
+                    if(!bullet.isPresent()) {
+                        bulletsContainer.add(BulletMapper.fromDto(bulletDto, playersContainer));
+                    } else {
+                        BulletMapper.updateByDto(bullet.get(), bulletDto);
+                    }
+                });
 
-    List&lt;String&gt; existingBulletIds = gameStateDto.getBullets().stream()
-	.map(BulletDto::getId)
-	.collect(toList());
+            List&lt;String&gt; existingBulletIds = gameStateDto.getBullets().stream()
+                .map(BulletDto::getId)
+                .collect(toList());
 
-    bulletsContainer.getAll().stream()
-	.map(Bullet::getId)
-	.map(Object::toString)
-	.filter(id -> !existingBulletIds.contains(id))
-	.collect(toList())
-	.forEach(bulletsContainer::removeById);
-});
+            bulletsContainer.getAll().stream()
+                .map(Bullet::getId)
+                .map(Object::toString)
+                .filter(id -> !existingBulletIds.contains(id))
+                .collect(toList())
+                .forEach(bulletsContainer::removeById);
+        });
   </code></pre>
 
   <p>
@@ -2979,35 +2979,35 @@ client.onGameStateReceived(gameStateDto -> {
   </p>
 
   <pre><code>
-client.connect(new PlayerDto(null, Randomize.fromList(Player.POSSIBLE_COLORS).toString(), null));
-}
+        client.connect(new PlayerDto(null, Randomize.fromList(Player.POSSIBLE_COLORS).toString(), null));
+    }
 
-@Override
-public void render(float delta) {
-Gdx.gl.glClearColor(0, 0, 0, 1);
-Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-if(!client.isConnected()) return;
+        if(!client.isConnected()) return;
 
-client.sendControls(ControlsMapper.mapToDto(localControls));
+        client.sendControls(ControlsMapper.mapToDto(localControls));
 
-viewport.apply();
-shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-playersRenderer.render(shapeRenderer);
-bulletsRenderer.render(shapeRenderer);
-shapeRenderer.end();
-}
+        viewport.apply();
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        playersRenderer.render(shapeRenderer);
+        bulletsRenderer.render(shapeRenderer);
+        shapeRenderer.end();
+    }
 
-@Override
-public void resize(int width, int height) {
-viewport.update(width, height, true);
-}
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
 
-@Override
-public void dispose() {
-shapeRenderer.dispose();
-}
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
+    }
 }
   </code></pre>
 
@@ -3019,39 +3019,39 @@ shapeRenderer.dispose();
 
   <pre><code>
 public class AsteroidsClientGame extends Game {
-private Screen asteroids;
+    private Screen asteroids;
 
-@Override
-public void create() {
-Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
-ShapeRenderer shapeRenderer =  new ShapeRenderer();
-Controls localControls = new KeyboardControls();
+    @Override
+    public void create() {
+        Viewport viewport = new FillViewport(WORLD_WIDTH, WORLD_HEIGHT);
+        ShapeRenderer shapeRenderer =  new ShapeRenderer();
+        Controls localControls = new KeyboardControls();
 
-Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
-Container&lt;Player&gt; playersContainer = new PlayersContainer<>();
+        Container&lt;Bullet&gt; bulletsContainer = new BulletsContainer();
+        Container&lt;Player&gt; playersContainer = new PlayersContainer<>();
 
-ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
-ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
+        ContainerRenderer&lt;Bullet&gt; bulletsRenderer = new ContainerRenderer<>(bulletsContainer, VisibleRenderer::new);
+        ContainerRenderer&lt;Player&gt; playersRenderer = new ContainerRenderer<>(playersContainer, PlayerRenderer::new);
 
-Map&lt;String, String&gt; env = System.getenv();
-String protocol = env.getOrDefault("PROTOCOL", "http");
-String host = env.getOrDefault("HOST", "localhost");
-int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
-Client client = new SocketIoClient(protocol, host, port);
+        Map&lt;String, String&gt; env = System.getenv();
+        String protocol = env.getOrDefault("PROTOCOL", "http");
+        String host = env.getOrDefault("HOST", "localhost");
+        int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
+        Client client = new SocketIoClient(protocol, host, port);
 
-asteroids = new AsteroidsClientScreen(
-    localControls, client,
-    viewport, shapeRenderer,
-    playersContainer, bulletsContainer,
-    playersRenderer, bulletsRenderer);
+        asteroids = new AsteroidsClientScreen(
+            localControls, client,
+            viewport, shapeRenderer,
+            playersContainer, bulletsContainer,
+            playersRenderer, bulletsRenderer);
 
-setScreen(asteroids);
-}
+        setScreen(asteroids);
+    }
 
-@Override
-public void dispose() {
-asteroids.dispose();
-}
+    @Override
+    public void dispose() {
+        asteroids.dispose();
+    }
 }
   </code></pre>
 
@@ -3062,8 +3062,8 @@ asteroids.dispose();
 
   <pre><code>
 public class AsteroidsGame {
-public static final float WORLD_WIDTH = 800f;
-public static final float WORLD_HEIGHT = 600f;
+    public static final float WORLD_WIDTH = 800f;
+    public static final float WORLD_HEIGHT = 600f;
 }
   </code></pre>
 
@@ -3073,10 +3073,10 @@ public static final float WORLD_HEIGHT = 600f;
 
   <pre><code>
 public class DesktopLauncher {
-public static void main (String[] arg) {
-LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-new LwjglApplication(new AsteroidsClientGame(), config);
-}
+    public static void main (String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        new LwjglApplication(new AsteroidsClientGame(), config);
+    }
 }
   </code></pre>
 
@@ -3161,7 +3161,6 @@ public class SocketIoClient implements Client {
     ...
     private void emit(Socket socket, Event eventName, Dto payload) {
         delay.execute(() -&gt; socket.emit(eventName.toString(), payload.toJsonString()));
-        ;
     }
     ...
 }
@@ -4091,7 +4090,7 @@ Then we’ll need to implement them in our <code>SocketIoClient</code>:
 public class SocketIoClient implements Client {
     ...
     private final Lock eventListenersLock;
-    ….
+    ...
  
     public SocketIoClient(String protocol, String host, int port, Lock eventListenersLock,
                           LocalStateSynchronizer localStateSynchronizer, Delay delay) {
@@ -4166,9 +4165,6 @@ So this is it. You’ve reached the final paragraphs in this series. Thank you f
 <p>
 That’s true, we haven’t cover these. In fact, we haven't cover <strong>a lot</strong> more than just these. But you’re a big boy (or girl) now. You don’t need me to show you things anymore. You’re well equipped to explore and experiment on your own.<br>
 Go do it, be bold, learn as much as you can and have fun while you’re at it! :)
-</p>
-
-<img src="./Serverless architecture - Amazon Web Services Lambda_files/out.gif" alt="smoother game">
 </p>
 
 
