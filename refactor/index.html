@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Refactoring</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .center img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Targeting Tech Debt
+
+---
+
+# Honeymoon phase
+.center[![clean code](clean-code.jpg)]
+
+---
+
+# Life happens
+.center[![jira](jira.png)]
+
+---
+
+# Why
+.center[![govnokod](govnokod.png)]
+
+---
+
+# How to clean it up
+.center[![refactoring](refactoring.jpg)]
+
+---
+
+# Where do I start?
+.center[![commits](commits.png)]
+--
+.center[![commits2](commits2.png)]
+--
+.center[![commits3](commits3.png)]
+
+---
+
+# Shameless rip-off
+.center[![xrays](xrays.jpg)]
+
+---
+class: center, middle
+
+# codescene.io
+
+---
+class: center, middle
+
+# How to prioritize refactoring targets?
+
+Source control history can help immensely.
+
+---
+
+# Change Frequency of Files
+
+.center[![change frequency](change-frequency.png)]
+
+---
+
+# Focus on the Code That Matters
+
+.center[![matters](matters.png)]
+
+
+---
+
+# Science Time
+
+- [Does Measuring Code Change Improve Fault Prediction?](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.281.7784&rep=rep1&type=pdf)
+
+- [A Comparative Analysis of the Efficiency of Change Metrics and Static Code Attributes for Defect Prediction](https://hiper.cis.udel.edu/lp/lib/exe/fetch.php/courses/icse08-moser-defectpredict.pdf)
+
+TL;DR: Research shows that frequently changing code leads to quality problems. Duh.
+
+---
+class: center, middle
+
+# Look for code that changes frequently
+
+---
+
+# Complexity
+.center[![complexity](complexity.svg)]
+
+
+---
+class: center, middle
+
+# McCabe's cyclomatic complexity metric?
+
+Accurate, but slow - especially if you take history into account.
+
+---
+
+# Quiz time: which code seems more complex?
+.center[![complexity quiz](complexity-quiz.png)]
+
+---
+
+# Indentation as a Good-Enough Proxy for Complexity
+
+[Some people even wrote papers about it](http://softwareprocess.es/x/x/hindle-indentation.pdf)
+
+--
+## Warning:
+
+- will break when you make huge code indentation changes across commits
+- cannot be used to complare complexity between languages
+- won't catch some complex constructs e.g. list comprehensions
+
+---
+class: center, middle
+
+# Before: Look for code that changes frequently
+
+---
+class: center, middle
+
+# Now: Look for complex code that changes frequently
+
+---
+# Also known as Hotspot
+
+.center[![hotspot](hotspot.png)]
+
+---
+## Technical Debt / Hotspots
+.center[![hotspot 2](hotspot2.png)]
+
+---
+## Technical Debt / Hotspots / Defects
+.center[![defects](defects.png)]
+
+---
+# Configure Defect Patterns
+#### Settings / Hotspots
+.center[![configure defects](configure-defects.png)]
+
+---
+# Zoom In
+.center[![hotspot file](hotspot-file.png)]
+
+---
+# Complexity Trends
+.center[![complexity trend](complexity-trend.png)]
+
+---
+# Complexity Patterns
+.center[![complexity patterns](complexity-patterns.png)]
+
+---
+# You usually start simple
+...and then it gets complicated. Just like in life.
+.center[![complexity genesis](complexity-genesis.png)]
+
+---
+# Until It Gets Riddiculous
+> This `EnterpriseActivityManagerUtils.java` file is 13k lines long and people are working on it, how am I supposed to refactor it? :(
+
+---
+# Scale Down The Approach
+.center[![function level analysis](function-level-analysis.png)]
+
+---
+# Perform X-Ray
+.center[![function level xray](function-level-xray.png)]
+
+---
+# Look for the Worst Offenders
+.center[![function level xray result](function-level-xray-result.png)]
+
+---
+class: center, middle
+
+# Clean it up!
+
+---
+# Low Hanging Fruit: Proximity Principle
+.center[![proximity principle](proximity-principle.png)]
+
+---
+# X-Ray File Results / Structural Recomendations
+.center[![proximity principle](proximity-principle-helper.png)]
+
+
+---
+# Mind the Work in Progress: Splinter Pattern
+.center[![splinter pattern](splinter-pattern.png)]
+
+---
+class: center, middle
+
+# Thank you :)
+## Questions?
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
